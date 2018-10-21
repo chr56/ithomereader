@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/horizontal_padding">
+
+    <ProgressBar
+        android:id="@+id/load_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/article_grade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/article_grade_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/trash"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_dislike"
+            android:drawableTint="?android:textColorSecondary"
+            android:drawablePadding="2dp" />
+
+        <TextView
+            android:id="@+id/soso"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_neutral"
+            android:drawableTint="?android:textColorSecondary"
+            android:drawablePadding="2dp" />
+
+        <TextView
+            android:id="@+id/great"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_like"
+            android:drawableTint="?android:textColorSecondary"
+            android:drawablePadding="2dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

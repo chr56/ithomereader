@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="font_size_text">
+        <item>最小</item>
+        <item>较小</item>
+        <item>中等</item>
+        <item>较大</item>
+        <item>最大</item>
+    </string-array>
+    <string-array name="font_size_value" translatable="false">
+        <item>-2</item>
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="load_image_condition_text">
+        <item>总是自动加载</item>
+        <item>连接到 Wi-Fi 时自动加载</item>
+        <item>不自动加载（点按加载）</item>
+    </string-array>
+    <string-array name="load_image_condition_value" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="load_thumb_condition_text">
+        <item>总是显示</item>
+        <item>连接到 Wi-Fi 时显示</item>
+        <item>不显示</item>
+    </string-array>
+</resources>

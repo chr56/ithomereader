@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_style" translatable="false">
+        * {
+            word-break: break-word
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff
+        }
+
+        #header {
+            padding: 1em 1em .5em;
+            color: #fff;
+            background: #d22222
+        }
+
+        #header *, .post_content, #about_info_show {
+            margin-left: auto;
+            margin-right: auto;
+            width: auto;
+            max-width: 720px
+        }
+
+        #header h2 {
+            margin-bottom: 0;
+            line-height: 1.25
+        }
+
+        #header p {
+            margin-top: 5px;
+            font-style: italic
+        }
+
+        .post_content, .news-content, #about_info_show {
+            padding-left: 1em;
+            padding-right: 1em;
+            line-height: 1.6
+        }
+
+        #about_info_show {
+            padding-top: .5em
+        }
+
+        a {
+            color: #d22222;
+            border-bottom: solid 1px #d22222;
+            text-decoration: none
+        }
+
+        img {
+            display: block;
+            background: #ccc;
+            height: 200px!important;
+            width: 100%!important
+        }
+
+        img.loaded {
+            height: auto!important;
+            width: auto!important;
+            max-width: 100%!important
+        }
+
+        blockquote {
+            margin: 0;
+            color: #666;
+            border-left: 4px solid #ccc;
+            padding-left: .5em
+        }
+
+        embed {
+            display: none
+        }
+
+        #player1 {
+            display: none
+        }
+
+        iframe {
+            display: none
+        }
+    </string>
+    <string name="base_style_night" translatable="false">
+        * {
+            word-break: break-word
+        }
+
+        body {
+            margin: 0;
+            background: #303030;
+            color: #fff
+        }
+
+        #header {
+            padding: 1em 1em .5em;
+            color: #fff;
+            background: #990000
+        }
+
+        #header *, .post_content, #about_info_show {
+            margin-left: auto;
+            margin-right: auto;
+            width: auto;
+            max-width: 720px
+        }
+
+        #header h2 {
+            margin-bottom: 0;
+            line-height: 1.25
+        }
+
+        #header p {
+            margin-top: 5px;
+            font-style: italic
+        }
+
+        .post_content, .news-content, #about_info_show {
+            padding-left: 1em;
+            padding-right: 1em;
+            line-height: 1.6
+        }
+
+        #about_info_show {
+            padding-top: .5em
+        }
+
+        a {
+            color: #ff5d4c;
+            border-bottom: solid 1px #ff5d4c;
+            text-decoration: none
+        }
+
+        img {
+            display: block;
+            background: #999;
+            height: 200px!important;
+            width: 100%!important
+        }
+
+        img.loaded {
+            height: auto!important;
+            width: auto!important;
+            max-width: 100%!important
+        }
+
+        blockquote {
+            margin: 0;
+            color: #ccc;
+            border-left: 4px solid #666;
+            padding-left: .5em
+        }
+
+        embed {
+            display: none
+        }
+
+        #player1 {
+            display: none
+        }
+
+        iframe {
+            display: none
+        }
+    </string>
+    <string name="base_style_white" translatable="false">
+        * {
+            word-break: break-word
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff
+        }
+
+        #header {
+            padding: 1em 1em .5em;
+            color: #d22222;
+            background: #f5f5f5
+        }
+
+        #header *, .post_content, #about_info_show {
+            margin-left: auto;
+            margin-right: auto;
+            width: auto;
+            max-width: 720px
+        }
+
+        #header h2 {
+            margin-bottom: 0;
+            line-height: 1.25
+        }
+
+        #header p {
+            margin-top: 5px;
+            font-style: italic
+        }
+
+        .post_content, .news-content, #about_info_show {
+            padding-left: 1em;
+            padding-right: 1em;
+            line-height: 1.6
+        }
+
+        #about_info_show {
+            padding-top: .5em
+        }
+
+        a {
+            color: #d22222;
+            border-bottom: solid 1px #d22222;
+            text-decoration: none
+        }
+
+        img {
+            display: block;
+            background: #ccc;
+            height: 200px!important;
+            width: 100%!important
+        }
+
+        img.loaded {
+            height: auto!important;
+            width: auto!important;
+            max-width: 100%!important
+        }
+
+        blockquote {
+            margin: 0;
+            color: #666;
+            border-left: 4px solid #ccc;
+            padding-left: .5em
+        }
+
+        embed {
+            display: none
+        }
+
+        #player1 {
+            display: none
+        }
+
+        iframe {
+            display: none
+        }
+    </string>
+    <string name="base_js" translatable="false">
+        "imgs = document.getElementsByTagName('img');
+        for(var i = 0; i &lt; imgs.length; i++) {
+            imgs[i].addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var target = e.target;
+                if(target.classList.contains('loaded')) {
+                    JSInterface.openInViewer(target.src);
+                } else {
+                    target.src = target.dataset.original;
+                    target.classList.add('loaded');
+                }
+            })
+        }"
+    </string>
+    <string name="app_name">IT之家阅读</string>
+    <string name="refresh">刷新</string>
+    <string name="open_in_browser">在浏览器中打开</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="cache_clearing">正在清除缓存…</string>
+    <string name="share">分享…</string>
+    <string name="no_more_content">没有更多内容了</string>
+    <string name="timeout_no_internet">网络请求出现错误</string>
+    <string name="comments">评论</string>
+    <string name="hot_comments">热门评论</string>
+    <string name="settings">设置</string>
+    <string name="pref_cat_list">列表（更改选项后刷新生效，不包括搜索）</string>
+    <string name="pref_filter_lapin">过滤广告文章</string>
+    <string name="pref_filter_lapin_summary">启用后，列表中将不显示广告（辣品）文章</string>
+    <string name="pref_cat_about">关于</string>
+    <string name="pref_about_title">一个简单的第三方IT之家阅读应用 by iKirby</string>
+    <string name="pref_about_summary">此应用和IT之家及其下属机构无关</string>
+    <string name="pref_go_full_site">浏览完整网站</string>
+    <string name="pref_go_full_site_summary">浏览完整IT之家网站以获取完整体验</string>
+    <string name="pref_cat_reading">阅读</string>
+    <string name="pref_font_size">字体大小</string>
+    <string name="pref_image_loading">图片加载</string>
+    <string name="download_image">保存图片</string>
+    <string name="image_saved_to">"图片已保存到 "</string>
+    <string name="permission_denied">权限被拒绝，无法写入文件</string>
+    <string name="save_fail">保存失败，请检查权限</string>
+    <string name="open_source">开源相关</string>
+    <string name="pref_night_mode">夜间模式</string>
+    <string name="pref_night_mode_summary">启用后，将使用暗色主题。更改选项后返回主界面生效</string>
+    <string name="day_mode">日间模式</string>
+    <string name="search">搜索…</string>
+    <string name="keyword_s_results">“%s” 的搜索结果</string>
+    <string name="pref_custom_filter">自定义关键词过滤</string>
+    <string name="pref_custom_filter_summary">将对标题进行过滤。多个关键词用英文逗号和一个半角空格隔开</string>
+    <string name="comment_content">评论内容</string>
+    <string name="comment_write_done">写好了</string>
+    <string name="post_comment">发表评论</string>
+    <string name="login_username">邮箱 / 手机号</string>
+    <string name="login_password">密码</string>
+    <string name="please_login_first">请先登录</string>
+    <string name="comment_posted">评论已经发表</string>
+    <string name="comment_post_failed">评论发表失败，请检查网络或尝试重新登录</string>
+    <string name="login_title">登录软媒通行证</string>
+    <string name="login_btn_dialog">登录</string>
+    <string name="user_pass_empty">用户名和密码不能为空</string>
+    <string name="cancel">取消</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_failed">登录失败，请检查网络或用户名/密码是否正确</string>
+    <string name="logout_btn">退出已登录帐号</string>
+    <string name="login_info_cleared">登录信息已清除</string>
+    <string name="already_has_login_info">已有登录信息，继续登录将覆盖</string>
+    <string name="all_comments">全部评论</string>
+    <string name="pref_show_thumb">文章列表中的缩略图</string>
+    <string name="pref_check_update_on_launch">启动时检查更新</string>
+    <string name="update_found">发现更新</string>
+    <string name="update_download">下载</string>
+    <string name="post_thumb_description">文章缩略图</string>
+    <string name="pref_o_style_light">使用 Android O 样式的亮色主题</string>
+    <string name="pref_o_style_light_summary">启用后，日间模式将使用全白主题。更改选项后返回主界面生效</string>
+    <string name="comment_basic_load_failed">评论基本信息尚未加载，无法查看评论</string>
+    <string name="share_ones_comment">分享 %s 的评论</string>
+    <string name="share_comment_content">[%s 评论了 %s]\n%s\n\n分享自IT之家: %s</string>
+    <string name="copy_content">复制内容</string>
+    <string name="copied_to_clipboard">已复制到剪切板</string>
+    <string name="reply_ones_comment">回复 %s 的评论：\n%s</string>
+    <string name="reply_preset_text">回复%s %s：</string>
+    <string name="reply_to_comment">回复</string>
+    <string name="pref_cat_misc">杂项</string>
+    <string name="pref_check_for_update">检查更新</string>
+    <string name="no_update_found">没有发现更新</string>
+    <string name="comment_support">支持(%d)</string>
+    <string name="comment_against">反对(%d)</string>
+    <string name="comment_is_support">取消支持(%d)</string>
+    <string name="comment_is_against">取消反对(%d)</string>
+    <string name="pref_cat_account">帐户凭据</string>
+    <string name="pref_cat_interface">界面</string>
+    <string name="pref_gesture">手势操作</string>
+    <string name="pref_gesture_summary">启用后，可以向右滑动返回，并在文章界面向左滑动打开评论</string>
+    <string name="not_support_reply_hot_comment">暂不支持回复热门评论</string>
+    <string name="no_content_to_display">没有内容可以显示</string>
+    <string name="trending">热门</string>
+    <string name="no_app_to_handle_intent">没有应用可以执行此操作</string>
+    <string name="timeline_dot_desc">时间点</string>
+    <string name="live_post_image">直播图片</string>
+    <string name="live_info">直播信息</string>
+    <string name="live">图文直播</string>
+    <string name="file_exists">保存失败，文件已存在</string>
+    <string name="fatal_exception_message">应用出现未知错误，请将以下信息和发生错误时您正在执行的操作发送给开发者以帮助诊断问题（长按复制）。</string>
+    <string name="show_banner_on_list">首页显示推荐横幅</string>
+    <string name="show_banner_on_list_summary">横幅图片将始终加载</string>
+    <string name="copy_link">复制链接</string>
+    <string name="current_ver">当前版本 %s</string>
+    <string name="view_thumb">查看缩略图</string>
+    <string name="news">新闻</string>
+    <string name="cancel_vote">取消评分…</string>
+    <string name="grade">评分</string>
+    <string name="see_grade_after_article_loaded">文章加载后才可以查看评分</string>
+    <string name="already_voted">每篇文章只能评分一次</string>
+    <string name="pref_use_bottom_nav">主界面使用底部导航 (BETA)</string>
+</resources>

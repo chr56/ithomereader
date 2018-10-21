@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:paddingStart="@dimen/horizontal_padding"
+    android:paddingTop="@dimen/vertical_padding"
+    android:paddingEnd="@dimen/horizontal_padding"
+    android:paddingBottom="@dimen/vertical_padding">
+
+    <ImageView
+        android:id="@+id/post_thumb"
+        android:layout_width="@dimen/thumb_width"
+        android:layout_height="@dimen/thumb_width"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/image_bg"
+        android:contentDescription="@string/post_thumb_description"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/post_info_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:minHeight="96dp">
+
+        <TextView
+            android:id="@+id/post_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/post_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/post_title"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:lines="2"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/post_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/post_date_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/againstText"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

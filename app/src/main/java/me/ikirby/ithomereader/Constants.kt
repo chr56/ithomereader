@@ -1,0 +1,8 @@
+package me.ikirby.ithomereader
+
+const val LIVE_MSG_TYPE_IMAGE = 1
+const val THEME_CHANGE_REQUEST_CODE = 1
+const val COMMENT_POSTED_REQUEST_CODE = 1
+const val SWIPE_GESTURE_DISTANCE = 150
+const val STORAGE_PERMISSION_REQUEST_CODE = 6
+const val SLIDE_SCROLL_INTERVAL = 5000

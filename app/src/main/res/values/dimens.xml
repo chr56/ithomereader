@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="vertical_padding">12dp</dimen>
+    <dimen name="horizontal_padding">16dp</dimen>
+    <dimen name="list_padding">0dp</dimen>
+    <dimen name="thumb_width">96dp</dimen>
+    <dimen name="horizontal_padding_single_column">@dimen/horizontal_padding</dimen>
+    <dimen name="bottom_sheet_menu_item_icon_size">24dp</dimen>
+    <dimen name="dialog_bottom_padding">6dp</dimen>
+    <dimen name="horizontal_padding_dialog">24dp</dimen>
+</resources>

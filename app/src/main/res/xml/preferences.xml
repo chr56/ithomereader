@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_cat_account">
+
+        <Preference
+            android:key="login_account"
+            android:title="@string/login_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_cat_list">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="show_banner"
+            android:summary="@string/show_banner_on_list_summary"
+            android:title="@string/show_banner_on_list" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="filter_lapin"
+            android:summary="@string/pref_filter_lapin_summary"
+            android:title="@string/pref_filter_lapin" />
+
+        <EditTextPreference
+            android:key="custom_filter"
+            android:summary="@string/pref_custom_filter_summary"
+            android:title="@string/pref_custom_filter" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/load_thumb_condition_text"
+            android:entryValues="@array/load_image_condition_value"
+            android:key="show_thumb_condition"
+            android:summary="%s"
+            android:title="@string/pref_show_thumb" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_cat_reading">
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/font_size_text"
+            android:entryValues="@array/font_size_value"
+            android:key="font_size"
+            android:summary="%s"
+            android:title="@string/pref_font_size" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/load_image_condition_text"
+            android:entryValues="@array/load_image_condition_value"
+            android:key="load_image_condition"
+            android:summary="%s"
+            android:title="@string/pref_image_loading" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_cat_interface">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="night_mode"
+            android:summary="@string/pref_night_mode_summary"
+            android:title="@string/pref_night_mode" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="o_style_light"
+            android:summary="@string/pref_o_style_light_summary"
+            android:title="@string/pref_o_style_light" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="swipe_back"
+            android:summary="@string/pref_gesture_summary"
+            android:title="@string/pref_gesture" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="use_bottom_nav"
+            android:title="@string/pref_use_bottom_nav" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_cat_misc"
+        android:title="@string/pref_cat_misc">
+
+        <Preference
+            android:key="check_for_update"
+            android:title="@string/pref_check_for_update" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="check_update_on_launch"
+            android:title="@string/pref_check_update_on_launch" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_cat_about">
+
+        <Preference
+            android:summary="@string/pref_about_summary"
+            android:title="@string/pref_about_title" />
+
+        <Preference
+            android:key="go_full_site"
+            android:summary="@string/pref_go_full_site_summary"
+            android:title="@string/pref_go_full_site" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/open_source">
+
+        <Preference
+            android:key="lib_androidx"
+            android:title="AndroidX" />
+
+        <Preference
+            android:key="lib_mdc"
+            android:title="Material Components for Android" />
+
+        <Preference
+            android:key="lib_jsoup"
+            android:title="jsoup" />
+
+        <Preference
+            android:key="lib_photoview"
+            android:title="PhotoView" />
+
+        <Preference
+            android:key="lib_glide"
+            android:title="Glide" />
+
+        <Preference
+            android:key="lib_bottom_sheet"
+            android:title="BottomSheetMenu" />
+
+        <Preference
+            android:key="kotlinx_coroutines"
+            android:title="kotlinx-coroutines-android" />
+    </PreferenceCategory>
+</PreferenceScreen>
