@@ -8,8 +8,10 @@ import me.ikirby.ithomereader.api.LiveApi
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
+import org.json.JSONException
 import org.json.JSONObject
 import org.jsoup.Jsoup
+import java.io.IOException
 
 object LiveApiImpl : LiveApi {
     private val tag = javaClass.simpleName
@@ -30,7 +32,9 @@ object LiveApiImpl : LiveApi {
                 }
             }
             return@async list
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
+            Logger.e(tag, "getLiveMessages:JSON format", e)
+        } catch (e: IOException) {
             Logger.e(tag, "getLiveMessages", e)
         }
         return@async null
