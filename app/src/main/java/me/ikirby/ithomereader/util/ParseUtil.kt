@@ -17,6 +17,7 @@ fun getMatchInt(s: String): Int {
         }
         return Integer.parseInt(result)
     } catch (e: Exception) {
+        Logger.e("ParseUtil", "getMatchInt", e)
         return 0
     }
 }

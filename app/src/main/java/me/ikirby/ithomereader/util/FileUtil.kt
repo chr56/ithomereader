@@ -10,7 +10,7 @@ fun clearCache() {
             deleteDir(dir)
         }
     } catch (e: Exception) {
-        e.printStackTrace()
+        Logger.e("FileUtil", "clearCache", e)
     }
 
 }

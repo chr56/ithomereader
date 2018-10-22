@@ -8,6 +8,7 @@ import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.entity.ArticleGrade
 import me.ikirby.ithomereader.entity.FullArticle
 import me.ikirby.ithomereader.network.ITHomeApi
+import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.getMatchInt
 import me.ikirby.ithomereader.util.isUrlImgSrc
 import org.jsoup.Jsoup
@@ -19,6 +20,8 @@ import java.util.*
 import java.util.regex.Pattern
 
 object ArticleApiImpl : ArticleApi {
+    private val tag = javaClass.simpleName
+
     override fun getArticleList(page: Int, filterLapin: Boolean,
                                 customFilter: Boolean, keywords: Array<String>?,
                                 oldList: ArrayList<Article>?): Deferred<List<Article>?> = GlobalScope.async {
@@ -44,6 +47,7 @@ object ArticleApiImpl : ArticleApi {
             }
             return@async removeDuplicate(list, oldList)
         } catch (e: IOException) {
+            Logger.e(tag, "getArticleList", e)
             return@async null
         }
     }
@@ -60,6 +64,7 @@ object ArticleApiImpl : ArticleApi {
             }
             return@async list
         } catch (e: IOException) {
+            Logger.e(tag, "getSearchResults", e)
             return@async null
         }
     }
@@ -82,7 +87,7 @@ object ArticleApiImpl : ArticleApi {
                 grade = ArticleGrade(score, trash, soso, great)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(tag, "getArticleGrade", e)
         }
         return@async grade
     }
@@ -91,6 +96,7 @@ object ArticleApiImpl : ArticleApi {
         return@async try {
             ITHomeApi.newsVote(id, type, cookie)
         } catch (e: Exception) {
+            Logger.e(tag, "articleVote", e)
             null
         }
     }
@@ -151,7 +157,7 @@ object ArticleApiImpl : ArticleApi {
             try {
                 return "https://" + URLDecoder.decode(matcher.group(0), "utf-8")
             } catch (e: UnsupportedEncodingException) {
-                e.printStackTrace()
+                Logger.e(tag, "parseSpecialUrl", e)
             }
 
         }
@@ -249,7 +255,7 @@ object ArticleApiImpl : ArticleApi {
             }
             return@async FullArticle(newsId, title, time, content)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(tag, "getFullArticle", e)
             return@async null
         }
     }

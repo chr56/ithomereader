@@ -7,9 +7,12 @@ import me.ikirby.ithomereader.api.TrendingApi
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.entity.Trending
 import me.ikirby.ithomereader.network.ITHomeApi
+import me.ikirby.ithomereader.util.Logger
 import java.io.IOException
 
 object TrendingApiImpl : TrendingApi {
+    private val tag = javaClass.simpleName
+
     override fun getFocusBannerArticles(): Deferred<List<Article>?> = GlobalScope.async {
         val list = mutableListOf<Article>()
         try {
@@ -23,6 +26,7 @@ object TrendingApiImpl : TrendingApi {
             }
             return@async list
         } catch (e: IOException) {
+            Logger.e(tag, "getFocusBannerArticles", e)
             return@async null
         }
     }
@@ -55,6 +59,7 @@ object TrendingApiImpl : TrendingApi {
             }
             return@async list
         } catch (e: IOException) {
+            Logger.e(tag, "getTrendingList", e)
             return@async null
         }
     }

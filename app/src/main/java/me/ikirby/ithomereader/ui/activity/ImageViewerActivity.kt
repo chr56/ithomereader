@@ -24,12 +24,12 @@ import me.ikirby.ithomereader.STORAGE_PERMISSION_REQUEST_CODE
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
+import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.copyToClipboard
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.concurrent.ExecutionException
 
 class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickListener {
 
@@ -118,14 +118,8 @@ class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickLi
             MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(fileName), arrayOf("image/*"), null)
             runOnUiThread { ToastUtil.showToast(getString(R.string.image_saved_to) + fileName) }
         } catch (e: IOException) {
+            Logger.e("ImageViewerActivity", "downloadFile", e)
             runOnUiThread { ToastUtil.showToast(R.string.save_fail) }
-            e.printStackTrace()
-        } catch (e: InterruptedException) {
-            runOnUiThread { ToastUtil.showToast(R.string.save_fail) }
-            e.printStackTrace()
-        } catch (e: ExecutionException) {
-            runOnUiThread { ToastUtil.showToast(R.string.save_fail) }
-            e.printStackTrace()
         }
     }).start()
 

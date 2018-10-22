@@ -6,12 +6,15 @@ import kotlinx.coroutines.experimental.async
 import me.ikirby.ithomereader.api.CommentApi
 import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.network.ITHomeApi
+import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.getMatchInt
 import org.jsoup.Jsoup
 import java.io.IOException
 import java.util.regex.Pattern
 
 object CommentApiImpl : CommentApi {
+    private val tag = javaClass.simpleName
+
     override fun getAllCommentsList(id: String, hash: String, page: Int,
                                     oldList: ArrayList<Comment>?,
                                     isLapin: Boolean): Deferred<List<Comment>?> = GlobalScope.async {
@@ -63,6 +66,7 @@ object CommentApiImpl : CommentApi {
             }
             return@async removeDuplicate(removeDiscontinuousFloor(list), oldList)
         } catch (e: IOException) {
+            Logger.e(tag, "getAllCommentsList", e)
             return@async null
         }
     }
@@ -93,6 +97,7 @@ object CommentApiImpl : CommentApi {
             }
             return@async removeDuplicate(list, oldList)
         } catch (e: IOException) {
+            Logger.e(tag, "getHotCommentsList", e)
             return@async null
         }
     }
@@ -121,6 +126,7 @@ object CommentApiImpl : CommentApi {
             }
             return list
         } catch (e: IOException) {
+            Logger.e(tag, "getMoreRepliesList", e)
             return null
         }
     }
@@ -130,6 +136,7 @@ object CommentApiImpl : CommentApi {
         return@async try {
             ITHomeApi.postComment(id, parentId, selfId, commentContent, cookie)
         } catch (e: IOException) {
+            Logger.e(tag, "postComment", e)
             null
         }
     }
@@ -139,6 +146,7 @@ object CommentApiImpl : CommentApi {
         return@async try {
             ITHomeApi.commentVote(id, typeId, isCancel, cookie)
         } catch (e: IOException) {
+            Logger.e(tag, "commentVote", e)
             null
         }
     }
@@ -152,6 +160,7 @@ object CommentApiImpl : CommentApi {
                 return@async matcher.group(1)
             }
         } catch (e: IOException) {
+            Logger.e(tag, "getCommentHash", e)
         }
         return@async null
     }

@@ -9,6 +9,7 @@ import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.entity.UpdateInfo
 import me.ikirby.ithomereader.ui.activity.DialogActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
+import me.ikirby.ithomereader.util.Logger
 import org.json.JSONObject
 import org.jsoup.Jsoup
 
@@ -37,7 +38,7 @@ class UpdateCheckNotifyTask(private val showToast: Boolean) : AsyncTask<Void, Vo
                     )
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Logger.e("UpdateCheckNotifyTask", "doInBackground", e)
             }
         }
 
