@@ -27,9 +27,9 @@ import me.ikirby.ithomereader.util.shouldShowThumb
 
 class ArticleListFragment : BaseFragment() {
 
-    private var articleList: ArrayList<Article>? = null
-    private var focuses: ArrayList<Article>? = null
-    private var focusSlideAdapter: SlideBannerAdapter? = null
+    private lateinit var articleList: ArrayList<Article>
+    private lateinit var focuses: ArrayList<Article>
+    private lateinit var focusSlideAdapter: SlideBannerAdapter
     private lateinit var adapter: ArticleListAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var page = 0
@@ -62,29 +62,28 @@ class ArticleListFragment : BaseFragment() {
         view.error_placeholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {
-            articleList = savedInstanceState.getParcelableArrayList("articleList")
-            focuses = savedInstanceState.getParcelableArrayList("focuses")
+            articleList = savedInstanceState.getParcelableArrayList("articleList") ?: ArrayList()
+            focuses = savedInstanceState.getParcelableArrayList("focuses") ?: ArrayList()
         }
 
-        if (savedInstanceState == null || articleList == null
-                || focuses == null && showBanner || articleList!!.size == 0) {
+        if (savedInstanceState == null || showBanner || articleList.isEmpty()) {
             showThumb = shouldShowThumb()
             showBanner = BaseApplication.preferences.getBoolean("show_banner", true)
             articleList = ArrayList()
             focuses = ArrayList()
             if (showBanner) {
-                focusSlideAdapter = SlideBannerAdapter(focuses!!, context!!)
+                focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
             }
-            adapter = ArticleListAdapter(articleList!!, focusSlideAdapter, context!!, showThumb)
+            adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
             view.list_view.adapter = adapter
         } else {
             showThumb = savedInstanceState.getBoolean("show_thumb", true)
             showBanner = savedInstanceState.getBoolean("show_banner", true)
             page = savedInstanceState.getInt("page")
             if (showBanner) {
-                focusSlideAdapter = SlideBannerAdapter(focuses!!, context!!)
+                focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
             }
-            adapter = ArticleListAdapter(articleList!!, focusSlideAdapter, context!!, showThumb)
+            adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
             if (showBanner) {
@@ -133,15 +132,13 @@ class ArticleListFragment : BaseFragment() {
             loadList()
             showBanner = BaseApplication.preferences.getBoolean("show_banner", true)
             if (showBanner) {
-                if (focusSlideAdapter == null) {
+                if (!::focusSlideAdapter.isInitialized) {
                     focuses = ArrayList()
-                    focusSlideAdapter = SlideBannerAdapter(focuses!!, context!!)
-                    adapter.setFocusSlideAdapter(focusSlideAdapter!!)
+                    focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
+                    adapter.setFocusSlideAdapter(focusSlideAdapter)
                 }
                 loadBanner()
             } else {
-                focuses = null
-                focusSlideAdapter = null
                 adapter.setFocusSlideAdapter(null)
             }
         }
@@ -168,9 +165,9 @@ class ArticleListFragment : BaseFragment() {
                         if (isRefresh) {
                             showThumb = shouldShowThumb()
                             adapter.setShowThumb(showThumb)
-                            articleList!!.clear()
+                            articleList.clear()
                         }
-                        articleList!!.addAll(articles)
+                        articleList.addAll(articles)
                         adapter.notifyDataSetChanged()
                     } else {
                         page--
@@ -182,7 +179,7 @@ class ArticleListFragment : BaseFragment() {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
 
-                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, articleList!!.size)
+                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, articleList.size)
                 isLoading = false
                 isRefresh = false
                 view!!.swipe_refresh.isRefreshing = false
@@ -194,9 +191,9 @@ class ArticleListFragment : BaseFragment() {
         GlobalScope.launch(Dispatchers.Main + parentJob) {
             val articles = TrendingApiImpl.getFocusBannerArticles().await()
             if (articles != null && articles.isNotEmpty()) {
-                focuses!!.clear()
-                focuses!!.addAll(articles)
-                focusSlideAdapter!!.notifyDataSetChanged()
+                focuses.clear()
+                focuses.addAll(articles)
+                focusSlideAdapter.notifyDataSetChanged()
             }
         }
     }

@@ -28,7 +28,7 @@ class LoginDialog : DialogFragment() {
 
     private val preferences: SharedPreferences = BaseApplication.preferences
     private var cookie: String? = null
-    private var callBackPreference: Preference? = null
+    private lateinit var callbackPreference: Preference
 
     private val parentJob = Job()
 
@@ -52,8 +52,8 @@ class LoginDialog : DialogFragment() {
             val textPassword = dlg.password
 
             btnLogin.setOnClickListener {
-                val username = textUsername.text!!.toString()
-                val password = textPassword.text!!.toString()
+                val username = textUsername.text.toString()
+                val password = textPassword.text.toString()
                 if (username == "" || password == "") {
                     ToastUtil.showToast(R.string.user_pass_empty)
                 } else {
@@ -101,8 +101,8 @@ class LoginDialog : DialogFragment() {
                 preferences.edit().putString("user_hash", cookieStr)
                         .putString("username", username).apply()
                 this@LoginDialog.cookie = cookieStr
-                if (callBackPreference != null) {
-                    callBackPreference!!.title = username
+                if (::callbackPreference.isInitialized) {
+                    callbackPreference.title = username
                 }
                 ToastUtil.showToast(R.string.login_success)
                 this@LoginDialog.dismiss()
@@ -117,14 +117,14 @@ class LoginDialog : DialogFragment() {
     private fun doLogout() {
         preferences.edit().remove("user_hash").remove("username").apply()
         this.cookie = null
-        if (callBackPreference != null) {
-            callBackPreference!!.setTitle(R.string.login_title)
+        if (::callbackPreference.isInitialized) {
+            callbackPreference.setTitle(R.string.login_title)
         }
         ToastUtil.showToast(R.string.login_info_cleared)
     }
 
-    fun setCallBackPreference(callBackPreference: Preference) {
-        this.callBackPreference = callBackPreference
+    fun setCallbackPreference(callBackPreference: Preference) {
+        this.callbackPreference = callBackPreference
     }
 
     companion object {

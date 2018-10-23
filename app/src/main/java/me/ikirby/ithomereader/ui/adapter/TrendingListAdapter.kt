@@ -131,6 +131,9 @@ class TrendingListAdapter(private val list: ArrayList<Trending>, private val con
     }
 
     private fun showPopupMenu(post: Trending) {
+        if (post.url == null) {
+            return
+        }
         UiUtil.showBottomSheetMenu(context, object : BottomSheetMenu.BottomSheetMenuListener {
             override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
                 inflater.inflate(R.menu.main_context, menu)
@@ -148,14 +151,14 @@ class TrendingListAdapter(private val list: ArrayList<Trending>, private val con
                         }
                         context.startActivity(Intent.createChooser(share, context.getString(R.string.share) + " " + post.title))
                     }
-                    R.id.copy_link -> copyToClipboard("ITHomeNewsLink", post.url!!)
+                    R.id.copy_link -> copyToClipboard("ITHomeNewsLink", post.url)
                     R.id.view_thumb -> {
                         val intent = Intent(context, ImageViewerActivity::class.java).apply {
                             putExtra("url", post.thumb)
                         }
                         context.startActivity(intent)
                     }
-                    R.id.open_in_browser -> openLinkInBrowser(context, post.url!!)
+                    R.id.open_in_browser -> openLinkInBrowser(context, post.url)
                 }
             }
         })

@@ -37,7 +37,7 @@ class XRecyclerView : RecyclerView {
 
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                         && firstVisibleItemPosition >= 0) {
-                    onBottomReachedListener!!.onBottomReached()
+                    onBottomReachedListener?.onBottomReached()
                 }
             }
         }

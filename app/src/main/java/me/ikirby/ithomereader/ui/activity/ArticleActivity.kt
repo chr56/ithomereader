@@ -21,9 +21,9 @@ import me.ikirby.ithomereader.util.*
 
 class ArticleActivity : BaseActivity() {
 
-    private var title: String? = null
-    private var url: String? = null
-    private var newsId: String? = null
+    private lateinit var title: String
+    private lateinit var url: String
+    private lateinit var newsId: String
     private var isLiveInfo = false
     private val actionBarElevation = convertDpToPixel(4F)
     //private var lapinId: String? = null
@@ -34,15 +34,9 @@ class ArticleActivity : BaseActivity() {
         enableBackBtn()
 
         url = intent.getStringExtra("url")
-        title = intent.getStringExtra("title")
+        title = intent.getStringExtra("title")?: ""
 
-        if (url == null) {
-            ToastUtil.showToast("null")
-            finish()
-            return
-        }
-
-        if (url!!.contains("live.ithome.com")) {
+        if (url.contains("live.ithome.com")) {
             if (intent.getStringExtra("live_info") == null) {
                 val i = Intent(this, LiveActivity::class.java)
                 i.putExtra("url", url)
@@ -94,8 +88,8 @@ class ArticleActivity : BaseActivity() {
             load_tip.visibility = View.VISIBLE
             loadContent()
         } else {
-            title = savedInstanceState.getString("title")
-            newsId = savedInstanceState.getString("news_id")
+            title = savedInstanceState.getString("title", "")
+            newsId = savedInstanceState.getString("news_id", "")
             post_content.restoreState(savedInstanceState)
         }
     }
@@ -127,8 +121,8 @@ class ArticleActivity : BaseActivity() {
             }
             R.id.action_grade -> showGrade()
             R.id.action_comments -> showComments()
-            R.id.copy_link -> copyToClipboard("ITHomeNewsLink", url!!)
-            R.id.open_in_browser -> openLinkInBrowser(this, url!!)
+            R.id.copy_link -> copyToClipboard("ITHomeNewsLink", url)
+            R.id.open_in_browser -> openLinkInBrowser(this, url)
             android.R.id.home -> finish()
         }
         return true
@@ -141,10 +135,10 @@ class ArticleActivity : BaseActivity() {
         load_text.visibility = View.GONE
         GlobalScope.launch(Dispatchers.Main + parentJob) {
             val loadImageAutomatically = shouldLoadImageAutomatically()
-            val fullArticle = ArticleApiImpl.getFullArticle(url!!, loadImageAutomatically, isLiveInfo).await()
+            val fullArticle = ArticleApiImpl.getFullArticle(url, loadImageAutomatically, isLiveInfo).await()
             if (fullArticle != null) {
                 if (fullArticle.newsId.isBlank()) {
-                    openLinkInBrowser(this@ArticleActivity, url!!)
+                    openLinkInBrowser(this@ArticleActivity, url)
                     finish()
                     return@launch
                 }
@@ -162,6 +156,7 @@ class ArticleActivity : BaseActivity() {
         }
     }
 
+    @Suppress("Unused")
     @JavascriptInterface
     fun openInViewer(url: String) {
         val intent = Intent(this, ImageViewerActivity::class.java).apply {
@@ -182,8 +177,8 @@ class ArticleActivity : BaseActivity() {
     }
 
     private fun showGrade() {
-        if (newsId != null) {
-            val dialog = ArticleGradeDialog.newInstance(newsId!!)
+        if (::newsId.isInitialized) {
+            val dialog = ArticleGradeDialog.newInstance(newsId)
             dialog.show(supportFragmentManager, "gradeDialog")
         } else {
             ToastUtil.showToast(R.string.see_grade_after_article_loaded)

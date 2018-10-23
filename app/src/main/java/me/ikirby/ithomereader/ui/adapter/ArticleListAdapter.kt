@@ -149,13 +149,7 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
             PagerSnapHelper().attachToRecyclerView(recyclerView)
             recyclerView.recycler_view.layoutManager = bannerLayoutManager
             recyclerView.recycler_view.adapter = focusSlideAdapter
-
-
             handler.postDelayed(autoScroll, SLIDE_SCROLL_INTERVAL.toLong())
-        }
-
-        fun stopHandler() {
-            handler.removeCallbacks(autoScroll)
         }
     }
 

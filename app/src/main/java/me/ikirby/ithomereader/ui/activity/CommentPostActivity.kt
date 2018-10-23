@@ -3,7 +3,6 @@ package me.ikirby.ithomereader.ui.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
@@ -23,9 +22,9 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class CommentPostActivity : BaseActivity() {
 
-    private var id: String? = null
-    private var parentId: String? = null
-    private var selfId: String? = null
+    private lateinit var id: String
+    private lateinit var parentId: String
+    private lateinit var selfId: String
     private var cookie: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,11 +35,6 @@ class CommentPostActivity : BaseActivity() {
         id = intent.getStringExtra("id")
         val title = intent.getStringExtra("title")
         val replyTo = intent.getParcelableExtra<Comment>("replyTo")
-        if (id == null || title == null) {
-            ToastUtil.showToast("null")
-            finish()
-            return
-        }
 
         if (replyTo != null) {
             if (replyTo.parentid == null) {
@@ -72,9 +66,7 @@ class CommentPostActivity : BaseActivity() {
         })
         post_comment_btn.setOnClickListener { postComment() }
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
         loadCookie()
-
         window.decorView.postDelayed({
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             post_comment_content.requestFocus()
@@ -103,7 +95,7 @@ class CommentPostActivity : BaseActivity() {
         load_progress.visibility = View.VISIBLE
         val commentContent = post_comment_content.text.toString()
         GlobalScope.launch(Dispatchers.Main + parentJob) {
-            val result = CommentApiImpl.postComment(id!!, parentId, selfId, commentContent, cookie!!).await()
+            val result = CommentApiImpl.postComment(id, parentId, selfId, commentContent, cookie!!).await()
             if (result != null) {
                 if (result == "评论成功") {
                     ToastUtil.showToast(R.string.comment_posted)
@@ -124,6 +116,6 @@ class CommentPostActivity : BaseActivity() {
     }
 
     fun loadCookie() {
-        cookie = preferences!!.getString("user_hash", null)
+        cookie = preferences.getString("user_hash", "")?: ""
     }
 }

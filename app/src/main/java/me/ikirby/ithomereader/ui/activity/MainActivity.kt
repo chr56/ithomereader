@@ -56,12 +56,12 @@ class MainActivity : BaseActivity() {
         viewPager!!.adapter = adapter
 
         if (savedInstanceState == null) {
-            if (preferences!!.getBoolean("check_update_on_launch", true)) {
+            if (preferences.getBoolean("check_update_on_launch", true)) {
                 UpdateCheckNotifyTask(false).execute()
             }
-            if (!preferences!!.contains("version") || BuildConfig.VERSION_CODE > preferences!!.getInt("version", BuildConfig.VERSION_CODE)) {
+            if (!preferences.contains("version") || BuildConfig.VERSION_CODE > preferences.getInt("version", BuildConfig.VERSION_CODE)) {
                 CleanUpTask().execute()
-                preferences!!.edit().putInt("version", BuildConfig.VERSION_CODE).apply()
+                preferences.edit().putInt("version", BuildConfig.VERSION_CODE).apply()
             }
         }
     }
@@ -132,9 +132,9 @@ class MainActivity : BaseActivity() {
             R.id.action_refresh -> return false
             R.id.action_night_mode -> {
                 if (BaseApplication.isNightMode) {
-                    preferences!!.edit().putBoolean("night_mode", false).apply()
+                    preferences.edit().putBoolean("night_mode", false).apply()
                 } else {
-                    preferences!!.edit().putBoolean("night_mode", true).apply()
+                    preferences.edit().putBoolean("night_mode", true).apply()
                 }
                 reloadTheme()
             }

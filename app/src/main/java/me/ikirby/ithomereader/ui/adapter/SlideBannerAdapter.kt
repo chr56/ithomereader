@@ -58,35 +58,40 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
                 Palette.from(resource).generate { palette ->
                     val bgColor: Int
                     val textColor: Int
-                    when {
-                        palette!!.mutedSwatch != null -> {
-                            bgColor = palette.getMutedColor(Color.BLACK)
-                            textColor = palette.mutedSwatch!!.titleTextColor
+                    if (palette != null) {
+                        when {
+                            palette.mutedSwatch != null -> {
+                                bgColor = palette.getMutedColor(Color.BLACK)
+                                textColor = palette.mutedSwatch!!.titleTextColor
+                            }
+                            palette.darkMutedSwatch != null -> {
+                                bgColor = palette.getDarkMutedColor(Color.BLACK)
+                                textColor = palette.darkMutedSwatch!!.titleTextColor
+                            }
+                            palette.lightMutedSwatch != null -> {
+                                bgColor = palette.getLightMutedColor(Color.BLACK)
+                                textColor = palette.lightMutedSwatch!!.titleTextColor
+                            }
+                            palette.vibrantSwatch != null -> {
+                                bgColor = palette.getVibrantColor(Color.BLACK)
+                                textColor = palette.vibrantSwatch!!.titleTextColor
+                            }
+                            palette.darkVibrantSwatch != null -> {
+                                bgColor = palette.getDarkVibrantColor(Color.BLACK)
+                                textColor = palette.darkVibrantSwatch!!.titleTextColor
+                            }
+                            palette.lightVibrantSwatch != null -> {
+                                bgColor = palette.getLightVibrantColor(Color.BLACK)
+                                textColor = palette.lightVibrantSwatch!!.titleTextColor
+                            }
+                            else -> {
+                                bgColor = Color.BLACK
+                                textColor = Color.WHITE
+                            }
                         }
-                        palette.darkMutedSwatch != null -> {
-                            bgColor = palette.getDarkMutedColor(Color.BLACK)
-                            textColor = palette.darkMutedSwatch!!.titleTextColor
-                        }
-                        palette.lightMutedSwatch != null -> {
-                            bgColor = palette.getLightMutedColor(Color.BLACK)
-                            textColor = palette.lightMutedSwatch!!.titleTextColor
-                        }
-                        palette.vibrantSwatch != null -> {
-                            bgColor = palette.getVibrantColor(Color.BLACK)
-                            textColor = palette.vibrantSwatch!!.titleTextColor
-                        }
-                        palette.darkVibrantSwatch != null -> {
-                            bgColor = palette.getDarkVibrantColor(Color.BLACK)
-                            textColor = palette.darkVibrantSwatch!!.titleTextColor
-                        }
-                        palette.lightVibrantSwatch != null -> {
-                            bgColor = palette.getLightVibrantColor(Color.BLACK)
-                            textColor = palette.lightVibrantSwatch!!.titleTextColor
-                        }
-                        else -> {
-                            bgColor = Color.BLACK
-                            textColor = Color.WHITE
-                        }
+                    } else {
+                        bgColor = Color.BLACK
+                        textColor = Color.WHITE
                     }
                     val colors = intArrayOf(bgColor, Color.TRANSPARENT)
                     val gradient = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors)

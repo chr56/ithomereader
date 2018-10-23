@@ -19,7 +19,7 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
 
-    private var newsId: String? = null
+    private lateinit var newsId: String
     private var cookie: String? = null
 
     private val parentJob = Job()
@@ -28,7 +28,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         val args = arguments
         if (args != null) {
-            this.newsId = args.getString("NEWS_ID")
+            this.newsId = args.getString("NEWS_ID", "")
             this.cookie = BaseApplication.preferences.getString("user_hash", null)
         }
         when {
@@ -56,7 +56,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
         view!!.article_grade.visibility = View.GONE
         view!!.article_grade_detail.visibility = View.GONE
         GlobalScope.launch(Dispatchers.Main + parentJob) {
-            val articleGrade = ArticleApiImpl.getArticleGrade(newsId!!, cookie).await()
+            val articleGrade = ArticleApiImpl.getArticleGrade(newsId, null).await()
             if (articleGrade != null) {
                 view!!.article_grade.text = articleGrade.score
                 view!!.trash.text = articleGrade.trashCount
@@ -74,15 +74,17 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     private fun vote(grade: Int) {
-        if (cookie == null && activity != null) {
+        if (cookie == null) {
             ToastUtil.showToast(R.string.please_login_first)
-            LoginDialog.newInstance(null)
-                    .show(activity!!.supportFragmentManager, "loginDialog")
-            dismiss()
+            if (activity != null) {
+                LoginDialog.newInstance(null)
+                        .show(activity!!.supportFragmentManager, "loginDialog")
+                dismiss()
+            }
             return
         }
         GlobalScope.launch(Dispatchers.Main + parentJob) {
-            val voteResult = ArticleApiImpl.articleVote(newsId!!, grade, cookie!!).await()
+            val voteResult = ArticleApiImpl.articleVote(newsId, grade, cookie!!).await()
             if (voteResult != null) {
                 try {
                     if (voteResult.contains("打分成功")) {

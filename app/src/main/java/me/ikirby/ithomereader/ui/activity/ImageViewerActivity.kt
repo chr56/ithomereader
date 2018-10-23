@@ -33,17 +33,13 @@ import java.io.IOException
 
 class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickListener {
 
-    private var url: String? = null
+    private lateinit var url: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
         url = intent.getStringExtra("url")
-        if (url == null) {
-            finish()
-            return
-        }
 
         photo_view.setOnClickListener(this)
         photo_view.setOnLongClickListener(this)
@@ -149,7 +145,7 @@ class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickLi
             override fun onBottomSheetMenuItemSelected(item: MenuItem) {
                 when (item.itemId) {
                     R.id.context_download_img -> checkPermission()
-                    R.id.copy_link -> copyToClipboard("ITHomeImageLink", url!!)
+                    R.id.copy_link -> copyToClipboard("ITHomeImageLink", url)
                 }
             }
         })

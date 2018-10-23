@@ -23,13 +23,13 @@ import me.ikirby.ithomereader.ui.fragment.CommentListFragment
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
-    private var id: String? = null
-    private var title: String? = null
-    private var url: String? = null
-    private var lapinId: String? = null
-    private var commentHash: String? = null
+    private lateinit var id: String
+    private lateinit var title: String
+    private lateinit var url: String
+    //    private lateinit var lapinId: String
+    private lateinit var commentHash: String
 
-    private var fragments: List<CommentListFragment>? = null
+    private lateinit var fragments: List<CommentListFragment>
     private var cookie: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,19 +40,13 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         id = intent.getStringExtra("id")
         title = intent.getStringExtra("title")
         url = intent.getStringExtra("url")
-        lapinId = intent.getStringExtra("lapinId")
+//        lapinId = intent.getStringExtra("lapinId")
 
-        if (id == null || title == null || url == null) {
-            ToastUtil.showToast("null")
-            finish()
-            return
-        }
-
-        cookie = BaseApplication.preferences.getString("user_hash", null)
+        cookie = preferences.getString("user_hash", null)
 
         if (savedInstanceState != null) {
-            commentHash = savedInstanceState.getString("comment_hash")
-            loadPages(id!!, commentHash!!, cookie, url!!, lapinId)
+            commentHash = savedInstanceState.getString("comment_hash", "")
+            loadPages(id, commentHash, cookie, url, null)
         } else {
             loadCommentHash()
         }
@@ -93,7 +87,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onResume() {
         super.onResume()
-        if (fragments != null) {
+        if (::fragments.isInitialized) {
             loadCookie()
         }
     }
@@ -111,10 +105,10 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         load_progress.visibility = View.VISIBLE
         load_text.visibility = View.GONE
         GlobalScope.launch(Dispatchers.Main + parentJob) {
-            val hash = CommentApiImpl.getCommentHash(id!!).await()
+            val hash = CommentApiImpl.getCommentHash(id).await()
             if (hash != null) {
                 commentHash = hash
-                loadPages(id!!, hash, cookie, url!!, lapinId)
+                loadPages(id, hash, cookie, url, null)
             } else {
                 ToastUtil.showToast(R.string.timeout_no_internet)
                 load_text.visibility = View.VISIBLE
@@ -138,11 +132,11 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         val adapter = object : FragmentPagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
-                return fragments!![position]
+                return fragments[position]
             }
 
             override fun getCount(): Int {
-                return fragments!!.size
+                return fragments.size
             }
 
             override fun getPageTitle(position: Int): CharSequence {
@@ -169,7 +163,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     fun loadCookie() {
         cookie = BaseApplication.preferences.getString("user_hash", null)
-        for (fragment in fragments!!) {
+        for (fragment in fragments) {
             if (fragment.view != null) {
                 fragment.setCookie(cookie)
             }

@@ -18,15 +18,14 @@ import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.getMatchInt
-import java.util.*
 
 class LiveActivity : BaseActivity() {
 
-    private var liveMessages: ArrayList<LiveMsg>? = null
+    private lateinit var liveMessages: ArrayList<LiveMsg>
     private lateinit var adapter: LivePostListAdapter
     private lateinit var layoutManager: LinearLayoutManager
-    private var url: String? = null
-    private var newsId: String? = null
+    private lateinit var url: String
+    private lateinit var newsId: String
     private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +34,7 @@ class LiveActivity : BaseActivity() {
         enableBackBtn()
 
         url = intent.getStringExtra("url")
-        if (url == null) {
-            ToastUtil.showToast("null")
-            finish()
-            return
-        }
-
-        newsId = "" + getMatchInt(url!!)
+        newsId = "" + getMatchInt(url)
 
         layoutManager = LinearLayoutManager(this)
         list_view.layoutManager = layoutManager
@@ -53,16 +46,16 @@ class LiveActivity : BaseActivity() {
         error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            liveMessages = savedInstanceState.getParcelableArrayList("liveMessages")
+            liveMessages = savedInstanceState.getParcelableArrayList("liveMessages") ?: ArrayList()
         }
 
-        if (savedInstanceState == null || liveMessages == null || liveMessages!!.size == 0) {
+        if (savedInstanceState == null || liveMessages.isEmpty()) {
             liveMessages = ArrayList()
-            adapter = LivePostListAdapter(liveMessages!!, layoutInflater)
+            adapter = LivePostListAdapter(liveMessages, layoutInflater)
             list_view.adapter = adapter
             loadList()
         } else {
-            adapter = LivePostListAdapter(liveMessages!!, layoutInflater)
+            adapter = LivePostListAdapter(liveMessages, layoutInflater)
             list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
         }
@@ -83,11 +76,11 @@ class LiveActivity : BaseActivity() {
             isLoading = true
             swipe_refresh.isRefreshing = true
             GlobalScope.launch(Dispatchers.Main + parentJob) {
-                val liveMsgs = LiveApiImpl.getLiveMessages(newsId!!).await()
+                val liveMsgs = LiveApiImpl.getLiveMessages(newsId).await()
                 if (liveMsgs != null) {
                     if (liveMsgs.isNotEmpty()) {
-                        liveMessages!!.clear()
-                        liveMessages!!.addAll(liveMsgs)
+                        liveMessages.clear()
+                        liveMessages.addAll(liveMsgs)
                         adapter.notifyDataSetChanged()
                     } else {
                         list_view.setAllContentLoaded(true)
@@ -96,7 +89,7 @@ class LiveActivity : BaseActivity() {
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(list_view, error_placeholder, liveMessages!!.size)
+                UiUtil.switchVisibility(list_view, error_placeholder, liveMessages.size)
                 isLoading = false
                 swipe_refresh.isRefreshing = false
             }

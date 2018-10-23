@@ -20,11 +20,11 @@ import java.util.*
 
 class SearchActivity : BaseActivity() {
 
-    private var articleList: ArrayList<Article>? = null
+    private lateinit var articleList: ArrayList<Article>
     private lateinit var adapter: ArticleListAdapter
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var keyword: String
     private var page = 0
-    private var keyword = ""
     private var lastFirst: String? = null
     private var isLoading = false
 
@@ -39,11 +39,6 @@ class SearchActivity : BaseActivity() {
         enableBackBtn()
 
         keyword = intent.getStringExtra("keyword")
-        if (keyword == "") {
-            ToastUtil.showToast("null")
-            finish()
-            return
-        }
 
         setTitleCustom(getString(R.string.keyword_s_results, keyword))
 
@@ -57,19 +52,19 @@ class SearchActivity : BaseActivity() {
         error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            articleList = savedInstanceState.getParcelableArrayList("articleList")
+            articleList = savedInstanceState.getParcelableArrayList("articleList") ?: ArrayList()
         }
 
         list_view.setOnBottomReachedListener(bottomReachedListener)
 
-        if (savedInstanceState == null || articleList == null || articleList!!.size == 0) {
+        if (savedInstanceState == null || articleList.isEmpty()) {
             articleList = ArrayList()
-            adapter = ArticleListAdapter(articleList!!, null, this, false)
+            adapter = ArticleListAdapter(articleList, null, this, false)
             list_view.adapter = adapter
             loadList()
         } else {
             page = savedInstanceState.getInt("page")
-            adapter = ArticleListAdapter(articleList!!, null, this, false)
+            adapter = ArticleListAdapter(articleList, null, this, false)
             list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
         }
@@ -98,7 +93,7 @@ class SearchActivity : BaseActivity() {
                     if (articles.isNotEmpty()) {
                         if (articles[0].title != lastFirst) {
                             lastFirst = articles[0].title
-                            articleList!!.addAll(articles)
+                            articleList.addAll(articles)
                             adapter.notifyDataSetChanged()
                         } else {
                             page--
@@ -114,7 +109,7 @@ class SearchActivity : BaseActivity() {
                     page--
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(list_view, error_placeholder, articleList!!.size)
+                UiUtil.switchVisibility(list_view, error_placeholder, articleList.size)
                 isLoading = false
                 swipe_refresh.isRefreshing = false
             }

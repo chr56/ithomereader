@@ -18,7 +18,7 @@ import me.ikirby.ithomereader.ui.util.UiUtil
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
-    protected var preferences: SharedPreferences? = null
+    protected lateinit var preferences: SharedPreferences
 
     private lateinit var mGestureDetector: GestureDetector
     protected var isGestureEnabled: Boolean = false

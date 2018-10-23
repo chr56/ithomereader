@@ -36,14 +36,14 @@ class CommentListFragment : BaseFragment() {
     private var isHotComment: Boolean = false
 
     private lateinit var layoutManager: LinearLayoutManager
-    private var commentList: ArrayList<Comment>? = null
+    private lateinit var commentList: ArrayList<Comment>
     private lateinit var adapter: CommentListAdapter
     private var page = 0
     private var isLoading = false
     private var isRefresh = false
 
     private val onLongClickListener = View.OnLongClickListener { v ->
-        showPopupMenu(commentList!![view!!.list_view.getChildLayoutPosition(v)])
+        showPopupMenu(commentList[view!!.list_view.getChildLayoutPosition(v)])
         true
     }
 
@@ -78,17 +78,17 @@ class CommentListFragment : BaseFragment() {
         view.error_placeholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {
-            commentList = savedInstanceState.getParcelableArrayList("commentList")
+            commentList = savedInstanceState.getParcelableArrayList("commentList") ?: ArrayList()
         }
 
-        if (savedInstanceState == null || commentList == null || commentList!!.size == 0) {
+        if (savedInstanceState == null || commentList.isEmpty()) {
             commentList = ArrayList()
-            adapter = CommentListAdapter(commentList!!, LayoutInflater.from(context),
+            adapter = CommentListAdapter(commentList, LayoutInflater.from(context),
                     activity as CommentsActivity, onLongClickListener, cookie)
             view.list_view.adapter = adapter
         } else {
             page = savedInstanceState.getInt("page")
-            adapter = CommentListAdapter(commentList!!, LayoutInflater.from(context),
+            adapter = CommentListAdapter(commentList, LayoutInflater.from(context),
                     activity as CommentsActivity, onLongClickListener, cookie)
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
@@ -161,9 +161,9 @@ class CommentListFragment : BaseFragment() {
                 if (comments != null) {
                     if (comments.isNotEmpty()) {
                         if (isRefresh) {
-                            commentList!!.clear()
+                            commentList.clear()
                         }
-                        commentList!!.addAll(comments)
+                        commentList.addAll(comments)
                         adapter.notifyDataSetChanged()
                         if (isLapin && isHotComment) {
                             view!!.list_view.setAllContentLoaded(true)
@@ -177,7 +177,7 @@ class CommentListFragment : BaseFragment() {
                     page--
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, commentList!!.size)
+                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, commentList.size)
                 isLoading = false
                 isRefresh = false
                 view!!.swipe_refresh.isRefreshing = false

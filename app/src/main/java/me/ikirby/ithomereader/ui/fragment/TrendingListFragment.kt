@@ -19,11 +19,10 @@ import me.ikirby.ithomereader.ui.base.BaseFragment
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.shouldShowThumb
-import java.util.*
 
 class TrendingListFragment : BaseFragment() {
 
-    private var trendingList: ArrayList<Trending>? = null
+    private lateinit var trendingList: ArrayList<Trending>
     private lateinit var adapter: TrendingListAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var isLoading = false
@@ -48,17 +47,17 @@ class TrendingListFragment : BaseFragment() {
         view.error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            trendingList = savedInstanceState.getParcelableArrayList("trendingList")
+            trendingList = savedInstanceState.getParcelableArrayList("trendingList") ?: ArrayList()
         }
 
-        if (savedInstanceState == null || trendingList == null || trendingList!!.size == 0) {
+        if (savedInstanceState == null || trendingList.isEmpty()) {
             trendingList = ArrayList()
             showThumb = shouldShowThumb()
-            adapter = TrendingListAdapter(trendingList!!, context!!, showThumb)
+            adapter = TrendingListAdapter(trendingList, context!!, showThumb)
             view.list_view.adapter = adapter
         } else {
             showThumb = savedInstanceState.getBoolean("show_thumb", true)
-            adapter = TrendingListAdapter(trendingList!!, context!!, showThumb)
+            adapter = TrendingListAdapter(trendingList, context!!, showThumb)
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
         }
@@ -98,8 +97,8 @@ class TrendingListFragment : BaseFragment() {
                     if (trendings.isNotEmpty()) {
                         showThumb = shouldShowThumb()
                         adapter.setShowThumb(showThumb)
-                        trendingList!!.clear()
-                        trendingList!!.addAll(trendings)
+                        trendingList.clear()
+                        trendingList.addAll(trendings)
                         adapter.notifyDataSetChanged()
                     } else {
                         ToastUtil.showToast(R.string.no_more_content)
@@ -107,7 +106,7 @@ class TrendingListFragment : BaseFragment() {
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, trendingList!!.size)
+                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, trendingList.size)
                 isLoading = false
                 view!!.swipe_refresh.isRefreshing = false
             }

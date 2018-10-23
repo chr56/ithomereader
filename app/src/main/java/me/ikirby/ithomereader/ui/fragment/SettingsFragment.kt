@@ -31,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     loginInfo = "y"
                 }
                 val dialog = LoginDialog.newInstance(loginInfo)
-                dialog.setCallBackPreference(preference)
+                dialog.setCallbackPreference(preference)
                 dialog.show(activity!!.supportFragmentManager, "loginDialog")
                 true
             }

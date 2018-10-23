@@ -158,7 +158,6 @@ object ArticleApiImpl : ArticleApi {
             } catch (e: UnsupportedEncodingException) {
                 Logger.e(tag, "parseSpecialUrl", e)
             }
-
         }
         return url
     }
