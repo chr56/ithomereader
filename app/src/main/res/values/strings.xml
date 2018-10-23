@@ -69,16 +69,8 @@
             padding-left: .5em
         }
 
-        embed {
-            display: none
-        }
-
-        #player1 {
-            display: none
-        }
-
-        iframe {
-            display: none
+        embed, iframe {
+            max-width: 100%!important
         }
     </string>
     <string name="base_style_night" translatable="false">
@@ -151,16 +143,8 @@
             padding-left: .5em
         }
 
-        embed {
-            display: none
-        }
-
-        #player1 {
-            display: none
-        }
-
-        iframe {
-            display: none
+        embed, iframe {
+            max-width: 100%!important
         }
     </string>
     <string name="base_style_white" translatable="false">
@@ -232,16 +216,8 @@
             padding-left: .5em
         }
 
-        embed {
-            display: none
-        }
-
-        #player1 {
-            display: none
-        }
-
-        iframe {
-            display: none
+        embed, iframe {
+            max-width: 100%!important
         }
     </string>
     <string name="base_js" translatable="false">

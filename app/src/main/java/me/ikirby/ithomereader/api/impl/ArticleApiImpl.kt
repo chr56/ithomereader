@@ -227,8 +227,8 @@ object ArticleApiImpl : ArticleApi {
                     link.removeAttr("href")
                 }
             }
-            post.select("iframe").remove()
-            post.select("embed").remove()
+//            post.select("iframe").remove()
+//            post.select("embed").remove()
             var content = "<div id=\"header\"><h2>$title</h2><p>$time</p></div>"
             content += post.toString().replace("<script.*</script>".toRegex(), "")
             if (url.contains("wap.") || url.contains("m.")) {

@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.webkit.JavascriptInterface
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
@@ -74,6 +71,7 @@ class ArticleActivity : BaseActivity() {
         }
         post_content.settings.loadsImagesAutomatically = false
         post_content.settings.javaScriptEnabled = true
+        post_content.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         post_content.addJavascriptInterface(this, "JSInterface")
         post_content.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             if (scrollY > 0) {
