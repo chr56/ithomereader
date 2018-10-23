@@ -16,7 +16,6 @@ import org.jsoup.nodes.Element
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
-import java.util.*
 import java.util.regex.Pattern
 
 object ArticleApiImpl : ArticleApi {
@@ -86,7 +85,7 @@ object ArticleApiImpl : ArticleApi {
                 val great = bt[2].text()
                 grade = ArticleGrade(score, trash, soso, great)
             }
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             Logger.e(tag, "getArticleGrade", e)
         }
         return@async grade
@@ -95,7 +94,7 @@ object ArticleApiImpl : ArticleApi {
     override fun articleVote(id: String, type: Int, cookie: String): Deferred<String?> = GlobalScope.async {
         return@async try {
             ITHomeApi.newsVote(id, type, cookie)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             Logger.e(tag, "articleVote", e)
             null
         }
