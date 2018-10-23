@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.CookieManager
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -63,6 +64,10 @@ class MainActivity : BaseActivity() {
                 CleanUpTask().execute()
                 preferences.edit().putInt("version", BuildConfig.VERSION_CODE).apply()
             }
+
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.setAcceptCookie(false)
+            cookieManager.removeAllCookies(null)
         }
     }
 
