@@ -70,7 +70,8 @@
         }
 
         embed, iframe {
-            max-width: 100%!important
+            max-width: 100%!important;
+            max-height: 240!important
         }
     </string>
     <string name="base_style_night" translatable="false">
@@ -144,7 +145,8 @@
         }
 
         embed, iframe {
-            max-width: 100%!important
+            max-width: 100%!important;
+            max-height: 240!important
         }
     </string>
     <string name="base_style_white" translatable="false">
@@ -217,7 +219,8 @@
         }
 
         embed, iframe {
-            max-width: 100%!important
+            max-width: 100%!important;
+            max-height: 240!important
         }
     </string>
     <string name="base_js" translatable="false">
