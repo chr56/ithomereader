@@ -37,12 +37,12 @@ class CommentPostActivity : BaseActivity() {
         val replyTo = intent.getParcelableExtra<Comment>("replyTo")
 
         if (replyTo != null) {
-            if (replyTo.parentid == null) {
+            if (replyTo.parentId == null) {
                 ToastUtil.showToast(R.string.not_support_reply_hot_comment)
                 finish()
                 return
             }
-            parentId = replyTo.parentid
+            parentId = replyTo.parentId
             selfId = replyTo.selfId
             reply_to_comment_info.text = getString(R.string.reply_ones_comment, replyTo.nick, replyTo.content)
             reply_to_comment_info.visibility = View.VISIBLE
