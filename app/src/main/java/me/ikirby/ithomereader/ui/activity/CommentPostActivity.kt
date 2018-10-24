@@ -23,8 +23,8 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 class CommentPostActivity : BaseActivity() {
 
     private lateinit var id: String
-    private lateinit var parentId: String
-    private lateinit var selfId: String
+    private var parentId: String? = null
+    private var selfId: String? = null
     private var cookie: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +116,6 @@ class CommentPostActivity : BaseActivity() {
     }
 
     fun loadCookie() {
-        cookie = preferences.getString("user_hash", "")?: ""
+        cookie = preferences.getString("user_hash", null)
     }
 }
