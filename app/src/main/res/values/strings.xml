@@ -73,6 +73,10 @@
             max-width: 100%!important;
             max-height: 240!important
         }
+
+        .font-color-red {
+            color: #d22222
+        }
     </string>
     <string name="base_style_night" translatable="false">
         * {
@@ -148,6 +152,10 @@
             max-width: 100%!important;
             max-height: 240!important
         }
+
+        .font-color-red {
+            color: #ff5d4c
+        }
     </string>
     <string name="base_style_white" translatable="false">
         * {
@@ -221,6 +229,10 @@
         embed, iframe {
             max-width: 100%!important;
             max-height: 240!important
+        }
+
+        .font-color-red {
+            color: #d22222
         }
     </string>
     <string name="base_js" translatable="false">
