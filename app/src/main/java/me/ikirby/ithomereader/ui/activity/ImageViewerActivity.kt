@@ -31,7 +31,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickListener {
+class ImageViewerActivity : Activity(), View.OnClickListener {
 
     private lateinit var url: String
 
@@ -42,7 +42,7 @@ class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickLi
         url = intent.getStringExtra("url")
 
         photo_view.setOnClickListener(this)
-        photo_view.setOnLongClickListener(this)
+        image_menu_btn.setOnClickListener(this)
 
         loadImage()
     }
@@ -64,6 +64,7 @@ class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickLi
             override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                 load_tip.visibility = View.GONE
                 photo_view.visibility = View.VISIBLE
+                image_menu_btn.visibility = View.VISIBLE
                 return false
             }
         }).into(photo_view)
@@ -133,22 +134,18 @@ class ImageViewerActivity : Activity(), View.OnClickListener, View.OnLongClickLi
         when (view.id) {
             R.id.photo_view -> finish()
             R.id.load_tip -> loadImage()
-        }
-    }
-
-    override fun onLongClick(view: View): Boolean {
-        UiUtil.showBottomSheetMenu(this, object : BottomSheetMenu.BottomSheetMenuListener {
-            override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
-                inflater.inflate(R.menu.menu_img_viewer, menu)
-            }
-
-            override fun onBottomSheetMenuItemSelected(item: MenuItem) {
-                when (item.itemId) {
-                    R.id.context_download_img -> checkPermission()
-                    R.id.copy_link -> copyToClipboard("ITHomeImageLink", url)
+            R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(this, object : BottomSheetMenu.BottomSheetMenuListener {
+                override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
+                    inflater.inflate(R.menu.menu_img_viewer, menu)
                 }
-            }
-        })
-        return true
+
+                override fun onBottomSheetMenuItemSelected(item: MenuItem) {
+                    when (item.itemId) {
+                        R.id.context_download_img -> checkPermission()
+                        R.id.copy_link -> copyToClipboard("ITHomeImageLink", url)
+                    }
+                }
+            })
+        }
     }
 }

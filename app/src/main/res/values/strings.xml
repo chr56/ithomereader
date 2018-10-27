@@ -349,4 +349,5 @@
     <string name="grade">评分</string>
     <string name="already_voted">每篇文章只能评分一次</string>
     <string name="pref_use_bottom_nav">主界面使用底部导航 (BETA)</string>
+    <string name="menu_button">菜单按钮</string>
 </resources>
