@@ -34,7 +34,7 @@ class ArticleActivity : BaseActivity() {
         enableBackBtn()
 
         url = intent.getStringExtra("url")
-        title = intent.getStringExtra("title")?: ""
+        title = intent.getStringExtra("title") ?: ""
 
         if (url.contains("live.ithome.com")) {
             if (intent.getStringExtra("live_info") == null) {
@@ -166,22 +166,21 @@ class ArticleActivity : BaseActivity() {
     }
 
     private fun showComments() {
-        val intent = Intent(this, CommentsActivity::class.java).apply {
-            putExtra("id", newsId)
-            putExtra("title", title)
-            putExtra("url", url)
-            // putExtra("lapinId", lapinId)
+        if (::newsId.isInitialized) {
+            val intent = Intent(this, CommentsActivity::class.java).apply {
+                putExtra("id", newsId)
+                putExtra("title", title)
+                putExtra("url", url)
+                // putExtra("lapinId", lapinId)
+            }
+            startActivity(intent)
         }
-
-        startActivity(intent)
     }
 
     private fun showGrade() {
         if (::newsId.isInitialized) {
             val dialog = ArticleGradeDialog.newInstance(newsId)
             dialog.show(supportFragmentManager, "gradeDialog")
-        } else {
-            ToastUtil.showToast(R.string.see_grade_after_article_loaded)
         }
     }
 

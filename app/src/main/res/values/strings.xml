@@ -347,7 +347,6 @@
     <string name="news">新闻</string>
     <string name="cancel_vote">取消评分…</string>
     <string name="grade">评分</string>
-    <string name="see_grade_after_article_loaded">文章加载后才可以查看评分</string>
     <string name="already_voted">每篇文章只能评分一次</string>
     <string name="pref_use_bottom_nav">主界面使用底部导航 (BETA)</string>
 </resources>
