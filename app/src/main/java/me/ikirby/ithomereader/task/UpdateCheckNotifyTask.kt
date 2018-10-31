@@ -24,7 +24,7 @@ class UpdateCheckNotifyTask(private val showToast: Boolean) : AsyncTask<Void, Vo
 
         if (!updateUrl.isNullOrBlank()) {
             try {
-                val json = Jsoup.connect(updateUrl!! + parameter)
+                val json = Jsoup.connect(updateUrl + parameter)
                         .ignoreContentType(true)
                         .timeout(5000).execute().body()
                 val info = JSONObject(json)

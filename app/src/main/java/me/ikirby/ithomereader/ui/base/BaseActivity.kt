@@ -10,7 +10,7 @@ import android.view.GestureDetector
 import android.view.Menu
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.Job
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SWIPE_GESTURE_DISTANCE

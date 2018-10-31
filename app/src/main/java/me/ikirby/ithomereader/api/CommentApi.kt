@@ -1,6 +1,6 @@
 package me.ikirby.ithomereader.api
 
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import me.ikirby.ithomereader.entity.Comment
 
 interface CommentApi {

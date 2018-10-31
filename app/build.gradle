@@ -22,7 +22,7 @@ android {
         applicationId "me.ikirby.ithomereader"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 125
+        versionCode 126
         versionName "4.3.17"
         resConfigs "zh-rCN"
         versionNameSuffix '-' + getGitHash()
@@ -61,7 +61,7 @@ androidExtensions {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.26.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
     implementation "androidx.viewpager:viewpager:$androidx_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$androidx_version"
     implementation "androidx.fragment:fragment:$androidx_version"
