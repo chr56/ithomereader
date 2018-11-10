@@ -11,6 +11,8 @@
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
         <item name="tabForegroundColor">@android:color/white</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
@@ -22,6 +24,8 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="customWindowBackground">@color/background_dark</item>
         <item name="menuItemColor">@color/menuTextDark</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents">
@@ -34,6 +38,8 @@
         <item name="commentReplyBg">@color/comment_reply_bg_dark</item>
         <item name="menuItemColor">@color/menuTextDark</item>
         <item name="tabForegroundColor">@android:color/white</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="AppBaseTheme.OStyle" parent="Theme.MaterialComponents.Light">
@@ -51,6 +57,8 @@
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
         <item name="tabForegroundColor">@color/colorPrimary</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme" />
@@ -78,6 +86,8 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
         <item name="customWindowBackground">@color/background_dark</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="AppTheme.CommonDialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
@@ -87,6 +97,8 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
         <item name="customWindowBackground">@color/background_light</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="AppTheme.CommonDialog.OStyle" parent="Theme.MaterialComponents.Light.Dialog">
@@ -96,6 +108,8 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
         <item name="customWindowBackground">@color/background_light</item>
+        <item name="android:ambientShadowAlpha">0.039</item>
+        <item name="android:spotShadowAlpha">0.19</item>
     </style>
 
     <style name="BottomSheetMenu">
