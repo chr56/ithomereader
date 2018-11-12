@@ -27,6 +27,7 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        BaseApplication.instance.setNightMode()
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.app_name))
         isGestureEnabled = false
@@ -158,6 +159,11 @@ class MainActivity : BaseActivity() {
         if (resultCode == RESULT_OK && requestCode == THEME_CHANGE_REQUEST_CODE) {
             reloadTheme()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        BaseApplication.hasCheckedAutoNightMode = false
     }
 
     override fun swipeRight(): Boolean {

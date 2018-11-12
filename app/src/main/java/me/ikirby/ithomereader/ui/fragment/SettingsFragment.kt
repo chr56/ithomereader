@@ -3,6 +3,7 @@ package me.ikirby.ithomereader.ui.fragment
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.ikirby.ithomereader.BaseApplication
@@ -10,7 +11,10 @@ import me.ikirby.ithomereader.BuildConfig
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
 import me.ikirby.ithomereader.ui.dialog.LoginDialog
+import me.ikirby.ithomereader.ui.dialog.TimePreferenceDialog
+import me.ikirby.ithomereader.ui.widget.TimePreference
 import me.ikirby.ithomereader.util.openLink
+
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -33,11 +37,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 val dialog = LoginDialog.newInstance(loginInfo)
                 dialog.setCallbackPreference(preference)
                 dialog.show(activity!!.supportFragmentManager, "loginDialog")
-                true
-            }
-
-            findPreference("night_mode").onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-                activity!!.setResult(Activity.RESULT_OK)
                 true
             }
 
@@ -102,6 +101,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 UpdateCheckNotifyTask(true).execute()
                 true
             }
+        }
+    }
+
+    override fun onDisplayPreferenceDialog(preference: Preference?) {
+        var dialogFragment: DialogFragment? = null
+        if (preference is TimePreference) {
+            dialogFragment = TimePreferenceDialog()
+            val bundle = Bundle(1)
+            bundle.putString("key", preference.getKey())
+            dialogFragment.setArguments(bundle)
+        }
+
+        if (dialogFragment != null) {
+            dialogFragment.setTargetFragment(this, 0)
+            dialogFragment.show(this.fragmentManager, "androidx.preference.PreferenceFragment.DIALOG")
+        } else {
+            super.onDisplayPreferenceDialog(preference)
         }
     }
 

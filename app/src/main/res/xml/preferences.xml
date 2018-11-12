@@ -62,12 +62,6 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="night_mode"
-            android:summary="@string/pref_night_mode_summary"
-            android:title="@string/pref_night_mode" />
-
-        <SwitchPreference
-            android:defaultValue="false"
             android:key="o_style_light"
             android:summary="@string/pref_o_style_light_summary"
             android:title="@string/pref_o_style_light" />
@@ -82,6 +76,24 @@
             android:defaultValue="false"
             android:key="use_bottom_nav"
             android:title="@string/pref_use_bottom_nav" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="auto_switch_night_mode"
+            android:title="@string/pref_auto_switch_night_mode"
+            android:summary="@string/pref_auto_switch_night_mode_summary" />
+
+        <me.ikirby.ithomereader.ui.widget.TimePreference
+            android:defaultValue="22:00"
+            android:dependency="auto_switch_night_mode"
+            android:key="night_mode_start_time"
+            android:title="@string/pref_night_start_time" />
+
+        <me.ikirby.ithomereader.ui.widget.TimePreference
+            android:defaultValue="07:00"
+            android:dependency="auto_switch_night_mode"
+            android:key="night_mode_end_time"
+            android:title="@string/pref_night_end_time" />
 
     </PreferenceCategory>
 

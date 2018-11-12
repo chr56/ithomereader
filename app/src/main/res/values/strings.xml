@@ -279,7 +279,6 @@
     <string name="save_fail">保存失败，请检查权限</string>
     <string name="open_source">开源相关</string>
     <string name="pref_night_mode">夜间模式</string>
-    <string name="pref_night_mode_summary">启用后，将使用暗色主题。更改选项后返回主界面生效</string>
     <string name="day_mode">日间模式</string>
     <string name="search">搜索…</string>
     <string name="keyword_s_results">“%s” 的搜索结果</string>
@@ -348,6 +347,10 @@
     <string name="cancel_vote">取消评分…</string>
     <string name="grade">评分</string>
     <string name="already_voted">每篇文章只能评分一次</string>
-    <string name="pref_use_bottom_nav">主界面使用底部导航 (BETA)</string>
+    <string name="pref_use_bottom_nav">主界面使用底部导航</string>
     <string name="menu_button">菜单按钮</string>
+    <string name="pref_auto_switch_night_mode">自动切换夜间模式</string>
+    <string name="pref_auto_switch_night_mode_summary">在应用启动时自动切换到暗色主题</string>
+    <string name="pref_night_start_time">夜间模式开始时间</string>
+    <string name="pref_night_end_time">夜间模式结束时间</string>
 </resources>
