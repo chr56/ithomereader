@@ -337,7 +337,7 @@
     <string name="live_info">直播信息</string>
     <string name="live">图文直播</string>
     <string name="file_exists">保存失败，文件已存在</string>
-    <string name="fatal_exception_message">应用出现未知错误，请将以下信息和发生错误时您正在执行的操作发送给开发者以帮助诊断问题（长按复制）。</string>
+    <string name="fatal_exception_message">应用出现未知错误，请尝试检查更新。若没有新版本或新版本未修复问题，请将下方显示的错误信息和发生错误时您正在执行的操作发送给开发者以帮助诊断问题（长按复制）。</string>
     <string name="show_banner_on_list">首页显示推荐横幅</string>
     <string name="show_banner_on_list_summary">横幅图片将始终加载</string>
     <string name="copy_link">复制链接</string>
