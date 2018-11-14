@@ -72,8 +72,10 @@ class ArticleListFragment : BaseFragment() {
             focuses = ArrayList()
             if (showBanner) {
                 focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
+                adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
+            } else {
+                adapter = ArticleListAdapter(articleList, null, context!!, showThumb)
             }
-            adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
             view.list_view.adapter = adapter
         } else {
             showThumb = savedInstanceState.getBoolean("show_thumb", true)
@@ -81,8 +83,10 @@ class ArticleListFragment : BaseFragment() {
             page = savedInstanceState.getInt("page")
             if (showBanner) {
                 focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
+                adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
+            } else {
+                adapter = ArticleListAdapter(articleList, null, context!!, showThumb)
             }
-            adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
             if (showBanner) {
