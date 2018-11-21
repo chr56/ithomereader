@@ -83,7 +83,7 @@ class ArticleActivity : BaseActivity() {
             }
         }
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState?.getString("news_id", null) == null) {
             load_tip.visibility = View.VISIBLE
             loadContent()
         } else {
@@ -99,9 +99,11 @@ class ArticleActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        post_content.saveState(outState)
-        outState.putString("title", title)
-        outState.putString("news_id", newsId)
+        if (::newsId.isInitialized) {
+            post_content.saveState(outState)
+            outState.putString("title", title)
+            outState.putString("news_id", newsId)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
