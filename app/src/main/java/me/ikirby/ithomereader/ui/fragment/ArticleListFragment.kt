@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
@@ -152,7 +150,7 @@ class ArticleListFragment : BaseFragment() {
             isLoading = true
             view!!.swipe_refresh.isRefreshing = true
             page++
-            GlobalScope.launch(Dispatchers.Main + parentJob) {
+            launch {
                 val filterLapin = BaseApplication.preferences.getBoolean("filter_lapin", false)
                 val keywords = BaseApplication.preferences.getString("custom_filter", "")!!
                         .split(", ").dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -191,7 +189,7 @@ class ArticleListFragment : BaseFragment() {
     }
 
     private fun loadBanner() {
-        GlobalScope.launch(Dispatchers.Main + parentJob) {
+        launch {
             val articles = TrendingApiImpl.getFocusBannerArticles().await()
             if (articles != null && articles.isNotEmpty()) {
                 focuses.clear()

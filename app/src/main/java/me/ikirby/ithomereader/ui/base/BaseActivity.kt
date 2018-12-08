@@ -10,20 +10,23 @@ import android.view.GestureDetector
 import android.view.Menu
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SWIPE_GESTURE_DISTANCE
 import me.ikirby.ithomereader.ui.util.UiUtil
+import kotlin.coroutines.CoroutineContext
 
 @SuppressLint("Registered")
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), CoroutineScope {
     protected lateinit var preferences: SharedPreferences
 
     private lateinit var mGestureDetector: GestureDetector
     protected var isGestureEnabled: Boolean = false
 
-    protected val parentJob = Job()
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         preferences = BaseApplication.preferences
@@ -73,7 +76,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        parentJob.cancel()
+        coroutineContext.cancelChildren()
         super.onDestroy()
     }
 

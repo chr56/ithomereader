@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
@@ -143,7 +141,7 @@ class CommentListFragment : BaseFragment() {
             view!!.swipe_refresh.isRefreshing = true
             isLoading = true
             page++
-            GlobalScope.launch(Dispatchers.Main + parentJob) {
+            launch {
                 val comments = if (isHotComment) {
                     if (isRefresh) {
                         CommentApiImpl.getHotCommentList(id, hash, page, null, isLapin).await()

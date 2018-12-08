@@ -7,8 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.webkit.*
 import kotlinx.android.synthetic.main.activity_article.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
@@ -134,7 +132,7 @@ class ArticleActivity : BaseActivity() {
         load_tip.visibility = View.VISIBLE
         load_progress.visibility = View.VISIBLE
         load_text.visibility = View.GONE
-        GlobalScope.launch(Dispatchers.Main + parentJob) {
+        launch {
             val loadImageAutomatically = shouldLoadImageAutomatically()
             val fullArticle = ArticleApiImpl.getFullArticle(url, loadImageAutomatically, isLiveInfo).await()
             if (fullArticle != null) {

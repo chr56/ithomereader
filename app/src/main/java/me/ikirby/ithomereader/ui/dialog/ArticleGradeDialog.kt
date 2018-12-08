@@ -7,21 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.article_grade_dialog.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.ui.util.ToastUtil
+import kotlin.coroutines.CoroutineContext
 
-class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
+class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnClickListener {
 
     private lateinit var newsId: String
     private var cookie: String? = null
 
-    private val parentJob = Job()
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
         view!!.load_progress.visibility = View.VISIBLE
         view!!.article_grade.visibility = View.GONE
         view!!.article_grade_detail.visibility = View.GONE
-        GlobalScope.launch(Dispatchers.Main + parentJob) {
+        launch {
             val articleGrade = ArticleApiImpl.getArticleGrade(newsId, null).await()
             if (articleGrade != null) {
                 view!!.article_grade.text = articleGrade.score
@@ -82,7 +82,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
             }
             return
         }
-        GlobalScope.launch(Dispatchers.Main + parentJob) {
+        launch {
             val voteResult = ArticleApiImpl.articleVote(newsId, grade, cookie!!).await()
             if (voteResult != null) {
                 try {
@@ -108,7 +108,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     override fun onDestroyView() {
-        parentJob.cancel()
+        coroutineContext.cancelChildren()
         super.onDestroyView()
     }
 

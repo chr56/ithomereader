@@ -11,25 +11,25 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.login_dialog.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.UserApiImpl
 import me.ikirby.ithomereader.ui.activity.CommentPostActivity
 import me.ikirby.ithomereader.ui.activity.CommentsActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
+import kotlin.coroutines.CoroutineContext
 
 
-class LoginDialog : DialogFragment() {
+class LoginDialog : DialogFragment(), CoroutineScope {
 
     private val preferences: SharedPreferences = BaseApplication.preferences
     private var cookie: String? = null
     private lateinit var callbackPreference: Preference
 
-    private val parentJob = Job()
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,14 +86,14 @@ class LoginDialog : DialogFragment() {
     }
 
     override fun onDestroyView() {
-        parentJob.cancel()
+        coroutineContext.cancelChildren()
         super.onDestroyView()
     }
 
     private fun doLogin(username: String, password: String, btnLogin: MaterialButton) {
         val loadProgress = this.dialog.findViewById<ProgressBar>(R.id.load_progress)
         loadProgress.visibility = View.VISIBLE
-        GlobalScope.launch(Dispatchers.Main + parentJob) {
+        launch {
             val cookie = UserApiImpl.login(username, password).await()
             if (cookie != null) {
                 val cookieStr = "user=$cookie"

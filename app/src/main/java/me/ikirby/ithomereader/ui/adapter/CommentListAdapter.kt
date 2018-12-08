@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.R
@@ -172,7 +170,7 @@ class CommentListAdapter(private val list: ArrayList<Comment>,
             activity.showLoginDialog()
             return
         }
-        GlobalScope.launch(Dispatchers.Main + activity.getJobParent()) {
+        activity.launch {
             val result = CommentApiImpl.commentVote(comment.selfId, typeId, isVoted, cookie!!).await()
             if (result != null) {
                 if (!result.matches("\\d+".toRegex())) {

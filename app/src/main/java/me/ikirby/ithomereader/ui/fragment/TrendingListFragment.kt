@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.TrendingApiImpl
@@ -90,7 +88,7 @@ class TrendingListFragment : BaseFragment() {
         if (!isLoading) {
             isLoading = true
             view!!.swipe_refresh.isRefreshing = true
-            GlobalScope.launch(Dispatchers.Main + parentJob) {
+            launch {
                 val trendings = TrendingApiImpl.getTrendingList().await()
                 if (trendings != null) {
                     if (trendings.isNotEmpty()) {

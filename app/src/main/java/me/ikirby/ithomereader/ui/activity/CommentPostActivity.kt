@@ -9,8 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.activity_comment_post.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
@@ -93,7 +91,7 @@ class CommentPostActivity : BaseActivity() {
         post_comment_btn.isEnabled = false
         load_progress.visibility = View.VISIBLE
         val commentContent = post_comment_content.text.toString()
-        GlobalScope.launch(Dispatchers.Main + parentJob) {
+        launch {
             val result = CommentApiImpl.postComment(id, parentId, selfId, commentContent, cookie!!).await()
             if (result != null) {
                 if (result == "评论成功") {
