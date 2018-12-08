@@ -27,6 +27,7 @@ object UiUtil {
             val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ActivityManager.TaskDescription(activity.getString(R.string.app_name), R.mipmap.ic_launcher, activity.getColor(descriptionColorRes))
             } else {
+                val icon = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
                 @Suppress("DEPRECATION")
                 ActivityManager.TaskDescription(activity.getString(R.string.app_name), icon, activity.getColor(descriptionColorRes))
             }
