@@ -76,8 +76,8 @@ class TrendingListFragment : BaseFragment() {
         outState.putBoolean("show_thumb", showThumb)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_refresh -> {
                 layoutManager.scrollToPosition(0)
                 loadList()

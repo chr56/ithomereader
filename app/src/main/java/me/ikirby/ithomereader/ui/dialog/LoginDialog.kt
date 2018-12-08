@@ -75,7 +75,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
         return dialog
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         val activity = activity
         if (activity is CommentsActivity) {
             activity.loadCookie()
@@ -91,7 +91,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
     }
 
     private fun doLogin(username: String, password: String, btnLogin: MaterialButton) {
-        val loadProgress = this.dialog.findViewById<ProgressBar>(R.id.load_progress)
+        val loadProgress = dialog!!.findViewById<ProgressBar>(R.id.load_progress)
         loadProgress.visibility = View.VISIBLE
         launch {
             val cookie = withContext(Dispatchers.IO) { UserApiImpl.login(username, password) }

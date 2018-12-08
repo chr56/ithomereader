@@ -115,7 +115,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         if (dialogFragment != null) {
             dialogFragment.setTargetFragment(this, 0)
-            dialogFragment.show(this.fragmentManager, "androidx.preference.PreferenceFragment.DIALOG")
+            dialogFragment.show(this.fragmentManager!!, "androidx.preference.PreferenceFragment.DIALOG")
         } else {
             super.onDisplayPreferenceDialog(preference)
         }

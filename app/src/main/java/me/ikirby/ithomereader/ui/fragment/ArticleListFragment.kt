@@ -117,8 +117,8 @@ class ArticleListFragment : BaseFragment() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_refresh -> {
                 layoutManager.scrollToPosition(0)
                 reloadList()
