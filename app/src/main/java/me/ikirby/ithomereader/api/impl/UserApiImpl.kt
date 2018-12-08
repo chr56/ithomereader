@@ -6,7 +6,6 @@ import kotlinx.coroutines.async
 import me.ikirby.ithomereader.api.UserApi
 import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
-import java.io.IOException
 
 object UserApiImpl : UserApi {
     private val tag = javaClass.simpleName
@@ -14,7 +13,7 @@ object UserApiImpl : UserApi {
     override fun login(username: String, password: String): Deferred<String?> = GlobalScope.async {
         return@async try {
             ITHomeApi.login(username, password)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "login", e)
             null
         }

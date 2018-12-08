@@ -13,7 +13,6 @@ import me.ikirby.ithomereader.util.getMatchInt
 import me.ikirby.ithomereader.util.isUrlImgSrc
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.util.regex.Pattern
@@ -45,7 +44,7 @@ object ArticleApiImpl : ArticleApi {
                 }
             }
             return@async removeDuplicate(list, oldList)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "getArticleList", e)
             return@async null
         }
@@ -62,7 +61,7 @@ object ArticleApiImpl : ArticleApi {
                 }
             }
             return@async list
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "getSearchResults", e)
             return@async null
         }
@@ -85,7 +84,7 @@ object ArticleApiImpl : ArticleApi {
                 val great = bt[2].text()
                 grade = ArticleGrade(score, trash, soso, great)
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "getArticleGrade", e)
         }
         return@async grade
@@ -94,7 +93,7 @@ object ArticleApiImpl : ArticleApi {
     override fun articleVote(id: String, type: Int, cookie: String): Deferred<String?> = GlobalScope.async {
         return@async try {
             ITHomeApi.newsVote(id, type, cookie)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "articleVote", e)
             null
         }

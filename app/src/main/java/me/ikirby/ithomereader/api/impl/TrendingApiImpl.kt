@@ -8,7 +8,6 @@ import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.entity.Trending
 import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
-import java.io.IOException
 
 object TrendingApiImpl : TrendingApi {
     private val tag = javaClass.simpleName
@@ -25,7 +24,7 @@ object TrendingApiImpl : TrendingApi {
                 list.add(Article(title, null, url, thumb, null))
             }
             return@async list
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "getFocusBannerArticles", e)
             return@async null
         }
@@ -58,7 +57,7 @@ object TrendingApiImpl : TrendingApi {
                 }
             }
             return@async list
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Logger.e(tag, "getTrendingList", e)
             return@async null
         }
