@@ -1,8 +1,5 @@
 package me.ikirby.ithomereader.api.impl
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import me.ikirby.ithomereader.api.TrendingApi
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.entity.Trending
@@ -12,9 +9,9 @@ import me.ikirby.ithomereader.util.Logger
 object TrendingApiImpl : TrendingApi {
     private val tag = javaClass.simpleName
 
-    override fun getFocusBannerArticles(): Deferred<List<Article>?> = GlobalScope.async {
+    override fun getFocusBannerArticles(): List<Article>? {
         val list = mutableListOf<Article>()
-        try {
+        return try {
             val elements = ITHomeApi.getHomePage().getElementById("coin-slider").getElementsByTag("item")
             for (element in elements) {
                 val url = element.attr("data")
@@ -23,14 +20,14 @@ object TrendingApiImpl : TrendingApi {
                 val thumb = element.getElementsByTag("img")[0].attr("abs:src")
                 list.add(Article(title, null, url, thumb, null))
             }
-            return@async list
+            list
         } catch (e: Exception) {
             Logger.e(tag, "getFocusBannerArticles", e)
-            return@async null
+            null
         }
     }
 
-    override fun getTrendingList(): Deferred<List<Trending>?> = GlobalScope.async {
+    override fun getTrendingList(): List<Trending>? {
         try {
             val document = ITHomeApi.getHomePage()
             val list = mutableListOf<Trending>()
@@ -56,10 +53,10 @@ object TrendingApiImpl : TrendingApi {
                     list.add(Trending(rank, title, url))
                 }
             }
-            return@async list
+            return list
         } catch (e: Exception) {
             Logger.e(tag, "getTrendingList", e)
-            return@async null
+            return null
         }
     }
 }

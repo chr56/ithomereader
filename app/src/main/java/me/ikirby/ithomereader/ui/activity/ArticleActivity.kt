@@ -7,7 +7,9 @@ import android.view.MenuItem
 import android.view.View
 import android.webkit.*
 import kotlinx.android.synthetic.main.activity_article.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
@@ -134,7 +136,9 @@ class ArticleActivity : BaseActivity() {
         load_text.visibility = View.GONE
         launch {
             val loadImageAutomatically = shouldLoadImageAutomatically()
-            val fullArticle = ArticleApiImpl.getFullArticle(url, loadImageAutomatically, isLiveInfo).await()
+            val fullArticle = withContext(Dispatchers.IO) {
+                ArticleApiImpl.getFullArticle(url, loadImageAutomatically, isLiveInfo)
+            }
             if (fullArticle != null) {
                 if (fullArticle.newsId.isBlank()) {
                     openLinkInBrowser(this@ArticleActivity, url)

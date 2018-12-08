@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
@@ -171,7 +173,9 @@ class CommentListAdapter(private val list: ArrayList<Comment>,
             return
         }
         activity.launch {
-            val result = CommentApiImpl.commentVote(comment.selfId, typeId, isVoted, cookie!!).await()
+            val result = withContext(Dispatchers.IO) {
+                CommentApiImpl.commentVote(comment.selfId, typeId, isVoted, cookie!!)
+            }
             if (result != null) {
                 if (!result.matches("\\d+".toRegex())) {
                     ToastUtil.showToast(result)

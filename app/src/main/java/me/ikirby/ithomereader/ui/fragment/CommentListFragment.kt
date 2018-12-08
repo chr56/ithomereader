@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
@@ -142,17 +144,19 @@ class CommentListFragment : BaseFragment() {
             isLoading = true
             page++
             launch {
-                val comments = if (isHotComment) {
-                    if (isRefresh) {
-                        CommentApiImpl.getHotCommentList(id, hash, page, null, isLapin).await()
+                val comments = withContext(Dispatchers.IO) {
+                    if (isHotComment) {
+                        if (isRefresh) {
+                            CommentApiImpl.getHotCommentList(id, hash, page, null, isLapin)
+                        } else {
+                            CommentApiImpl.getHotCommentList(id, hash, page, commentList, isLapin)
+                        }
                     } else {
-                        CommentApiImpl.getHotCommentList(id, hash, page, commentList, isLapin).await()
-                    }
-                } else {
-                    if (isRefresh) {
-                        CommentApiImpl.getAllCommentsList(id, hash, page, null, isLapin).await()
-                    } else {
-                        CommentApiImpl.getAllCommentsList(id, hash, page, commentList, isLapin).await()
+                        if (isRefresh) {
+                            CommentApiImpl.getAllCommentsList(id, hash, page, null, isLapin)
+                        } else {
+                            CommentApiImpl.getAllCommentsList(id, hash, page, commentList, isLapin)
+                        }
                     }
                 }
                 if (comments != null) {

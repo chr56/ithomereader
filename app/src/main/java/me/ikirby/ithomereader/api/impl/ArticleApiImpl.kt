@@ -1,8 +1,5 @@
 package me.ikirby.ithomereader.api.impl
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import me.ikirby.ithomereader.api.ArticleApi
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.entity.ArticleGrade
@@ -20,9 +17,8 @@ import java.util.regex.Pattern
 object ArticleApiImpl : ArticleApi {
     private val tag = javaClass.simpleName
 
-    override fun getArticleList(page: Int, filterLapin: Boolean,
-                                customFilter: Boolean, keywords: Array<String>?,
-                                oldList: ArrayList<Article>?): Deferred<List<Article>?> = GlobalScope.async {
+    override fun getArticleList(page: Int, filterLapin: Boolean, customFilter: Boolean, keywords: Array<String>?,
+                                oldList: ArrayList<Article>?): List<Article>? {
         try {
             val doc = ITHomeApi.getNewsListDoc(page)
             val list = mutableListOf<Article>()
@@ -43,15 +39,15 @@ object ArticleApiImpl : ArticleApi {
                     }
                 }
             }
-            return@async removeDuplicate(list, oldList)
+            return removeDuplicate(list, oldList)
         } catch (e: Exception) {
             Logger.e(tag, "getArticleList", e)
-            return@async null
+            return null
         }
     }
 
-    override fun getSearchResults(keyword: String, page: Int): Deferred<List<Article>?> = GlobalScope.async {
-        try {
+    override fun getSearchResults(keyword: String, page: Int): List<Article>? {
+        return try {
             val doc = ITHomeApi.getSearchDoc(keyword, page)
             val list = mutableListOf<Article>()
             val posts = doc.select(".ulcl li")
@@ -60,14 +56,14 @@ object ArticleApiImpl : ArticleApi {
                     list.add(getArticleObj(post, true))
                 }
             }
-            return@async list
+            list
         } catch (e: Exception) {
             Logger.e(tag, "getSearchResults", e)
-            return@async null
+            null
         }
     }
 
-    override fun getArticleGrade(id: String, cookie: String?): Deferred<ArticleGrade?> = GlobalScope.async {
+    override fun getArticleGrade(id: String, cookie: String?): ArticleGrade? {
         var grade: ArticleGrade? = null
         try {
             var gradeHtml = ITHomeApi.getNewsGrade(id, cookie)
@@ -87,11 +83,11 @@ object ArticleApiImpl : ArticleApi {
         } catch (e: Exception) {
             Logger.e(tag, "getArticleGrade", e)
         }
-        return@async grade
+        return grade
     }
 
-    override fun articleVote(id: String, type: Int, cookie: String): Deferred<String?> = GlobalScope.async {
-        return@async try {
+    override fun articleVote(id: String, type: Int, cookie: String): String? {
+        return try {
             ITHomeApi.newsVote(id, type, cookie)
         } catch (e: Exception) {
             Logger.e(tag, "articleVote", e)
@@ -173,8 +169,7 @@ object ArticleApiImpl : ArticleApi {
         return true
     }
 
-    override fun getFullArticle(url: String, loadImageAutomatically: Boolean,
-                                isLiveInfo: Boolean): Deferred<FullArticle?> = GlobalScope.async {
+    override fun getFullArticle(url: String, loadImageAutomatically: Boolean, isLiveInfo: Boolean): FullArticle? {
         try {
             val doc = Jsoup.connect(url).timeout(5000).get()
             val title: String
@@ -198,7 +193,7 @@ object ArticleApiImpl : ArticleApi {
                         "(" + (meta.select("#author_baidu strong")?.text() ?: "") + ")"
             }
 
-            if (post == null) return@async FullArticle()
+            if (post == null) return FullArticle()
 
             val imgs = post.getElementsByTag("img")
             if (loadImageAutomatically && !isLiveInfo) {
@@ -250,10 +245,10 @@ object ArticleApiImpl : ArticleApi {
                     "" + getMatchInt(url)
                 }
             }
-            return@async FullArticle(newsId, title, time, content)
+            return FullArticle(newsId, title, time, content)
         } catch (e: Exception) {
             Logger.e(tag, "getFullArticle", e)
-            return@async null
+            return null
         }
     }
 }

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.entity.Article
@@ -85,7 +87,7 @@ class SearchActivity : BaseActivity() {
             swipe_refresh.isRefreshing = true
             page++
             launch {
-                val articles = ArticleApiImpl.getSearchResults(keyword, page).await()
+                val articles = withContext(Dispatchers.IO) { ArticleApiImpl.getSearchResults(keyword, page) }
                 if (articles != null) {
                     if (articles.isNotEmpty()) {
                         if (articles[0].title != lastFirst) {

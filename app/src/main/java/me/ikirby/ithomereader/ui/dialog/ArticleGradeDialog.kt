@@ -55,7 +55,9 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         view!!.article_grade.visibility = View.GONE
         view!!.article_grade_detail.visibility = View.GONE
         launch {
-            val articleGrade = ArticleApiImpl.getArticleGrade(newsId, null).await()
+            val articleGrade = withContext(Dispatchers.IO) {
+                ArticleApiImpl.getArticleGrade(newsId, null)
+            }
             if (articleGrade != null) {
                 view!!.article_grade.text = articleGrade.score
                 view!!.trash.text = articleGrade.trashCount
@@ -83,7 +85,9 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
             return
         }
         launch {
-            val voteResult = ArticleApiImpl.articleVote(newsId, grade, cookie!!).await()
+            val voteResult = withContext(Dispatchers.IO) {
+                ArticleApiImpl.articleVote(newsId, grade, cookie!!)
+            }
             if (voteResult != null) {
                 try {
                     if (voteResult.contains("打分成功")) {

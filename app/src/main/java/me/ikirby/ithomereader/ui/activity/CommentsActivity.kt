@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_viewpager.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.COMMENT_POSTED_REQUEST_CODE
 import me.ikirby.ithomereader.R
@@ -102,7 +104,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         load_progress.visibility = View.VISIBLE
         load_text.visibility = View.GONE
         launch {
-            val hash = CommentApiImpl.getCommentHash(id).await()
+            val hash = withContext(Dispatchers.IO) { CommentApiImpl.getCommentHash(id) }
             if (hash != null) {
                 commentHash = hash
                 loadPages(id, hash, cookie, url, null)

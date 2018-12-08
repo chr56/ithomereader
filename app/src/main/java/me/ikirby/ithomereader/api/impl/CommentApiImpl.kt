@@ -1,8 +1,5 @@
 package me.ikirby.ithomereader.api.impl
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import me.ikirby.ithomereader.api.CommentApi
 import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.network.ITHomeApi
@@ -15,8 +12,7 @@ object CommentApiImpl : CommentApi {
     private val tag = javaClass.simpleName
 
     override fun getAllCommentsList(id: String, hash: String, page: Int,
-                                    oldList: ArrayList<Comment>?,
-                                    isLapin: Boolean): Deferred<List<Comment>?> = GlobalScope.async {
+                                    oldList: ArrayList<Comment>?, isLapin: Boolean): List<Comment>? {
         try {
             val doc = ITHomeApi.getCommentsDoc(id, hash, page, isLapin)
             val list = mutableListOf<Comment>()
@@ -63,16 +59,15 @@ object CommentApiImpl : CommentApi {
                     }
                 }
             }
-            return@async removeDuplicate(removeDiscontinuousFloor(list), oldList)
+            return removeDuplicate(removeDiscontinuousFloor(list), oldList)
         } catch (e: Exception) {
             Logger.e(tag, "getAllCommentsList", e)
-            return@async null
+            return null
         }
     }
 
     override fun getHotCommentList(id: String, hash: String, page: Int,
-                                   oldList: ArrayList<Comment>?,
-                                   isLapin: Boolean): Deferred<List<Comment>?> = GlobalScope.async {
+                                   oldList: ArrayList<Comment>?, isLapin: Boolean): List<Comment>? {
         try {
             val doc = ITHomeApi.getHotCommentsDoc(id, hash, page, isLapin)
             val list = mutableListOf<Comment>()
@@ -94,10 +89,10 @@ object CommentApiImpl : CommentApi {
                     list.add(Comment(nick, floor, posAndTime, content, device, null, selfId, supportCount, againstCount))
                 }
             }
-            return@async removeDuplicate(list, oldList)
+            return removeDuplicate(list, oldList)
         } catch (e: Exception) {
             Logger.e(tag, "getHotCommentsList", e)
-            return@async null
+            return null
         }
     }
 
@@ -131,8 +126,8 @@ object CommentApiImpl : CommentApi {
     }
 
     override fun postComment(id: String, parentId: String?, selfId: String?,
-                             commentContent: String, cookie: String): Deferred<String?> = GlobalScope.async {
-        return@async try {
+                             commentContent: String, cookie: String): String? {
+        return try {
             ITHomeApi.postComment(id, parentId, selfId, commentContent, cookie)
         } catch (e: Exception) {
             Logger.e(tag, "postComment", e)
@@ -140,9 +135,8 @@ object CommentApiImpl : CommentApi {
         }
     }
 
-    override fun commentVote(id: String, typeId: Int,
-                             isCancel: Boolean, cookie: String): Deferred<String?> = GlobalScope.async {
-        return@async try {
+    override fun commentVote(id: String, typeId: Int, isCancel: Boolean, cookie: String):String? {
+        return try {
             ITHomeApi.commentVote(id, typeId, isCancel, cookie)
         } catch (e: Exception) {
             Logger.e(tag, "commentVote", e)
@@ -150,18 +144,18 @@ object CommentApiImpl : CommentApi {
         }
     }
 
-    override fun getCommentHash(id: String): Deferred<String?> = GlobalScope.async {
+    override fun getCommentHash(id: String): String? {
         try {
             val doc = Jsoup.connect(ITHomeApi.IFCOMMENT_URL + id).timeout(5000).get()
             val pattern = Pattern.compile("var ch11 = '(.+)';")
             val matcher = pattern.matcher(doc.html())
             if (matcher.find()) {
-                return@async matcher.group(1)
+                return matcher.group(1)
             }
         } catch (e: Exception) {
             Logger.e(tag, "getCommentHash", e)
         }
-        return@async null
+        return null
     }
 
     private fun getCommentId(strContainingId: String): String {

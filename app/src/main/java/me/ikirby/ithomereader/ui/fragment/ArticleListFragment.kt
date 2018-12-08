@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
@@ -155,10 +157,12 @@ class ArticleListFragment : BaseFragment() {
                 val keywords = BaseApplication.preferences.getString("custom_filter", "")!!
                         .split(", ").dropLastWhile { it.isEmpty() }.toTypedArray()
                 val customFilter = keywords.isNotEmpty()
-                val articles = if (isRefresh) {
-                    ArticleApiImpl.getArticleList(page, filterLapin, customFilter, keywords, null).await()
-                } else {
-                    ArticleApiImpl.getArticleList(page, filterLapin, customFilter, keywords, articleList).await()
+                val articles = withContext(Dispatchers.IO) {
+                    if (isRefresh) {
+                        ArticleApiImpl.getArticleList(page, filterLapin, customFilter, keywords, null)
+                    } else {
+                        ArticleApiImpl.getArticleList(page, filterLapin, customFilter, keywords, articleList)
+                    }
                 }
 
                 if (articles != null) {
@@ -190,7 +194,7 @@ class ArticleListFragment : BaseFragment() {
 
     private fun loadBanner() {
         launch {
-            val articles = TrendingApiImpl.getFocusBannerArticles().await()
+            val articles = withContext(Dispatchers.IO) { TrendingApiImpl.getFocusBannerArticles() }
             if (articles != null && articles.isNotEmpty()) {
                 focuses.clear()
                 focuses.addAll(articles)

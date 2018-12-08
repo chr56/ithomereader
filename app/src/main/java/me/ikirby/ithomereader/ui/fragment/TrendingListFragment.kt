@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.TrendingApiImpl
 import me.ikirby.ithomereader.entity.Trending
@@ -89,7 +91,7 @@ class TrendingListFragment : BaseFragment() {
             isLoading = true
             view!!.swipe_refresh.isRefreshing = true
             launch {
-                val trendings = TrendingApiImpl.getTrendingList().await()
+                val trendings = withContext(Dispatchers.IO) { TrendingApiImpl.getTrendingList() }
                 if (trendings != null) {
                     if (trendings.isNotEmpty()) {
                         showThumb = shouldShowThumb()

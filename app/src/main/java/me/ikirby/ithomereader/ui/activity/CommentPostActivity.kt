@@ -9,7 +9,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.activity_comment_post.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
@@ -92,7 +94,9 @@ class CommentPostActivity : BaseActivity() {
         load_progress.visibility = View.VISIBLE
         val commentContent = post_comment_content.text.toString()
         launch {
-            val result = CommentApiImpl.postComment(id, parentId, selfId, commentContent, cookie!!).await()
+            val result = withContext(Dispatchers.IO) {
+                CommentApiImpl.postComment(id, parentId, selfId, commentContent, cookie!!)
+            }
             if (result != null) {
                 if (result == "评论成功") {
                     ToastUtil.showToast(R.string.comment_posted)

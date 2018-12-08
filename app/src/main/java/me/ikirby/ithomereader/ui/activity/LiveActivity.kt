@@ -6,7 +6,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.LiveApiImpl
 import me.ikirby.ithomereader.entity.LiveMsg
@@ -73,7 +75,7 @@ class LiveActivity : BaseActivity() {
             isLoading = true
             swipe_refresh.isRefreshing = true
             launch {
-                val liveMsgs = LiveApiImpl.getLiveMessages(newsId).await()
+                val liveMsgs = withContext(Dispatchers.IO) { LiveApiImpl.getLiveMessages(newsId) }
                 if (liveMsgs != null) {
                     if (liveMsgs.isNotEmpty()) {
                         liveMessages.clear()

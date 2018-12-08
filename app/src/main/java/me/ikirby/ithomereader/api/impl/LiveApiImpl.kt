@@ -1,8 +1,5 @@
 package me.ikirby.ithomereader.api.impl
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import me.ikirby.ithomereader.LIVE_MSG_TYPE_IMAGE
 import me.ikirby.ithomereader.api.LiveApi
 import me.ikirby.ithomereader.entity.LiveMsg
@@ -15,8 +12,7 @@ import org.jsoup.Jsoup
 object LiveApiImpl : LiveApi {
     private val tag = javaClass.simpleName
 
-    override fun getLiveMessages(id: String): Deferred<List<LiveMsg>?> = GlobalScope.async {
-
+    override fun getLiveMessages(id: String):List<LiveMsg>? {
         try {
             val msgs = JSONObject(ITHomeApi.getLiveMsgJson(id)).getJSONArray("contents")
             val list = mutableListOf<LiveMsg>()
@@ -30,12 +26,12 @@ object LiveApiImpl : LiveApi {
                     list.add(LiveMsg(null, img.attr("data-original"), LIVE_MSG_TYPE_IMAGE))
                 }
             }
-            return@async list
+            return list
         } catch (e: JSONException) {
             Logger.e(tag, "getLiveMessages:JSON format", e)
         } catch (e: Exception) {
             Logger.e(tag, "getLiveMessages", e)
         }
-        return@async null
+        return null
     }
 }

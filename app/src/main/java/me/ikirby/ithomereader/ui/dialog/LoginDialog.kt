@@ -94,7 +94,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
         val loadProgress = this.dialog.findViewById<ProgressBar>(R.id.load_progress)
         loadProgress.visibility = View.VISIBLE
         launch {
-            val cookie = UserApiImpl.login(username, password).await()
+            val cookie = withContext(Dispatchers.IO) { UserApiImpl.login(username, password) }
             if (cookie != null) {
                 val cookieStr = "user=$cookie"
                 preferences.edit().putString("user_hash", cookieStr)
