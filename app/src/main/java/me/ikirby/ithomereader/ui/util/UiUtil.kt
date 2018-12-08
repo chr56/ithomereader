@@ -16,7 +16,6 @@ object UiUtil {
 
     fun setNightMode(activity: Activity, isNightMode: Boolean, isOStyleLight: Boolean) {
         if (!isNightMode) {
-            val icon = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
             val descriptionColorRes = if (isOStyleLight) {
                 activity.setTheme(R.style.AppTheme_OStyle)
                 R.color.colorPrimary_white
