@@ -43,7 +43,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         cookie = preferences.getString("user_hash", null)
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && savedInstanceState.containsKey("comment_hash")) {
             commentHash = savedInstanceState.getString("comment_hash", "")
             loadPages(id, commentHash, cookie, url, null)
         } else {
@@ -93,7 +93,9 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("comment_hash", commentHash)
+        if (::commentHash.isInitialized) {
+            outState.putString("comment_hash", commentHash)
+        }
     }
 
     private fun loadCommentHash() {
