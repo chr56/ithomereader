@@ -19,7 +19,7 @@ object UiUtil {
             val icon = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
             val descriptionColorRes = if (isOStyleLight) {
                 activity.setTheme(R.style.AppTheme_OStyle)
-                R.color.allLightPrimary
+                R.color.colorPrimary_white
             } else {
                 activity.setTheme(R.style.AppTheme_Light)
                 R.color.colorPrimary
@@ -91,7 +91,7 @@ object UiUtil {
     fun getToolBarColor(): Int {
         return if (!BaseApplication.isNightMode) {
             if (BaseApplication.isOStyleLight) {
-                BaseApplication.instance.getColor(R.color.allLightPrimary)
+                BaseApplication.instance.getColor(R.color.colorPrimary_white)
             } else {
                 BaseApplication.instance.getColor(R.color.colorPrimary)
             }
@@ -113,10 +113,10 @@ object UiUtil {
             if (BaseApplication.isOStyleLight) {
                 R.color.colorPrimary
             } else {
-                R.color.colorAccent
+                R.color.colorSecondary
             }
         } else {
-            R.color.colorAccent_night
+            R.color.colorSecondary_night
         }
     }
 }

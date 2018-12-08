@@ -1,56 +1,72 @@
 <resources>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/background_light</item>
-        <item name="customWindowBackground">@color/background_light</item>
-        <item name="listDividerColor">@color/divider_light</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
         <item name="tabForegroundColor">@android:color/white</item>
+        <item name="actionBarColor">@color/colorActionBarBackground</item>
     </style>
 
     <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary_night</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_night</item>
-        <item name="colorAccent">@color/colorAccent_night</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary_night</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
         <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorBackground">@color/background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="customWindowBackground">@color/background_dark</item>
         <item name="menuItemColor">@color/menuTextDark</item>
     </style>
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents">
+        <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
         <item name="colorPrimary">@color/colorPrimary_night</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_night</item>
-        <item name="colorAccent">@color/colorAccent_night</item>
-        <item name="customWindowBackground">@color/background_dark</item>
-        <item name="listDividerColor">@color/divider_night</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary_night</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
+        <item name="android:colorBackground">@color/background_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="commentReplyBg">@color/comment_reply_bg_dark</item>
         <item name="menuItemColor">@color/menuTextDark</item>
         <item name="tabForegroundColor">@android:color/white</item>
+        <item name="actionBarColor">@color/colorActionBarBackground_night</item>
     </style>
 
     <style name="AppBaseTheme.OStyle" parent="Theme.MaterialComponents.Light">
-        <!--<item name="actionBarStyle">@style/AppBaseTheme.OStyle.ActionBar</item>-->
+        <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
         <item name="actionBarTheme">@style/AppBaseTheme.OStyle.ActionBar.Theme</item>
-        <item name="colorPrimary">@color/allLightPrimary</item>
-        <item name="colorPrimaryDark">@color/allLightDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary_white</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary_white</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_white</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_white</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_white</item>
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="android:colorEdgeEffect">@android:color/black</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowBackground">@color/background_light</item>
-        <item name="customWindowBackground">@color/background_light</item>
-        <item name="listDividerColor">@color/divider_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
-        <item name="tabForegroundColor">@color/colorPrimary</item>
+        <item name="tabForegroundColor">@color/colorPrimary_white</item>
+        <item name="actionBarColor">@color/colorActionBarBackground_white</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme" />
@@ -59,49 +75,57 @@
 
     <style name="AppTheme.OStyle" parent="AppBaseTheme.OStyle" />
 
-    <!--<style name="AppBaseTheme.OStyle.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">-->
-    <!--<item name="android:titleTextStyle">@style/AppBaseTheme.OStyle.ActionBar.TitleText</item>-->
-    <!--</style>-->
-
-    <style name="AppBaseTheme.OStyle.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar">
-        <item name="colorControlNormal">@color/colorPrimary</item>
+    <style name="AppBaseTheme.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">?actionBarColor</item>
     </style>
 
-    <!--<style name="AppBaseTheme.OStyle.ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">-->
-    <!--<item name="android:textColor">@color/colorPrimary</item>-->
-    <!--</style>-->
+    <style name="AppBaseTheme.OStyle.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="colorControlNormal">@color/colorPrimary_white</item>
+    </style>
 
     <style name="AppTheme.CommonDialog" parent="Theme.MaterialComponents.Dialog">
         <item name="colorPrimary">@color/colorPrimary_night</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_night</item>
-        <item name="colorAccent">@color/colorAccent_night</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary_night</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
-        <item name="customWindowBackground">@color/background_dark</item>
+        <item name="android:colorBackground">@color/background_dark</item>
     </style>
 
     <style name="AppTheme.CommonDialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
-        <item name="customWindowBackground">@color/background_light</item>
+        <item name="android:colorBackground">@color/background_light</item>
     </style>
 
     <style name="AppTheme.CommonDialog.OStyle" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimary">@color/allLightPrimary</item>
-        <item name="colorPrimaryDark">@color/allLightDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary_white</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary_white</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_white</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_white</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_white</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
-        <item name="customWindowBackground">@color/background_light</item>
+        <item name="android:colorBackground">@color/background_light</item>
     </style>
 
     <style name="BottomSheetMenu">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:background">?customWindowBackground</item>
+        <item name="android:background">?android:colorBackground</item>
     </style>
 
     <style name="BottomSheetItem">
@@ -119,11 +143,11 @@
     </style>
 
     <style name="BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="colorAccent">@color/colorAccent_night</item>
+        <item name="colorAccent">@color/colorSecondary_night</item>
     </style>
 
     <style name="BottomSheetDialog.Light" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorSecondary</item>
     </style>
 
     <style name="BottomSheetDialog.OStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
@@ -132,7 +156,7 @@
 
     <style name="Widget.MaterialRefresh.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:elevation">4dp</item>
-        <item name="android:background">?colorPrimary</item>
+        <item name="android:background">?actionBarColor</item>
         <item name="tabIndicator">@drawable/material_refresh_tab_indicator</item>
         <item name="tabIndicatorColor">?tabForegroundColor</item>
         <item name="tabIndicatorFullWidth">false</item>
