@@ -91,12 +91,12 @@ object UiUtil {
     fun getToolBarColor(): Int {
         return if (!BaseApplication.isNightMode) {
             if (BaseApplication.isOStyleLight) {
-                BaseApplication.instance.getColor(R.color.colorPrimary_white)
+                BaseApplication.instance.getColor(R.color.colorActionBarBackground_white)
             } else {
-                BaseApplication.instance.getColor(R.color.colorPrimary)
+                BaseApplication.instance.getColor(R.color.colorActionBarBackground)
             }
         } else {
-            BaseApplication.instance.getColor(R.color.colorPrimary_night)
+            BaseApplication.instance.getColor(R.color.colorActionBarBackground_night)
         }
     }
 
