@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/context_download_img"
+    <item
+        android:id="@+id/context_download_img"
         android:icon="@drawable/ic_save"
-        android:title="@string/download_image"/>
+        android:title="@string/download_image" />
 
-    <item android:id="@+id/copy_link"
+    <item
+        android:id="@+id/copy_link"
         android:icon="@drawable/ic_copy"
         android:title="@string/copy_link" />
 </menu>
