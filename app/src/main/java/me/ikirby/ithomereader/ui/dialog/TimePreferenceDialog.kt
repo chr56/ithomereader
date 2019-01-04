@@ -8,7 +8,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceDialogFragmentCompat
 import me.ikirby.ithomereader.ui.widget.TimePreference
 
-class TimePreferenceDialog : PreferenceDialogFragmentCompat(), DialogPreference.TargetFragment {
+class TimePreferenceDialog : PreferenceDialogFragmentCompat() {
 
     private lateinit var timePicker: TimePicker
 
@@ -37,10 +37,6 @@ class TimePreferenceDialog : PreferenceDialogFragmentCompat(), DialogPreference.
                 timePreference.persistStringValue(value)
             }
         }
-    }
-
-    override fun findPreference(key: CharSequence?): Preference {
-        return preference
     }
 
 }

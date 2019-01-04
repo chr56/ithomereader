@@ -152,7 +152,7 @@
             android:title="BottomSheetMenu" />
 
         <Preference
-            android:key="kotlinx_coroutines"
+            android:key="lib_kotlinx_coroutines"
             android:title="kotlinx-coroutines-android" />
     </PreferenceCategory>
 </PreferenceScreen>

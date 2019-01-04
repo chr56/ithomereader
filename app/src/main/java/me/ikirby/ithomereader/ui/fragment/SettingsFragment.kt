@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.BuildConfig
 import me.ikirby.ithomereader.R
@@ -25,7 +26,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (savedInstanceState == null) {
 
             setPreferencesFromResource(R.xml.preferences, rootKey)
-            val loginAccount = findPreference("login_account")
+            val loginAccount = findPreference<Preference>("login_account")
             if (preferences.contains("username")) {
                 loginAccount.title = preferences.getString("username", getString(R.string.login_title))
             }
@@ -40,62 +41,75 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-            findPreference("o_style_light").onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            val oStyleLightSwitch = findPreference<SwitchPreference>("o_style_light")
+            val swipeBackSwitch = findPreference<SwitchPreference>("swipe_back")
+            val useBottomNavSwitch = findPreference<SwitchPreference>("use_bottom_nav")
+
+            oStyleLightSwitch.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
                 activity!!.setResult(Activity.RESULT_OK)
                 true
             }
 
-            findPreference("swipe_back").onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            swipeBackSwitch.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
                 activity!!.setResult(Activity.RESULT_OK)
                 true
             }
 
-            findPreference("use_bottom_nav").onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            useBottomNavSwitch.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
                 activity!!.setResult(Activity.RESULT_OK)
                 true
             }
 
-            findPreference("go_full_site").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            val goFullSite = findPreference<Preference>("go_full_site")
+            val libAndroidX = findPreference<Preference>("lib_androidx")
+            val libMdc = findPreference<Preference>("lib_mdc")
+            val libJsoup = findPreference<Preference>("lib_jsoup")
+            val libPhotoView = findPreference<Preference>("lib_photoview")
+            val libGlide = findPreference<Preference>("lib_glide")
+            val libBottomSheet = findPreference<Preference>("lib_bottom_sheet")
+            val libKotlinxCoroutines = findPreference<Preference>("lib_kotlinx_coroutines")
+
+            goFullSite.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://www.ithome.com")
                 true
             }
 
-            findPreference("lib_androidx").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libAndroidX.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://developer.android.com/topic/libraries/support-library/androidx-rn")
                 true
             }
 
-            findPreference("lib_mdc").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libMdc.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://github.com/material-components/material-components-android")
                 true
             }
 
-            findPreference("lib_jsoup").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libJsoup.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://jsoup.org")
                 true
             }
 
-            findPreference("lib_photoview").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libPhotoView.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://github.com/chrisbanes/PhotoView")
                 true
             }
 
-            findPreference("lib_glide").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libGlide.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://github.com/bumptech/glide")
                 true
             }
 
-            findPreference("lib_bottom_sheet").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libBottomSheet.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://github.com/krossovochkin/BottomSheetMenu")
                 true
             }
 
-            findPreference("kotlinx_coroutines").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            libKotlinxCoroutines.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://github.com/Kotlin/kotlinx.coroutines/tree/master/ui/kotlinx-coroutines-android")
                 true
             }
 
-            val checkForUpdate = findPreference("check_for_update")
+            val checkForUpdate = findPreference<Preference>("check_for_update")
             checkForUpdate.summary = getString(R.string.current_ver, BuildConfig.VERSION_NAME)
             checkForUpdate.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 UpdateCheckNotifyTask(true).execute()
