@@ -72,7 +72,7 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         setContentView(R.layout.activity_viewpager)
-        if (BaseApplication.preferences.getBoolean("use_bottom_nav", false)) {
+        if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_USE_BOTTOM_NAV, false)) {
             tabs.visibility = View.GONE
             bottom_nav.visibility = View.VISIBLE
             viewPager.setSwipeDisabled(true)
