@@ -9,7 +9,6 @@
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
         <item name="tabForegroundColor">@android:color/white</item>
@@ -39,7 +38,6 @@
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
         <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
         <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="commentReplyBg">@color/comment_reply_bg_dark</item>
         <item name="menuItemColor">@color/menuTextDark</item>
         <item name="tabForegroundColor">@android:color/white</item>
@@ -58,7 +56,6 @@
         <item name="colorOnSecondary">@color/colorOnSecondary_white</item>
         <item name="android:colorEdgeEffect">@android:color/black</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
         <item name="tabForegroundColor">@color/colorPrimary_white</item>
