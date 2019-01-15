@@ -156,6 +156,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     fun showLoginDialog() {
+        ToastUtil.showToast(R.string.please_login_first)
         val dialog = LoginDialog.newInstance(cookie)
         dialog.show(supportFragmentManager, "loginDialog")
     }
