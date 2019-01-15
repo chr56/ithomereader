@@ -22,6 +22,6 @@
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:fontFamily="sans-serif-condensed"/>
+        android:fontFamily="sans-serif-condensed" />
 
 </LinearLayout>
