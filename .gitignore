@@ -36,3 +36,5 @@ captures/
 *.iml
 *.iws
 *.ipr
+
+signing.properties

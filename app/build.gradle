@@ -14,7 +14,19 @@ def getGitHash = { ->
     return stdout.toString().trim()
 }
 
+def signingConfigFile = rootProject.file("signing.properties")
+def signingProperties = new Properties()
+signingProperties.load(new FileInputStream(signingConfigFile))
+
 android {
+    signingConfigs {
+        release {
+            keyAlias signingProperties['keyAlias']
+            keyPassword signingProperties['keyPassword']
+            storeFile file(signingProperties['storeFile'])
+            storePassword signingProperties['storePassword']
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
@@ -31,6 +43,7 @@ android {
             minifyEnabled true
             shrinkResources true
             useProguard false
+            signingConfig signingConfigs.release
         }
     }
     flavorDimensions 'update'
@@ -75,8 +88,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
 
 repositories {
