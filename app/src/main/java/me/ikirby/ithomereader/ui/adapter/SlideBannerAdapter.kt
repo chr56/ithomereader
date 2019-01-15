@@ -58,40 +58,12 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
             }
 
             override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                Palette.from(resource).generate { palette ->
+                Palette.Builder(resource).maximumColorCount(8).generate { palette ->
                     val bgColor: Int
                     val textColor: Int
                     if (palette != null) {
-                        when {
-                            palette.mutedSwatch != null -> {
-                                bgColor = palette.getMutedColor(Color.BLACK)
-                                textColor = palette.mutedSwatch!!.titleTextColor
-                            }
-                            palette.darkMutedSwatch != null -> {
-                                bgColor = palette.getDarkMutedColor(Color.BLACK)
-                                textColor = palette.darkMutedSwatch!!.titleTextColor
-                            }
-                            palette.lightMutedSwatch != null -> {
-                                bgColor = palette.getLightMutedColor(Color.BLACK)
-                                textColor = palette.lightMutedSwatch!!.titleTextColor
-                            }
-                            palette.vibrantSwatch != null -> {
-                                bgColor = palette.getVibrantColor(Color.BLACK)
-                                textColor = palette.vibrantSwatch!!.titleTextColor
-                            }
-                            palette.darkVibrantSwatch != null -> {
-                                bgColor = palette.getDarkVibrantColor(Color.BLACK)
-                                textColor = palette.darkVibrantSwatch!!.titleTextColor
-                            }
-                            palette.lightVibrantSwatch != null -> {
-                                bgColor = palette.getLightVibrantColor(Color.BLACK)
-                                textColor = palette.lightVibrantSwatch!!.titleTextColor
-                            }
-                            else -> {
-                                bgColor = Color.BLACK
-                                textColor = Color.WHITE
-                            }
-                        }
+                        bgColor = palette.getDominantColor(Color.BLACK)
+                        textColor = palette.dominantSwatch?.titleTextColor ?: Color.WHITE
                     } else {
                         bgColor = Color.BLACK
                         textColor = Color.WHITE
