@@ -3,8 +3,6 @@ package me.ikirby.ithomereader.ui.dialog
 import android.content.Context
 import android.view.View
 import android.widget.TimePicker
-import androidx.preference.DialogPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceDialogFragmentCompat
 import me.ikirby.ithomereader.ui.widget.TimePreference
 

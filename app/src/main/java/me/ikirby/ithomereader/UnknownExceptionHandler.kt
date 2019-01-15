@@ -15,7 +15,7 @@ object UnknownExceptionHandler {
         val intent = Intent().apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             action = "me.ikirby.ithomereader.UNKNOWN_EXCEPTION"
-            putExtra("stack_trace", stackTrace)
+            putExtra(KEY_STACK_TRACE, stackTrace)
         }
         context.startActivity(intent)
 

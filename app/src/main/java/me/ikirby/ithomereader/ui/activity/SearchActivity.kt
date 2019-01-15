@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
@@ -37,7 +37,7 @@ class SearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableBackBtn()
 
-        keyword = intent.getStringExtra("keyword")
+        keyword = intent.getStringExtra(KEY_KEYWORD)
 
         setTitleCustom(getString(R.string.keyword_s_results, keyword))
 
@@ -51,7 +51,7 @@ class SearchActivity : BaseActivity() {
         error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            articleList = savedInstanceState.getParcelableArrayList("articleList") ?: ArrayList()
+            articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
         }
 
         list_view.setOnBottomReachedListener(bottomReachedListener)
@@ -62,10 +62,10 @@ class SearchActivity : BaseActivity() {
             list_view.adapter = adapter
             loadList()
         } else {
-            page = savedInstanceState.getInt("page")
+            page = savedInstanceState.getInt(KEY_PAGE)
             adapter = ArticleListAdapter(articleList, null, this, false)
             list_view.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
     }
 
@@ -75,10 +75,10 @@ class SearchActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("page", page)
-        outState.putParcelableArrayList("articleList", articleList)
-        outState.putParcelable("list_state", layoutManager.onSaveInstanceState())
-        outState.putString("last_first", lastFirst)
+        outState.putInt(KEY_PAGE, page)
+        outState.putParcelableArrayList(KEY_ARTICLE_LIST, articleList)
+        outState.putParcelable(KEY_LIST_STATE, layoutManager.onSaveInstanceState())
+        outState.putString(KEY_LAST_FIRST, lastFirst)
     }
 
     private fun loadList() {

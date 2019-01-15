@@ -12,10 +12,7 @@ import kotlinx.android.synthetic.main.activity_viewpager.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.COMMENT_POSTED_REQUEST_CODE
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.LoginDialog
@@ -37,9 +34,9 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setTitleCustom(getString(R.string.comments))
         enableBackBtn()
 
-        id = intent.getStringExtra("id")
-        title = intent.getStringExtra("title")
-        url = intent.getStringExtra("url")
+        id = intent.getStringExtra(KEY_NEWS_ID)
+        title = intent.getStringExtra(KEY_TITLE)
+        url = intent.getStringExtra(KEY_URL)
 //        lapinId = intent.getStringExtra("lapinId")
 
         cookie = preferences.getString(SETTINGS_KEY_USER_HASH, null)
@@ -68,8 +65,8 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             R.id.action_refresh -> return false
             R.id.action_post_comment -> {
                 val intent = Intent(this, CommentPostActivity::class.java).apply {
-                    putExtra("id", id)
-                    putExtra("title", title)
+                    putExtra(KEY_NEWS_ID, id)
+                    putExtra(KEY_TITLE, title)
                 }
                 startActivityForResult(intent, COMMENT_POSTED_REQUEST_CODE)
             }

@@ -60,8 +60,8 @@ class ArticleListFragment : BaseFragment() {
         view.error_placeholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {
-            articleList = savedInstanceState.getParcelableArrayList("articleList") ?: ArrayList()
-            focuses = savedInstanceState.getParcelableArrayList("focuses") ?: ArrayList()
+            articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
+            focuses = savedInstanceState.getParcelableArrayList(KEY_BANNER_ITEMS) ?: ArrayList()
         }
 
         if (savedInstanceState == null || showBanner || articleList.isEmpty()) {
@@ -77,9 +77,9 @@ class ArticleListFragment : BaseFragment() {
             }
             view.list_view.adapter = adapter
         } else {
-            showThumb = savedInstanceState.getBoolean("show_thumb", true)
-            showBanner = savedInstanceState.getBoolean("show_banner", true)
-            page = savedInstanceState.getInt("page")
+            showThumb = savedInstanceState.getBoolean(KEY_SHOW_THUMB, true)
+            showBanner = savedInstanceState.getBoolean(KEY_SHOW_BANNER, true)
+            page = savedInstanceState.getInt(KEY_PAGE)
             if (showBanner) {
                 focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
                 adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
@@ -87,10 +87,10 @@ class ArticleListFragment : BaseFragment() {
                 adapter = ArticleListAdapter(articleList, null, context!!, showThumb)
             }
             view.list_view.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
             if (showBanner) {
                 adapter.bannerLayoutManager.onRestoreInstanceState(
-                        savedInstanceState.getParcelable("focus_state"))
+                        savedInstanceState.getParcelable(KEY_BANNER_STATE))
             }
         }
 
@@ -105,14 +105,14 @@ class ArticleListFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("page", page)
-        outState.putParcelableArrayList("articleList", articleList)
-        outState.putParcelable("list_state", layoutManager.onSaveInstanceState())
-        outState.putBoolean("show_thumb", showThumb)
-        outState.putBoolean("show_banner", showBanner)
+        outState.putInt(KEY_PAGE, page)
+        outState.putParcelableArrayList(KEY_ARTICLE_LIST, articleList)
+        outState.putParcelable(KEY_LIST_STATE, layoutManager.onSaveInstanceState())
+        outState.putBoolean(KEY_SHOW_THUMB, showThumb)
+        outState.putBoolean(KEY_SHOW_BANNER, showBanner)
         if (showBanner) {
-            outState.putParcelableArrayList("focuses", focuses)
-            outState.putParcelable("focus_state", adapter.bannerLayoutManager.onSaveInstanceState())
+            outState.putParcelableArrayList(KEY_BANNER_ITEMS, focuses)
+            outState.putParcelable(KEY_BANNER_STATE, adapter.bannerLayoutManager.onSaveInstanceState())
         }
     }
 

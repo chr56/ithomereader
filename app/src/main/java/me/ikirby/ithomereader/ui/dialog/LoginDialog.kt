@@ -12,10 +12,7 @@ import androidx.preference.Preference
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.login_dialog.*
 import kotlinx.coroutines.*
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SETTINGS_KEY_USERNAME
-import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.UserApiImpl
 import me.ikirby.ithomereader.ui.activity.CommentPostActivity
 import me.ikirby.ithomereader.ui.activity.CommentsActivity
@@ -37,7 +34,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
         super.onCreate(savedInstanceState)
         val args = arguments
         if (args != null) {
-            cookie = args.getString("cookie")
+            cookie = args.getString(KEY_COOKIE)
         }
     }
 
@@ -133,7 +130,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
         fun newInstance(cookie: String?): LoginDialog {
             val dialog = LoginDialog()
             val args = Bundle()
-            args.putString("cookie", cookie)
+            args.putString(KEY_COOKIE, cookie)
             dialog.arguments = args
             return dialog
         }

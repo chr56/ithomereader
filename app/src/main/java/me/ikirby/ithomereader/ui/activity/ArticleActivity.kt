@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.ArticleGradeDialog
@@ -32,13 +31,13 @@ class ArticleActivity : BaseActivity() {
         setTitleCustom("")
         enableBackBtn()
 
-        url = intent.getStringExtra("url")
-        title = intent.getStringExtra("title") ?: ""
+        url = intent.getStringExtra(KEY_URL)
+        title = intent.getStringExtra(KEY_TITLE) ?: ""
 
         if (url.contains("live.ithome.com")) {
-            if (intent.getStringExtra("live_info") == null) {
+            if (intent.getStringExtra(KEY_LIVE_INFO) == null) {
                 val i = Intent(this, LiveActivity::class.java)
-                i.putExtra("url", url)
+                i.putExtra(KEY_URL, url)
                 startActivity(i)
                 finish()
                 return
@@ -83,12 +82,12 @@ class ArticleActivity : BaseActivity() {
             }
         }
 
-        if (savedInstanceState?.getString("news_id", null) == null) {
+        if (savedInstanceState?.getString(KEY_NEWS_ID, null) == null) {
             load_tip.visibility = View.VISIBLE
             loadContent()
         } else {
-            title = savedInstanceState.getString("title", "")
-            newsId = savedInstanceState.getString("news_id", "")
+            title = savedInstanceState.getString(KEY_TITLE, "")
+            newsId = savedInstanceState.getString(KEY_NEWS_ID, "")
             post_content.restoreState(savedInstanceState)
         }
     }
@@ -101,8 +100,8 @@ class ArticleActivity : BaseActivity() {
         super.onSaveInstanceState(outState)
         if (::newsId.isInitialized) {
             post_content.saveState(outState)
-            outState.putString("title", title)
-            outState.putString("news_id", newsId)
+            outState.putString(KEY_TITLE, title)
+            outState.putString(KEY_NEWS_ID, newsId)
         }
     }
 
@@ -122,7 +121,7 @@ class ArticleActivity : BaseActivity() {
             }
             R.id.action_grade -> showGrade()
             R.id.action_comments -> showComments()
-            R.id.copy_link -> copyToClipboard("ITHomeNewsLink", url)
+            R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, url)
             R.id.open_in_browser -> openLinkInBrowser(this, url)
             android.R.id.home -> finish()
         }
@@ -163,7 +162,7 @@ class ArticleActivity : BaseActivity() {
     @JavascriptInterface
     fun openInViewer(url: String) {
         val intent = Intent(this, ImageViewerActivity::class.java).apply {
-            putExtra("url", url)
+            putExtra(KEY_URL, url)
         }
         startActivity(intent)
     }
@@ -171,9 +170,9 @@ class ArticleActivity : BaseActivity() {
     private fun showComments() {
         if (::newsId.isInitialized) {
             val intent = Intent(this, CommentsActivity::class.java).apply {
-                putExtra("id", newsId)
-                putExtra("title", title)
-                putExtra("url", url)
+                putExtra(KEY_NEWS_ID, newsId)
+                putExtra(KEY_TITLE, title)
+                putExtra(KEY_URL, url)
                 // putExtra("lapinId", lapinId)
             }
             startActivity(intent)

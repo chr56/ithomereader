@@ -12,8 +12,7 @@ import kotlinx.android.synthetic.main.activity_comment_post.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -32,9 +31,9 @@ class CommentPostActivity : BaseActivity() {
         setTitleCustom(getString(R.string.post_comment))
         enableBackBtn()
 
-        id = intent.getStringExtra("id")
-        val title = intent.getStringExtra("title")
-        val replyTo = intent.getParcelableExtra<Comment>("replyTo")
+        id = intent.getStringExtra(KEY_NEWS_ID)
+        val title = intent.getStringExtra(KEY_TITLE)
+        val replyTo = intent.getParcelableExtra<Comment>(KEY_COMMENT_REPLY_TO)
 
         if (replyTo != null) {
             if (replyTo.parentId == null) {

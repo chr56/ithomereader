@@ -17,6 +17,9 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.slide_image_view.view.*
+import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
+import me.ikirby.ithomereader.KEY_TITLE
+import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.activity.ArticleActivity
@@ -34,8 +37,8 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
         view.setOnClickListener {
             val (title, _, url) = list[holder.adapterPosition]
             val intent = Intent(context, ArticleActivity::class.java).apply {
-                putExtra("url", url)
-                putExtra("title", title)
+                putExtra(KEY_URL, url)
+                putExtra(KEY_TITLE, title)
             }
             context.startActivity(intent)
         }
@@ -136,10 +139,10 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
                         context.startActivity(Intent.createChooser(share,
                                 context.getString(R.string.share) + " " + post.title))
                     }
-                    R.id.copy_link -> copyToClipboard("ITHomeNewsLink", post.url)
+                    R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
                     R.id.view_thumb -> {
                         val intent = Intent(context, ImageViewerActivity::class.java).apply {
-                            putExtra("url", post.thumb)
+                            putExtra(KEY_URL, post.thumb)
                         }
                         context.startActivity(intent)
                     }

@@ -19,6 +19,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_image_viewer.*
+import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
+import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.STORAGE_PERMISSION_REQUEST_CODE
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
@@ -39,7 +41,7 @@ class ImageViewerActivity : Activity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
-        url = intent.getStringExtra("url")
+        url = intent.getStringExtra(KEY_URL)
 
         photo_view.setOnClickListener(this)
         image_menu_btn.setOnClickListener(this)
@@ -142,7 +144,7 @@ class ImageViewerActivity : Activity(), View.OnClickListener {
                 override fun onBottomSheetMenuItemSelected(item: MenuItem) {
                     when (item.itemId) {
                         R.id.context_download_img -> checkPermission()
-                        R.id.copy_link -> copyToClipboard("ITHomeImageLink", url)
+                        R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, url)
                     }
                 }
             })

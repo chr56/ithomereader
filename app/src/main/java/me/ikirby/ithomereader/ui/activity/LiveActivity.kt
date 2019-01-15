@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.LiveApiImpl
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.ui.adapter.LivePostListAdapter
@@ -32,7 +32,7 @@ class LiveActivity : BaseActivity() {
         setTitleCustom(getString(R.string.live))
         enableBackBtn()
 
-        url = intent.getStringExtra("url")
+        url = intent.getStringExtra(KEY_URL)
         newsId = "" + getMatchInt(url)
 
         layoutManager = LinearLayoutManager(this)
@@ -45,7 +45,7 @@ class LiveActivity : BaseActivity() {
         error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            liveMessages = savedInstanceState.getParcelableArrayList("liveMessages") ?: ArrayList()
+            liveMessages = savedInstanceState.getParcelableArrayList(KEY_LIVE_MESSAGES) ?: ArrayList()
         }
 
         if (savedInstanceState == null || liveMessages.isEmpty()) {
@@ -56,7 +56,7 @@ class LiveActivity : BaseActivity() {
         } else {
             adapter = LivePostListAdapter(liveMessages, layoutInflater)
             list_view.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
     }
 
@@ -66,8 +66,8 @@ class LiveActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("liveMessages", liveMessages)
-        outState.putParcelable("list_state", layoutManager.onSaveInstanceState())
+        outState.putParcelableArrayList(KEY_LIVE_MESSAGES, liveMessages)
+        outState.putParcelable(KEY_LIST_STATE, layoutManager.onSaveInstanceState())
     }
 
     private fun loadList() {
@@ -105,8 +105,8 @@ class LiveActivity : BaseActivity() {
             android.R.id.home -> finish()
             R.id.action_live_info -> {
                 val intent = Intent(this, ArticleActivity::class.java)
-                intent.putExtra("url", url)
-                intent.putExtra("live_info", "")
+                intent.putExtra(KEY_URL, url)
+                intent.putExtra(KEY_LIVE_INFO, "")
                 startActivity(intent)
             }
         }

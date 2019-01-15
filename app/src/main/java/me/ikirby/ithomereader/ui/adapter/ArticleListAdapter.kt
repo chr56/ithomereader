@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.post_list_item.view.*
 import kotlinx.android.synthetic.main.slide_recycler.view.*
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SLIDE_SCROLL_INTERVAL
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.activity.ArticleActivity
 import me.ikirby.ithomereader.ui.activity.ImageViewerActivity
@@ -51,8 +50,8 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
                 }
                 val (title, _, url) = list[position]
                 val intent = Intent(context, ArticleActivity::class.java).apply {
-                    putExtra("url", url)
-                    putExtra("title", title)
+                    putExtra(KEY_URL, url)
+                    putExtra(KEY_TITLE, title)
                 }
                 context.startActivity(intent)
             }
@@ -180,10 +179,10 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
                         context.startActivity(Intent.createChooser(share,
                                 context.getString(R.string.share) + " " + post.title))
                     }
-                    R.id.copy_link -> copyToClipboard("ITHomeNewsLink", post.url)
+                    R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
                     R.id.view_thumb -> {
                         val intent = Intent(context, ImageViewerActivity::class.java).apply {
-                            putExtra("url", post.thumb)
+                            putExtra(KEY_URL, post.thumb)
                         }
                         context.startActivity(intent)
                     }

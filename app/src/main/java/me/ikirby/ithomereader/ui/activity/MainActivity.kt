@@ -117,7 +117,7 @@ class MainActivity : BaseActivity() {
             override fun onQueryTextSubmit(s: String): Boolean {
                 if (s != "") {
                     val intent = Intent(this@MainActivity, SearchActivity::class.java)
-                    intent.putExtra("keyword", s)
+                    intent.putExtra(KEY_KEYWORD, s)
                     startActivity(intent)
                 }
                 return false

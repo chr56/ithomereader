@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.ui.activity.CommentPostActivity
@@ -50,12 +50,12 @@ class CommentListFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (arguments != null) {
-            id = arguments!!.getString(NEWS_ID)!!
-            hash = arguments!!.getString(HASH)!!
-            cookie = arguments!!.getString(COOKIE)
-            url = arguments!!.getString(NEWS_URL)!!
-            lapinId = arguments!!.getString(LAPIN_ID)
-            isHotComment = arguments!!.getBoolean(IS_HOT_COMMENT)
+            id = arguments!!.getString(KEY_NEWS_ID)!!
+            hash = arguments!!.getString(KEY_COMMENT_HASH)!!
+            cookie = arguments!!.getString(KEY_COOKIE)
+            url = arguments!!.getString(KEY_URL)!!
+            lapinId = arguments!!.getString(KEY_LAPIN_ID)
+            isHotComment = arguments!!.getBoolean(KEY_HOT_COMMENT)
         }
         if (lapinId != null) {
             id = lapinId!!
@@ -77,7 +77,7 @@ class CommentListFragment : BaseFragment() {
         view.error_placeholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {
-            commentList = savedInstanceState.getParcelableArrayList("commentList") ?: ArrayList()
+            commentList = savedInstanceState.getParcelableArrayList(KEY_COMMENT_LIST) ?: ArrayList()
         }
 
         if (savedInstanceState == null || commentList.isEmpty()) {
@@ -86,11 +86,11 @@ class CommentListFragment : BaseFragment() {
                     activity as CommentsActivity, onLongClickListener, cookie)
             view.list_view.adapter = adapter
         } else {
-            page = savedInstanceState.getInt("page")
+            page = savedInstanceState.getInt(KEY_PAGE)
             adapter = CommentListAdapter(commentList, LayoutInflater.from(context),
                     activity as CommentsActivity, onLongClickListener, cookie)
             view.list_view.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
 
         view.list_view.setOnBottomReachedListener(object : OnBottomReachedListener {
@@ -109,9 +109,9 @@ class CommentListFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("page", page)
-        outState.putParcelableArrayList("commentList", commentList)
-        outState.putParcelable("list_state", layoutManager.onSaveInstanceState())
+        outState.putInt(KEY_PAGE, page)
+        outState.putParcelableArrayList(KEY_COMMENT_LIST, commentList)
+        outState.putParcelable(KEY_LIST_STATE, layoutManager.onSaveInstanceState())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -188,7 +188,7 @@ class CommentListFragment : BaseFragment() {
 
     fun setCookie(cookie: String?) {
         if (arguments != null) {
-            arguments!!.putString("cookie", cookie)
+            arguments!!.putString(KEY_COOKIE, cookie)
             adapter.setCookie(cookie)
             this.cookie = cookie
         }
@@ -210,18 +210,18 @@ class CommentListFragment : BaseFragment() {
                 when (item.itemId) {
                     R.id.reply_comment -> {
                         val intent = Intent(context, CommentPostActivity::class.java).apply {
-                            putExtra("id", id)
-                            putExtra("title", activity!!.intent.getStringExtra("title"))
-                            putExtra("replyTo", comment)
+                            putExtra(KEY_NEWS_ID, id)
+                            putExtra(KEY_TITLE, activity!!.intent.getStringExtra(KEY_TITLE))
+                            putExtra(KEY_COMMENT_REPLY_TO, comment)
                         }
                         startActivity(intent)
                     }
-                    R.id.copy_content -> copyToClipboard("ITHomeComment",
+                    R.id.copy_content -> copyToClipboard(CLIP_TAG_COMMENT,
                             Jsoup.clean(comment.content, "", Whitelist.none(),
                                     Document.OutputSettings().prettyPrint(false)))
                     R.id.share -> {
                         val nick = comment.nick
-                        val title = activity!!.intent.getStringExtra("title")
+                        val title = activity!!.intent.getStringExtra(KEY_TITLE)
                         val content = Jsoup.clean(comment.content, "", Whitelist.none(),
                                 Document.OutputSettings().prettyPrint(false))
                         val shareText = getString(R.string.share_comment_content, nick, title, content, url)
@@ -237,22 +237,15 @@ class CommentListFragment : BaseFragment() {
     }
 
     companion object {
-        private const val NEWS_ID = "id"
-        private const val HASH = "hash"
-        private const val COOKIE = "cookie"
-        private const val NEWS_URL = "url"
-        private const val LAPIN_ID = "lapin_id"
-        private const val IS_HOT_COMMENT = "is_hot"
-
         fun newInstance(id: String, hash: String, cookie: String?, url: String, lapinId: String?, isHotComment: Boolean = false): CommentListFragment {
             val fragment = CommentListFragment()
             val args = Bundle()
-            args.putString(NEWS_ID, id)
-            args.putString(HASH, hash)
-            args.putString(COOKIE, cookie)
-            args.putString(NEWS_URL, url)
-            args.putString(LAPIN_ID, lapinId)
-            args.putBoolean(IS_HOT_COMMENT, isHotComment)
+            args.putString(KEY_NEWS_ID, id)
+            args.putString(KEY_COMMENT_HASH, hash)
+            args.putString(KEY_COOKIE, cookie)
+            args.putString(KEY_URL, url)
+            args.putString(KEY_LAPIN_ID, lapinId)
+            args.putBoolean(KEY_HOT_COMMENT, isHotComment)
             fragment.arguments = args
             return fragment
         }

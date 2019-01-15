@@ -2,6 +2,7 @@ package me.ikirby.ithomereader.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import me.ikirby.ithomereader.KEY_URL
 
 import me.ikirby.ithomereader.ui.base.BaseActivity
 
@@ -15,7 +16,7 @@ class LinkJumpActivity : BaseActivity() {
         if (url != null) {
             url = url.replace("http://", "https://")
             val intent = Intent(this, ArticleActivity::class.java)
-            intent.putExtra("url", url)
+            intent.putExtra(KEY_URL, url)
             startActivity(intent)
         }
 

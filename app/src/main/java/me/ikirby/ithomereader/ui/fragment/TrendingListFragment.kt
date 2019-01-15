@@ -10,6 +10,9 @@ import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.ikirby.ithomereader.KEY_LIST_STATE
+import me.ikirby.ithomereader.KEY_SHOW_THUMB
+import me.ikirby.ithomereader.KEY_TRENDING_LIST
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.TrendingApiImpl
 import me.ikirby.ithomereader.entity.Trending
@@ -46,7 +49,7 @@ class TrendingListFragment : BaseFragment() {
         view.error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            trendingList = savedInstanceState.getParcelableArrayList("trendingList") ?: ArrayList()
+            trendingList = savedInstanceState.getParcelableArrayList(KEY_TRENDING_LIST) ?: ArrayList()
         }
 
         if (savedInstanceState == null || trendingList.isEmpty()) {
@@ -55,10 +58,10 @@ class TrendingListFragment : BaseFragment() {
             adapter = TrendingListAdapter(trendingList, context!!, showThumb)
             view.list_view.adapter = adapter
         } else {
-            showThumb = savedInstanceState.getBoolean("show_thumb", true)
+            showThumb = savedInstanceState.getBoolean(KEY_SHOW_THUMB, true)
             adapter = TrendingListAdapter(trendingList, context!!, showThumb)
             view.list_view.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"))
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
 
         return view
@@ -71,9 +74,9 @@ class TrendingListFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("trendingList", trendingList)
-        outState.putParcelable("list_state", layoutManager.onSaveInstanceState())
-        outState.putBoolean("show_thumb", showThumb)
+        outState.putParcelableArrayList(KEY_TRENDING_LIST, trendingList)
+        outState.putParcelable(KEY_LIST_STATE, layoutManager.onSaveInstanceState())
+        outState.putBoolean(KEY_SHOW_THUMB, showThumb)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

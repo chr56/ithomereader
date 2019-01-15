@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.BuildConfig
+import me.ikirby.ithomereader.KEY_UPDATE_INFO
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.entity.UpdateInfo
 import me.ikirby.ithomereader.ui.activity.DialogActivity
@@ -50,7 +51,7 @@ class UpdateCheckNotifyTask(private val showToast: Boolean) : AsyncTask<Void, Vo
         if (updateInfo != null) {
             val intent = Intent(context, DialogActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                putExtra("updateInfo", updateInfo)
+                putExtra(KEY_UPDATE_INFO, updateInfo)
             }
             context.startActivity(intent)
         } else if (showToast) {

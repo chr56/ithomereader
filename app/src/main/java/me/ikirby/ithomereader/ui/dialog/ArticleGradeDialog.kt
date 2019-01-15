@@ -9,6 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.article_grade_dialog.view.*
 import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.KEY_NEWS_ID
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
@@ -28,7 +29,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         super.onCreate(savedInstanceState)
         val args = arguments
         if (args != null) {
-            this.newsId = args.getString("NEWS_ID", "")
+            this.newsId = args.getString(KEY_NEWS_ID, "")
             this.cookie = BaseApplication.preferences.getString(SETTINGS_KEY_USER_HASH, null)
         }
         when {
@@ -121,7 +122,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
 
         fun newInstance(newsId: String): ArticleGradeDialog {
             val args = Bundle()
-            args.putString("NEWS_ID", newsId)
+            args.putString(KEY_NEWS_ID, newsId)
             val fragment = ArticleGradeDialog()
             fragment.arguments = args
             return fragment

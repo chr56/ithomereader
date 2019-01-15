@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_update_dialog.*
 import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.KEY_UPDATE_INFO
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.entity.UpdateInfo
 import me.ikirby.ithomereader.ui.util.UiUtil
@@ -23,7 +24,7 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_dialog)
 
-        updateInfo = intent.getParcelableExtra("updateInfo")
+        updateInfo = intent.getParcelableExtra(KEY_UPDATE_INFO)
 
         if (updateInfo != null) {
             update_info_text.text = updateInfo!!.version + "\n" + updateInfo!!.log
