@@ -7,30 +7,19 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import me.ikirby.ithomereader.BaseApplication
 
+@SuppressLint("ShowToast")
 object ToastUtil {
-    private var sToast: Toast? = null
-
-    @SuppressLint("ShowToast")
-    private fun createToast() {
-        if (sToast == null) {
-            sToast = Toast.makeText(BaseApplication.instance.applicationContext,
-                    "", Toast.LENGTH_SHORT)
-        }
+    private val sToast by lazy {
+        Toast.makeText(BaseApplication.instance.applicationContext, "", Toast.LENGTH_SHORT)
     }
 
     fun showToast(@StringRes resId: Int) {
-        if (sToast == null) {
-            createToast()
-        }
-        sToast!!.setText(resId)
-        sToast!!.show()
+        sToast.setText(resId)
+        sToast.show()
     }
 
     fun showToast(content: String?) {
-        if (sToast == null) {
-            createToast()
-        }
-        sToast!!.setText(content)
-        sToast!!.show()
+        sToast.setText(content)
+        sToast.show()
     }
 }
