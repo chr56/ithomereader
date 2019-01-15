@@ -80,8 +80,8 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="auto_switch_night_mode"
-            android:title="@string/pref_auto_switch_night_mode"
-            android:summary="@string/pref_auto_switch_night_mode_summary" />
+            android:summary="@string/pref_auto_switch_night_mode_summary"
+            android:title="@string/pref_auto_switch_night_mode" />
 
         <me.ikirby.ithomereader.ui.widget.TimePreference
             android:defaultValue="22:00"
@@ -97,9 +97,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="pref_cat_misc"
-        android:title="@string/pref_cat_misc">
+    <PreferenceCategory android:title="@string/pref_cat_misc">
 
         <Preference
             android:key="check_for_update"

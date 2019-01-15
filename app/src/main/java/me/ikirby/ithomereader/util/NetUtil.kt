@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.SETTINGS_KEY_LOAD_IMAGE_COND
+import me.ikirby.ithomereader.SETTINGS_KEY_SHOW_THUMB_COND
 
 private fun isWiFiConnected(): Boolean {
     val manager = BaseApplication.instance
@@ -21,7 +23,7 @@ private fun isWiFiConnected(): Boolean {
 
 fun shouldLoadImageAutomatically(): Boolean {
     val preferences = BaseApplication.preferences
-    when (preferences.getString("load_image_condition", "0")) {
+    when (preferences.getString(SETTINGS_KEY_LOAD_IMAGE_COND, "0")) {
         "0" -> return true
         "1" -> return isWiFiConnected()
         "2" -> return false
@@ -31,7 +33,7 @@ fun shouldLoadImageAutomatically(): Boolean {
 
 fun shouldShowThumb(): Boolean {
     val preferences = BaseApplication.preferences
-    when (preferences.getString("show_thumb_condition", "0")) {
+    when (preferences.getString(SETTINGS_KEY_SHOW_THUMB_COND, "0")) {
         "0" -> return true
         "1" -> return isWiFiConnected()
         "2" -> return false

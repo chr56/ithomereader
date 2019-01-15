@@ -15,6 +15,7 @@ import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.COMMENT_POSTED_REQUEST_CODE
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.LoginDialog
@@ -41,7 +42,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         url = intent.getStringExtra("url")
 //        lapinId = intent.getStringExtra("lapinId")
 
-        cookie = preferences.getString("user_hash", null)
+        cookie = preferences.getString(SETTINGS_KEY_USER_HASH, null)
 
         if (savedInstanceState != null && savedInstanceState.containsKey("comment_hash")) {
             commentHash = savedInstanceState.getString("comment_hash", "")
@@ -163,7 +164,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     fun loadCookie() {
-        cookie = BaseApplication.preferences.getString("user_hash", null)
+        cookie = BaseApplication.preferences.getString(SETTINGS_KEY_USER_HASH, null)
         for (fragment in fragments) {
             if (fragment.view != null) {
                 fragment.setCookie(cookie)

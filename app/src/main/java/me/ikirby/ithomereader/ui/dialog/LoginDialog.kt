@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.login_dialog.*
 import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_USERNAME
+import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.UserApiImpl
 import me.ikirby.ithomereader.ui.activity.CommentPostActivity
 import me.ikirby.ithomereader.ui.activity.CommentsActivity
@@ -97,8 +99,8 @@ class LoginDialog : DialogFragment(), CoroutineScope {
             val cookie = withContext(Dispatchers.IO) { UserApiImpl.login(username, password) }
             if (cookie != null) {
                 val cookieStr = "user=$cookie"
-                preferences.edit().putString("user_hash", cookieStr)
-                        .putString("username", username).apply()
+                preferences.edit().putString(SETTINGS_KEY_USER_HASH, cookieStr)
+                        .putString(SETTINGS_KEY_USERNAME, username).apply()
                 this@LoginDialog.cookie = cookieStr
                 if (::callbackPreference.isInitialized) {
                     callbackPreference.title = username
@@ -114,7 +116,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
     }
 
     private fun doLogout() {
-        preferences.edit().remove("user_hash").remove("username").apply()
+        preferences.edit().remove(SETTINGS_KEY_USER_HASH).remove(SETTINGS_KEY_USERNAME).apply()
         this.cookie = null
         if (::callbackPreference.isInitialized) {
             callbackPreference.setTitle(R.string.login_title)

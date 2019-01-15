@@ -36,18 +36,18 @@ class BaseApplication : Application() {
     }
 
     fun loadPreferences() {
-        isNightMode = preferences.getBoolean("night_mode", false)
-        isOStyleLight = preferences.getBoolean("o_style_light", false)
-        isGestureEnabled = preferences.getBoolean("swipe_back", true)
+        isNightMode = preferences.getBoolean(SETTINGS_KEY_NIGHT_MODE, false)
+        isOStyleLight = preferences.getBoolean(SETTINGS_KEY_WHITE_THEME, false)
+        isGestureEnabled = preferences.getBoolean(SETTINGS_KEY_SWIPE_GESTURE, true)
     }
 
     fun setNightMode() {
         if (hasCheckedAutoNightMode) return
-        if (preferences.getBoolean("auto_switch_night_mode", false)) {
-            val startTime = preferences.getString("night_mode_start_time", "22:00")
-            val endTime = preferences.getString("night_mode_end_time", "07:00")
+        if (preferences.getBoolean(SETTINGS_KEY_AUTO_NIGHT_MODE, false)) {
+            val startTime = preferences.getString(SETTINGS_KEY_NIGHT_MODE_START_TIME, "22:00")
+            val endTime = preferences.getString(SETTINGS_KEY_NIGHT_MODE_END_TIME, "07:00")
             isNightMode = shouldEnableNightMode(startTime, endTime)
-            preferences.edit().putBoolean("night_mode", isNightMode).apply()
+            preferences.edit().putBoolean(SETTINGS_KEY_NIGHT_MODE, isNightMode).apply()
         }
         hasCheckedAutoNightMode = true
     }

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.article_grade_dialog.view.*
 import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import kotlin.coroutines.CoroutineContext
@@ -28,7 +29,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         val args = arguments
         if (args != null) {
             this.newsId = args.getString("NEWS_ID", "")
-            this.cookie = BaseApplication.preferences.getString("user_hash", null)
+            this.cookie = BaseApplication.preferences.getString(SETTINGS_KEY_USER_HASH, null)
         }
         when {
             BaseApplication.isNightMode -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog)

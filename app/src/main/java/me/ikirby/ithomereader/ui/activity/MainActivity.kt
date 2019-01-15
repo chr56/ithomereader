@@ -12,10 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_viewpager.*
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.BuildConfig
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.THEME_CHANGE_REQUEST_CODE
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.task.CleanUpTask
 import me.ikirby.ithomereader.task.ClearCacheTask
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
@@ -58,12 +55,13 @@ class MainActivity : BaseActivity() {
         viewPager!!.adapter = adapter
 
         if (savedInstanceState == null) {
-            if (preferences.getBoolean("check_update_on_launch", true)) {
+            if (preferences.getBoolean(SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH, true)) {
                 UpdateCheckNotifyTask(false).execute()
             }
-            if (!preferences.contains("version") || BuildConfig.VERSION_CODE > preferences.getInt("version", BuildConfig.VERSION_CODE)) {
+            if (!preferences.contains(SETTINGS_KEY_VERSION)
+                    || BuildConfig.VERSION_CODE > preferences.getInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE)) {
                 CleanUpTask().execute()
-                preferences.edit().putInt("version", BuildConfig.VERSION_CODE).apply()
+                preferences.edit().putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE).apply()
             }
 
             val cookieManager = CookieManager.getInstance()
@@ -137,11 +135,7 @@ class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.action_refresh -> return false
             R.id.action_night_mode -> {
-                if (BaseApplication.isNightMode) {
-                    preferences.edit().putBoolean("night_mode", false).apply()
-                } else {
-                    preferences.edit().putBoolean("night_mode", true).apply()
-                }
+                preferences.edit().putBoolean(SETTINGS_KEY_NIGHT_MODE, !BaseApplication.isNightMode).apply()
                 reloadTheme()
             }
             R.id.action_clearcache -> {

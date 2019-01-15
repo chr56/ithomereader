@@ -2,6 +2,7 @@ package me.ikirby.ithomereader.util
 
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
 import java.util.regex.Pattern
 
 fun getCss(): String {
@@ -17,7 +18,7 @@ fun getCss(): String {
 
 private fun getFontSize(): String {
     var fontSize = "p{font-size: 16px}"
-    when (BaseApplication.preferences.getString("font_size", "0")) {
+    when (BaseApplication.preferences.getString(SETTINGS_KEY_FONT_SIZE, "0")) {
         "-1" -> fontSize = "p{font-size: 15px}"
         "1" -> fontSize = "p{font-size: 17px}"
         "2" -> fontSize = "p{font-size: 18px}"

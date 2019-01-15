@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -117,6 +118,6 @@ class CommentPostActivity : BaseActivity() {
     }
 
     fun loadCookie() {
-        cookie = preferences.getString("user_hash", null)
+        cookie = preferences.getString(SETTINGS_KEY_USER_HASH, null)
     }
 }

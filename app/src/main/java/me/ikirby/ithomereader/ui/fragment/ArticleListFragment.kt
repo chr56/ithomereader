@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.api.impl.TrendingApiImpl
 import me.ikirby.ithomereader.entity.Article
@@ -67,7 +66,7 @@ class ArticleListFragment : BaseFragment() {
 
         if (savedInstanceState == null || showBanner || articleList.isEmpty()) {
             showThumb = shouldShowThumb()
-            showBanner = BaseApplication.preferences.getBoolean("show_banner", true)
+            showBanner = BaseApplication.preferences.getBoolean(SETTINGS_KEY_SHOW_BANNER, true)
             articleList = ArrayList()
             focuses = ArrayList()
             if (showBanner) {
@@ -133,7 +132,7 @@ class ArticleListFragment : BaseFragment() {
             isRefresh = true
             page = 0
             loadList()
-            showBanner = BaseApplication.preferences.getBoolean("show_banner", true)
+            showBanner = BaseApplication.preferences.getBoolean(SETTINGS_KEY_SHOW_BANNER, true)
             if (showBanner) {
                 if (!::focusSlideAdapter.isInitialized) {
                     focuses = ArrayList()
@@ -153,8 +152,8 @@ class ArticleListFragment : BaseFragment() {
             view!!.swipe_refresh.isRefreshing = true
             page++
             launch {
-                val filterLapin = BaseApplication.preferences.getBoolean("filter_lapin", false)
-                val keywords = BaseApplication.preferences.getString("custom_filter", "")!!
+                val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
+                val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
                         .split(", ").dropLastWhile { it.isEmpty() }.toTypedArray()
                 val customFilter = keywords.isNotEmpty()
                 val articles = withContext(Dispatchers.IO) {
