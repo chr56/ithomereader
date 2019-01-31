@@ -75,3 +75,12 @@ embed, iframe {
 .font-color-red {
     color: #ff5d4c
 }
+
+pre {
+    color: #f68b60;
+    background: #303030;
+    margin-bottom: .5em;
+    padding: 1em;
+    max-width: 100%!important;
+    overflow: auto
+}
