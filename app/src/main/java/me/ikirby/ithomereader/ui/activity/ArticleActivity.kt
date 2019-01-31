@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
+import me.ikirby.ithomereader.entity.FullArticle
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.ArticleGradeDialog
 import me.ikirby.ithomereader.ui.util.ToastUtil
@@ -22,9 +23,11 @@ class ArticleActivity : BaseActivity() {
     private lateinit var title: String
     private lateinit var url: String
     private lateinit var newsId: String
+    private lateinit var fullArticle: FullArticle
     private var isLiveInfo = false
+    private var readProgress = 0F
+
     private val actionBarElevation = convertDpToPixel(4F)
-    //private var lapinId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +57,20 @@ class ArticleActivity : BaseActivity() {
                 return true
             }
 
-            override fun onPageFinished(view: WebView?, url: String?) {
+            override fun onPageFinished(view: WebView, url: String) {
                 supportActionBar?.elevation = 0F
                 post_content.settings.loadsImagesAutomatically = true
                 load_progress.visibility = View.GONE
                 load_tip.visibility = View.GONE
+
+                if (readProgress != 0F) {
+                    view.postDelayed({
+                        val webViewSize = post_content.contentHeight - post_content.top
+                        val position = webViewSize * readProgress
+                        val scrollY = Math.round(post_content.top + position)
+                        post_content.scrollTo(0, scrollY)
+                    }, 300)
+                }
             }
         }
         post_content.settings.loadsImagesAutomatically = false
@@ -82,13 +94,13 @@ class ArticleActivity : BaseActivity() {
             }
         }
 
-        if (savedInstanceState?.getString(KEY_NEWS_ID, null) == null) {
+        if (savedInstanceState?.getParcelable<FullArticle>(KEY_FULL_ARTICLE) == null) {
             load_tip.visibility = View.VISIBLE
             loadContent()
         } else {
-            title = savedInstanceState.getString(KEY_TITLE, "")
-            newsId = savedInstanceState.getString(KEY_NEWS_ID, "")
-            post_content.restoreState(savedInstanceState)
+            fullArticle = savedInstanceState.getParcelable(KEY_FULL_ARTICLE)!!
+            readProgress = savedInstanceState.getFloat(KEY_READ_PROGRESS)
+            loadArticleContent()
         }
     }
 
@@ -98,10 +110,9 @@ class ArticleActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (::newsId.isInitialized) {
-            post_content.saveState(outState)
-            outState.putString(KEY_TITLE, title)
-            outState.putString(KEY_NEWS_ID, newsId)
+        if (::fullArticle.isInitialized) {
+            outState.putParcelable(KEY_FULL_ARTICLE, fullArticle)
+            outState.putFloat(KEY_READ_PROGRESS, getScrollProgress(post_content))
         }
     }
 
@@ -144,12 +155,8 @@ class ArticleActivity : BaseActivity() {
                     finish()
                     return@launch
                 }
-                post_content.loadDataWithBaseURL(url,
-                        getHead() + fullArticle.content + getFooter(),
-                        "text/html; charset=utf-8",
-                        "UTF-8", null)
-                newsId = fullArticle.newsId
-                title = fullArticle.title
+                this@ArticleActivity.fullArticle = fullArticle
+                loadArticleContent()
             } else {
                 ToastUtil.showToast(R.string.timeout_no_internet)
                 load_text.visibility = View.VISIBLE
@@ -157,6 +164,15 @@ class ArticleActivity : BaseActivity() {
                 load_progress.visibility = View.GONE
             }
         }
+    }
+
+    private fun loadArticleContent() {
+        post_content.loadDataWithBaseURL(url,
+                getHead() + fullArticle.content + getFooter(),
+                "text/html; charset=utf-8",
+                "UTF-8", null)
+        newsId = fullArticle.newsId
+        title = fullArticle.title
     }
 
     @Suppress("Unused")

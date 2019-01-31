@@ -1,5 +1,6 @@
 package me.ikirby.ithomereader.util
 
+import android.webkit.WebView
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
 import java.util.regex.Pattern
@@ -34,4 +35,11 @@ fun isUrlImgSrc(url: String): Boolean {
     val pattern = Pattern.compile("img.+\\..+\\.[a-zA-Z]")
     val matcher = pattern.matcher(url)
     return matcher.find()
+}
+
+fun getScrollProgress(webView: WebView): Float {
+    val positionTop = webView.top.toFloat()
+    val contentHeight = webView.contentHeight.toFloat()
+    val currentPosition = webView.scrollY.toFloat()
+    return (currentPosition - positionTop) / contentHeight
 }
