@@ -7,10 +7,7 @@ import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.webkit.URLUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -34,6 +31,15 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class ImageViewerActivity : Activity(), View.OnClickListener {
+
+    companion object {
+        const val flagsFullscreen = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    }
 
     private lateinit var url: String
 
@@ -134,7 +140,13 @@ class ImageViewerActivity : Activity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.photo_view -> finish()
+            R.id.photo_view -> {
+                if (window.decorView.systemUiVisibility == flagsFullscreen) {
+                    window.decorView.systemUiVisibility = 0
+                } else {
+                    window.decorView.systemUiVisibility = flagsFullscreen
+                }
+            }
             R.id.load_tip -> loadImage()
             R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(this, object : BottomSheetMenu.BottomSheetMenuListener {
                 override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
