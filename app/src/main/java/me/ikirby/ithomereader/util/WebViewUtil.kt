@@ -1,33 +1,34 @@
 package me.ikirby.ithomereader.util
 
 import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
 import java.util.regex.Pattern
 
 fun getCss(): String {
     return when {
-        BaseApplication.isNightMode -> "<style>" + BaseApplication.instance.getString(R.string.base_style_night) +
-                getFontSize() + "</style>"
-        BaseApplication.isOStyleLight -> "<style>" + BaseApplication.instance.getString(R.string.base_style_white) +
-                getFontSize() + "</style>"
-        else -> "<style>" + BaseApplication.instance.getString(R.string.base_style) +
-                getFontSize() + "</style>"
+        BaseApplication.isNightMode -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_night.css'>"
+        BaseApplication.isOStyleLight -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_white.css'>"
+        else -> "<link rel='stylesheet' href='file:///android_asset/css/base_style.css'>"
     }
 }
 
 private fun getFontSize(): String {
-    var fontSize = "p{font-size: 16px}"
+    var fontSize = 16
     when (BaseApplication.preferences.getString(SETTINGS_KEY_FONT_SIZE, "0")) {
-        "-1" -> fontSize = "p{font-size: 15px}"
-        "1" -> fontSize = "p{font-size: 17px}"
-        "2" -> fontSize = "p{font-size: 18px}"
-        "-2" -> fontSize = "p{font-size: 14px}"
+        "-1" -> fontSize = 15
+        "1" -> fontSize = 17
+        "2" -> fontSize = 18
+        "-2" -> fontSize = 14
     }
-    return fontSize
+    return "<style>p{font-size:${fontSize}px}</style>"
 }
 
-fun getJs() = "<script>" + BaseApplication.instance.getString(R.string.base_js) + "</script>"
+fun getJs() = "<script src='file:///android_asset/js/base.js'></script>"
+
+
+fun getHead() = "<html><head>${getCss()}${getFontSize()}</head><body>"
+
+fun getFooter() = "${getJs()}</body></html>"
 
 fun isUrlImgSrc(url: String): Boolean {
     val pattern = Pattern.compile("img.+\\..+\\.[a-zA-Z]")

@@ -144,7 +144,8 @@ class ArticleActivity : BaseActivity() {
                     finish()
                     return@launch
                 }
-                post_content.loadDataWithBaseURL(url, getCss() + fullArticle.content + getJs(),
+                post_content.loadDataWithBaseURL(url,
+                        getHead() + fullArticle.content + getFooter(),
                         "text/html; charset=utf-8",
                         "UTF-8", null)
                 newsId = fullArticle.newsId
