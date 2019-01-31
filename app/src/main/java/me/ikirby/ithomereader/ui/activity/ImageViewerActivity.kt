@@ -1,14 +1,17 @@
 package me.ikirby.ithomereader.ui.activity
 
 import android.Manifest
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.webkit.URLUtil
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -16,6 +19,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_image_viewer.*
+import kotlinx.coroutines.*
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
@@ -29,8 +33,9 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.coroutines.CoroutineContext
 
-class ImageViewerActivity : Activity(), View.OnClickListener {
+class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, CoroutineScope {
 
     companion object {
         const val flagsFullscreen = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -40,6 +45,10 @@ class ImageViewerActivity : Activity(), View.OnClickListener {
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     private lateinit var url: String
 
@@ -53,6 +62,11 @@ class ImageViewerActivity : Activity(), View.OnClickListener {
         image_menu_btn.setOnClickListener(this)
 
         loadImage()
+    }
+
+    override fun onDestroy() {
+        coroutineContext.cancelChildren()
+        super.onDestroy()
     }
 
     private fun loadImage() {
@@ -80,58 +94,63 @@ class ImageViewerActivity : Activity(), View.OnClickListener {
 
     private fun checkPermission() {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            downloadFile()
+            saveImage()
         } else {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE)
         }
     }
 
-    private fun downloadFile() = Thread(Runnable {
-        val target = Glide.with(this@ImageViewerActivity).downloadOnly().load(url).submit()
-        try {
-            val path = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path
-                    + "/ITHome/" + URLUtil.guessFileName(url, "", "image/*"))
-            val fileName: String
-            fileName = if (path.contains("@")) {
-                path.substring(0, path.indexOf("@"))
-            } else {
-                path
-            }
-            val file = File(fileName)
-            if (!file.parentFile.exists()) {
+    private fun saveImage() {
+        launch {
+            withContext(Dispatchers.IO) {
+                val target = Glide.with(this@ImageViewerActivity).downloadOnly().load(url).submit()
+                try {
+                    val path = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path
+                            + "/ITHome/" + URLUtil.guessFileName(url, "", "image/*"))
+                    val fileName: String
+                    fileName = if (path.contains("@")) {
+                        path.substring(0, path.indexOf("@"))
+                    } else {
+                        path
+                    }
+                    val file = File(fileName)
+                    if (!file.parentFile.exists()) {
 
-                file.parentFile.mkdirs()
-            }
-            if (file.exists()) {
-                runOnUiThread { ToastUtil.showToast(R.string.file_exists) }
-                return@Runnable
-            }
-            val inputStream = FileInputStream(target.get())
-            val outputStream = FileOutputStream(fileName)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (true) {
-                length = inputStream.read(buffer)
-                if (length > 0) {
-                    outputStream.write(buffer, 0, length)
-                } else {
-                    break
+                        file.parentFile.mkdirs()
+                    }
+                    if (file.exists()) {
+                        withContext(Dispatchers.Main) { ToastUtil.showToast(R.string.file_exists) }
+                    }
+                    val inputStream = FileInputStream(target.get())
+                    val outputStream = FileOutputStream(fileName)
+                    val buffer = ByteArray(1024)
+                    var length: Int
+                    while (true) {
+                        length = inputStream.read(buffer)
+                        if (length > 0) {
+                            outputStream.write(buffer, 0, length)
+                        } else {
+                            break
+                        }
+                    }
+                    inputStream.close()
+                    outputStream.close()
+                    MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(fileName), arrayOf("image/*"), null)
+                    withContext(Dispatchers.Main) {
+                        ToastUtil.showToast(getString(R.string.image_saved_to) + fileName)
+                    }
+                } catch (e: IOException) {
+                    Logger.e("ImageViewerActivity", "saveImage", e)
+                    withContext(Dispatchers.Main) { ToastUtil.showToast(R.string.save_fail) }
                 }
             }
-            inputStream.close()
-            outputStream.close()
-            MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(fileName), arrayOf("image/*"), null)
-            runOnUiThread { ToastUtil.showToast(getString(R.string.image_saved_to) + fileName) }
-        } catch (e: IOException) {
-            Logger.e("ImageViewerActivity", "downloadFile", e)
-            runOnUiThread { ToastUtil.showToast(R.string.save_fail) }
         }
-    }).start()
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                downloadFile()
+                saveImage()
             } else {
                 ToastUtil.showToast(R.string.permission_denied)
             }
