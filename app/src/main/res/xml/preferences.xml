@@ -33,7 +33,6 @@
             android:entries="@array/load_thumb_condition_text"
             android:entryValues="@array/load_image_condition_value"
             android:key="show_thumb_condition"
-            android:summary="%s"
             android:title="@string/pref_show_thumb" />
 
     </PreferenceCategory>
@@ -45,7 +44,6 @@
             android:entries="@array/font_size_text"
             android:entryValues="@array/font_size_value"
             android:key="font_size"
-            android:summary="%s"
             android:title="@string/pref_font_size" />
 
         <ListPreference
@@ -53,7 +51,6 @@
             android:entries="@array/load_image_condition_text"
             android:entryValues="@array/load_image_condition_value"
             android:key="load_image_condition"
-            android:summary="%s"
             android:title="@string/pref_image_loading" />
 
     </PreferenceCategory>

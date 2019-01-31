@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -22,8 +23,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferences = BaseApplication.preferences
         if (savedInstanceState == null) {
-
             setPreferencesFromResource(R.xml.preferences, rootKey)
+
+            val showThumbPreference = findPreference<ListPreference>(SETTINGS_KEY_SHOW_THUMB_COND)
+            showThumbPreference.summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
+                preference.entries[preference.findIndexOfValue(preference.value)]
+            }
+
+            val loadImagePreference = findPreference<ListPreference>(SETTINGS_KEY_LOAD_IMAGE_COND)
+            loadImagePreference.summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
+                preference.entries[preference.findIndexOfValue(preference.value)]
+            }
+
+            val fontSizePreference = findPreference<ListPreference>(SETTINGS_KEY_FONT_SIZE)
+            fontSizePreference.summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
+                preference.entries[preference.findIndexOfValue(preference.value)]
+            }
+
+
             val loginAccount = findPreference<Preference>(SETTINGS_KEY_LOGIN_ACCOUNT)
             if (preferences.contains(SETTINGS_KEY_USERNAME)) {
                 loginAccount.title = preferences.getString(SETTINGS_KEY_USERNAME, getString(R.string.login_title))
