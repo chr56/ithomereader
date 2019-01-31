@@ -13,7 +13,7 @@ fun getMatchInt(s: String): Int {
         } else {
             return 0
         }
-        if (result.length == 1) {
+        if (matcher.groupCount() > 2 && result.length == 1) {
             result = matcher.group(1) + matcher.group(2)
         }
         return Integer.parseInt(result)
