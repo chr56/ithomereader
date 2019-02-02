@@ -1,14 +1,14 @@
-var imgs = document.getElementsByTagName('img');
-for(var i = 0; i < imgs.length; i++) {
-    imgs[i].addEventListener('click', function(e) {
+var imgs = document.getElementsByTagName("img")
+Array.prototype.slice.call(imgs).forEach(function(img) {
+    img.addEventListener("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
         var target = e.target;
-        if(target.classList.contains('loaded')) {
+        if(target.classList.contains("loaded")) {
             JSInterface.openInViewer(target.src);
         } else {
             target.src = target.dataset.original;
-            target.classList.add('loaded');
+            target.classList.add("loaded");
         }
-    })
-}
+    });
+});
