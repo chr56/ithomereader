@@ -1,86 +1,86 @@
 * {
-    word-break: break-word
+  word-break: break-word;
 }
 
 body {
-    margin: 0;
-    background: #141414;
-    color: #fff
+  margin: 0;
+  background: #141414;
+  color: #fff;
 }
 
 #header {
-    padding: 1em 1em .5em;
-    color: #fff;
-    background: #990000
+  padding: 1em 1em .5em;
+  color: #fff;
+  background: #990000;
 }
 
 #header *, .post_content, #about_info_show {
-    margin-left: auto;
-    margin-right: auto;
-    width: auto;
-    max-width: 720px
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  max-width: 720px;
 }
 
 #header h2 {
-    margin-bottom: 0;
-    line-height: 1.25
+  margin-bottom: 0;
+  line-height: 1.25;
 }
 
 #header p {
-    margin-top: 5px;
-    font-style: italic
+  margin-top: 5px;
+  font-style: italic;
 }
 
 .post_content, .news-content, #about_info_show {
-    padding-left: 1em;
-    padding-right: 1em;
-    line-height: 1.6
+  padding-left: 1em;
+  padding-right: 1em;
+  line-height: 1.6;
 }
 
 #about_info_show {
-    padding-top: .5em
+  padding-top: .5em;
 }
 
 a {
-    color: #ff5d4c;
-    border-bottom: solid 1px #ff5d4c;
-    text-decoration: none
+  color: #ff5d4c;
+  border-bottom: solid 1px #ff5d4c;
+  text-decoration: none;
 }
 
 img {
-    display: block;
-    background: #999;
-    height: 200px!important;
-    width: 100%!important
+  display: block;
+  background: #999;
+  height: 200px!important;
+  width: 100%!important;
 }
 
 img.loaded {
-    height: auto!important;
-    width: auto!important;
-    max-width: 100%!important
+  height: auto!important;
+  width: auto!important;
+  max-width: 100%!important;
 }
 
 blockquote {
-    margin: 0;
-    color: #ccc;
-    border-left: 4px solid #666;
-    padding-left: .5em
+  margin: 0;
+  color: #ccc;
+  border-left: 4px solid #666;
+  padding-left: .5em;
 }
 
 embed, iframe {
-    max-width: 100%!important;
-    max-height: 240!important
+  max-width: 100%!important;
+  max-height: 240!important;
 }
 
 .font-color-red {
-    color: #ff5d4c
+  color: #ff5d4c;
 }
 
 pre {
-    color: #f68b60;
-    background: #303030;
-    margin-bottom: .5em;
-    padding: 1em;
-    max-width: 100%!important;
-    overflow: auto
+  color: #f68b60;
+  background: #303030;
+  margin-bottom: .5em;
+  padding: 1em;
+  max-width: 100%!important;
+  overflow: auto;
 }
