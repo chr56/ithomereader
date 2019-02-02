@@ -1,4 +1,4 @@
-var imgs = document.getElementsByTagName("img")
+var imgs = document.getElementsByTagName("img");
 Array.prototype.slice.call(imgs).forEach(function(img) {
     img.addEventListener("click", function(e) {
         e.preventDefault();
