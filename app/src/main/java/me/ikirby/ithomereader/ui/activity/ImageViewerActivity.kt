@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.os.Bundle
-import android.os.Environment
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -14,7 +13,6 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
-import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -33,9 +31,9 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.copyToClipboard
+import me.ikirby.ithomereader.util.getFullPath
+import me.ikirby.ithomereader.util.writeFile
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
@@ -119,40 +117,18 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         launch {
             withContext(Dispatchers.IO) {
                 val target = Glide.with(this@ImageViewerActivity).downloadOnly().load(url).submit()
+                val pathname = getFullPath(url)
                 try {
-                    val path = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path
-                            + "/ITHome/" + URLUtil.guessFileName(url, "", "image/*"))
-                    val fileName: String
-                    fileName = if (path.contains("@")) {
-                        path.substring(0, path.indexOf("@"))
-                    } else {
-                        path
-                    }
-                    val file = File(fileName)
-                    if (!file.parentFile.exists()) {
-
-                        file.parentFile.mkdirs()
-                    }
+                    val file = File(pathname)
+                    file.parentFile.mkdirs()
                     if (file.exists()) {
                         withContext(Dispatchers.Main) { ToastUtil.showToast(R.string.file_exists) }
+                        return@withContext
                     }
-                    val inputStream = FileInputStream(target.get())
-                    val outputStream = FileOutputStream(fileName)
-                    val buffer = ByteArray(1024)
-                    var length: Int
-                    while (true) {
-                        length = inputStream.read(buffer)
-                        if (length > 0) {
-                            outputStream.write(buffer, 0, length)
-                        } else {
-                            break
-                        }
-                    }
-                    inputStream.close()
-                    outputStream.close()
-                    MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(fileName), arrayOf("image/*"), null)
+                    writeFile(pathname, target.get())
+                    MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(pathname), arrayOf("image/*"), null)
                     withContext(Dispatchers.Main) {
-                        ToastUtil.showToast(getString(R.string.image_saved_to) + fileName)
+                        ToastUtil.showToast(getString(R.string.image_saved_to) + pathname)
                     }
                 } catch (e: IOException) {
                     Logger.e("ImageViewerActivity", "saveImage", e)

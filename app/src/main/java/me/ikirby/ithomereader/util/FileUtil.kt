@@ -1,7 +1,12 @@
 package me.ikirby.ithomereader.util
 
+import android.os.Environment
+import android.webkit.URLUtil
 import me.ikirby.ithomereader.BaseApplication
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 
 fun clearCache() {
     try {
@@ -25,4 +30,32 @@ private fun deleteDir(dir: File): Boolean {
         }
     }
     return dir.delete()
+}
+
+fun getFullPath(url: String): String {
+    val path = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path
+            + "/ITHome/" + URLUtil.guessFileName(url, "", "image/*"))
+    return if (path.contains("@")) {
+        path.substring(0, path.indexOf("@"))
+    } else {
+        path
+    }
+}
+
+@Throws(IOException::class)
+fun writeFile(fileName: String, file: File) {
+    val inputStream = FileInputStream(file)
+    val outputStream = FileOutputStream(fileName)
+    val buffer = ByteArray(1024)
+    var length: Int
+    while (true) {
+        length = inputStream.read(buffer)
+        if (length > 0) {
+            outputStream.write(buffer, 0, length)
+        } else {
+            break
+        }
+    }
+    inputStream.close()
+    outputStream.close()
 }
