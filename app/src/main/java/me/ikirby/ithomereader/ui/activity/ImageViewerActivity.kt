@@ -10,6 +10,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
 import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -52,6 +56,9 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
     private lateinit var url: String
 
+    private lateinit var fadeOutAnim: Animation
+    private lateinit var fadeInAnim: Animation
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
@@ -60,6 +67,14 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
         photo_view.setOnClickListener(this)
         image_menu_btn.setOnClickListener(this)
+
+        fadeOutAnim = AlphaAnimation(1F, 0F)
+        fadeOutAnim.interpolator = AccelerateInterpolator()
+        fadeOutAnim.duration = 400
+
+        fadeInAnim = AlphaAnimation(0F, 1F)
+        fadeInAnim.interpolator = DecelerateInterpolator()
+        fadeInAnim.duration = 400
 
         loadImage()
     }
@@ -162,8 +177,12 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             R.id.photo_view -> {
                 if (window.decorView.systemUiVisibility == flagsFullscreen) {
                     window.decorView.systemUiVisibility = 0
+                    image_menu_btn.visibility = View.VISIBLE
+                    image_menu_btn.startAnimation(fadeInAnim)
                 } else {
                     window.decorView.systemUiVisibility = flagsFullscreen
+                    image_menu_btn.visibility = View.GONE
+                    image_menu_btn.startAnimation(fadeOutAnim)
                 }
             }
             R.id.load_tip -> loadImage()
