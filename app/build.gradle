@@ -33,8 +33,8 @@ android {
         applicationId "me.ikirby.ithomereader"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 135
-        versionName "4.5"
+        versionCode 136
+        versionName "4.6"
         resConfigs "zh-rCN"
         versionNameSuffix '-' + getGitHash()
     }
