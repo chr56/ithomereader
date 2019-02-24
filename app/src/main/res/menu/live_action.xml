@@ -6,5 +6,11 @@
         android:id="@+id/action_live_info"
         android:icon="@drawable/ic_info"
         android:title="@string/live_info"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_comments"
+        android:icon="@drawable/ic_comment"
+        android:title="@string/comments"
         app:showAsAction="always" />
 </menu>

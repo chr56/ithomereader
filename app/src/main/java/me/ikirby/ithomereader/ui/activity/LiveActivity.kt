@@ -109,7 +109,26 @@ class LiveActivity : BaseActivity() {
                 intent.putExtra(KEY_LIVE_INFO, "")
                 startActivity(intent)
             }
+            R.id.action_comments -> {
+                showComments()
+            }
         }
         return true
+    }
+
+    override fun swipeLeft(): Boolean {
+        showComments()
+        return true
+    }
+
+    private fun showComments() {
+        if (::newsId.isInitialized) {
+            val intent = Intent(this, CommentsActivity::class.java).apply {
+                putExtra(KEY_NEWS_ID, newsId)
+                putExtra(KEY_TITLE, getString(R.string.live))
+                putExtra(KEY_URL, url)
+            }
+            startActivity(intent)
+        }
     }
 }
