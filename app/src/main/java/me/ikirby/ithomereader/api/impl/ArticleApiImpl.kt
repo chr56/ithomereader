@@ -72,7 +72,7 @@ object ArticleApiImpl : ArticleApi {
             if (matcher.find()) {
                 gradeHtml = matcher.group(1).replace(");", "")
                 val gradeDoc = Jsoup.parse(gradeHtml)
-                val score = gradeDoc.select(".text").text()
+                val score = gradeDoc.selectFirst(".text .sd").text()
 
                 val bt = gradeDoc.select(".bt span div")
                 val trash = bt[0].text()
