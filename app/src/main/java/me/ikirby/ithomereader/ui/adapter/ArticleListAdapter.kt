@@ -140,7 +140,7 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
                 } else {
                     recyclerView.smoothScrollToPosition(bannerLayoutManager.findFirstVisibleItemPosition() + 1)
                 }
-                handler.postDelayed(this, SLIDE_SCROLL_INTERVAL.toLong())
+                handler.postDelayed(this, SLIDE_SCROLL_INTERVAL)
             }
         }
 
@@ -148,7 +148,24 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
             PagerSnapHelper().attachToRecyclerView(recyclerView)
             recyclerView.recycler_view.layoutManager = bannerLayoutManager
             recyclerView.recycler_view.adapter = focusSlideAdapter
-            handler.postDelayed(autoScroll, SLIDE_SCROLL_INTERVAL.toLong())
+            recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+                }
+
+                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                    if (e.action == MotionEvent.ACTION_UP || e.action == MotionEvent.ACTION_CANCEL) {
+                        handler.postDelayed(autoScroll, SLIDE_SCROLL_INTERVAL)
+                    } else {
+                        handler.removeCallbacks(autoScroll)
+                    }
+                    return false
+                }
+
+                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+                }
+
+            })
+            handler.postDelayed(autoScroll, SLIDE_SCROLL_INTERVAL)
         }
     }
 
