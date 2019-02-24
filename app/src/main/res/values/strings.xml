@@ -5,7 +5,7 @@
     <string name="open_in_browser">在浏览器中打开</string>
     <string name="clear_cache">清除缓存</string>
     <string name="cache_clearing">正在清除缓存…</string>
-    <string name="share">分享…</string>
+    <string name="share">分享</string>
     <string name="no_more_content">没有更多内容了</string>
     <string name="timeout_no_internet">网络请求出现错误</string>
     <string name="comments">评论</string>
