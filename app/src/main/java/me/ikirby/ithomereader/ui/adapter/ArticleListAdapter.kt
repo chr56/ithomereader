@@ -146,8 +146,8 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
 
         init {
             PagerSnapHelper().attachToRecyclerView(recyclerView)
-            recyclerView.recycler_view.layoutManager = bannerLayoutManager
-            recyclerView.recycler_view.adapter = focusSlideAdapter
+            recyclerView.layoutManager = bannerLayoutManager
+            recyclerView.adapter = focusSlideAdapter
             recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
                 override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
                 }
