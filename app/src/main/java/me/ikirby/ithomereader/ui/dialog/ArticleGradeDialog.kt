@@ -65,13 +65,12 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
                 view!!.trash.text = articleGrade.trashCount
                 view!!.soso.text = articleGrade.sosoCount
                 view!!.great.text = articleGrade.greatCount
+                view!!.article_grade_detail.visibility = View.VISIBLE
             } else {
                 view!!.article_grade.setText(R.string.timeout_no_internet)
-                view!!.article_grade.visibility = View.VISIBLE
-                view!!.load_progress.visibility = View.GONE
+                view!!.article_grade_detail.visibility = View.GONE
             }
             view!!.article_grade.visibility = View.VISIBLE
-            view!!.article_grade_detail.visibility = View.VISIBLE
             view!!.load_progress.visibility = View.GONE
         }
     }
