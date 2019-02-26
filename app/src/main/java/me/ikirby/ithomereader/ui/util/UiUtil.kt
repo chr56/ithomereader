@@ -18,10 +18,10 @@ object UiUtil {
         if (!isNightMode) {
             val descriptionColorRes = if (isOStyleLight) {
                 activity.setTheme(R.style.AppTheme_OStyle)
-                R.color.colorPrimary_white
+                R.color.colorActionBarBackground_white
             } else {
                 activity.setTheme(R.style.AppTheme_Light)
-                R.color.colorPrimary
+                R.color.colorActionBarBackground
             }
             val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ActivityManager.TaskDescription(activity.getString(R.string.app_name), R.mipmap.ic_launcher, activity.getColor(descriptionColorRes))
