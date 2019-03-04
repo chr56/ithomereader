@@ -6,8 +6,13 @@ import me.ikirby.ithomereader.entity.FullArticle
 
 interface ArticleApi {
 
-    fun getArticleList(page: Int, filterLapin: Boolean, customFilter: Boolean, keywords: Array<String>?,
-                       oldList: ArrayList<Article>?): List<Article>?
+    fun getArticleList(
+        page: Int,
+        filterLapin: Boolean,
+        customFilter: Boolean,
+        keywords: Array<String>?,
+        oldList: ArrayList<Article>?
+    ): List<Article>?
 
     fun getSearchResults(keyword: String, page: Int): List<Article>?
 

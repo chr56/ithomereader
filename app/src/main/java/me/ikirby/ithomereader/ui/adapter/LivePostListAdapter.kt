@@ -17,8 +17,10 @@ import me.ikirby.ithomereader.ui.activity.ImageViewerActivity
 import java.util.*
 
 
-class LivePostListAdapter(private val list: ArrayList<LiveMsg>,
-                          private val inflater: LayoutInflater) : RecyclerView.Adapter<LivePostListAdapter.LiveMsgViewHolder>() {
+class LivePostListAdapter(
+    private val list: ArrayList<LiveMsg>,
+    private val inflater: LayoutInflater
+) : RecyclerView.Adapter<LivePostListAdapter.LiveMsgViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LiveMsgViewHolder {
         val view = inflater.inflate(R.layout.live_msg_item, parent, false)

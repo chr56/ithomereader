@@ -10,7 +10,12 @@ class TimePreference : DialogPreference {
     var hour = 0
     var minute = 0
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(
+        context,
+        attrs,
+        defStyleAttr,
+        defStyleRes
+    )
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 

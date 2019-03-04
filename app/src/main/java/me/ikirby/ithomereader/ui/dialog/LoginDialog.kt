@@ -39,8 +39,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = AlertDialog.Builder(activity)
-                .setView(R.layout.login_dialog).create()
+        val dialog = AlertDialog.Builder(activity).setView(R.layout.login_dialog).create()
         dialog.setOnShowListener { dialogInterface ->
             val dlg = dialogInterface as AlertDialog
             val btnLogin = dlg.btn_login
@@ -97,7 +96,7 @@ class LoginDialog : DialogFragment(), CoroutineScope {
             if (cookie != null) {
                 val cookieStr = "user=$cookie"
                 preferences.edit().putString(SETTINGS_KEY_USER_HASH, cookieStr)
-                        .putString(SETTINGS_KEY_USERNAME, username).apply()
+                    .putString(SETTINGS_KEY_USERNAME, username).apply()
                 this@LoginDialog.cookie = cookieStr
                 if (::callbackPreference.isInitialized) {
                     callbackPreference.title = username

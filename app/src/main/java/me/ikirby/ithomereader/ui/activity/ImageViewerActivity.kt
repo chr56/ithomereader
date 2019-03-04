@@ -88,7 +88,12 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         load_text.visibility = View.GONE
         load_progress.visibility = View.VISIBLE
         Glide.with(this).load(url).transition(withCrossFade()).listener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any,
+                target: Target<Drawable>,
+                isFirstResource: Boolean
+            ): Boolean {
                 load_progress.visibility = View.GONE
                 load_progress.visibility = View.VISIBLE
                 photo_view.visibility = View.INVISIBLE
@@ -96,7 +101,13 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                 return false
             }
 
-            override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+            override fun onResourceReady(
+                resource: Drawable,
+                model: Any,
+                target: Target<Drawable>,
+                dataSource: DataSource,
+                isFirstResource: Boolean
+            ): Boolean {
                 load_tip.visibility = View.GONE
                 photo_view.visibility = View.VISIBLE
                 image_menu_btn.visibility = View.VISIBLE
@@ -126,7 +137,12 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                         return@withContext
                     }
                     writeFile(pathname, target.get())
-                    MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(pathname), arrayOf("image/*"), null)
+                    MediaScannerConnection.scanFile(
+                        this@ImageViewerActivity,
+                        arrayOf(pathname),
+                        arrayOf("image/*"),
+                        null
+                    )
                     withContext(Dispatchers.Main) {
                         ToastUtil.showToast(getString(R.string.image_saved_to) + pathname)
                     }

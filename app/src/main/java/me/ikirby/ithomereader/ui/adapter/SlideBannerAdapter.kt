@@ -29,7 +29,8 @@ import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.copyToClipboard
 import me.ikirby.ithomereader.util.openLinkInBrowser
 
-class SlideBannerAdapter(private val list: List<Article>, private val context: Context) : RecyclerView.Adapter<SlideBannerAdapter.BannerItemViewHolder>() {
+class SlideBannerAdapter(private val list: List<Article>, private val context: Context) :
+    RecyclerView.Adapter<SlideBannerAdapter.BannerItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerItemViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.slide_image_view, parent, false)
@@ -53,11 +54,22 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
     override fun onBindViewHolder(holder: BannerItemViewHolder, position: Int) {
         val (title, _, _, thumb) = list[position]
         Glide.with(context).asBitmap().load(thumb).listener(object : RequestListener<Bitmap> {
-            override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Bitmap>, isFirstResource: Boolean): Boolean {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any,
+                target: Target<Bitmap>,
+                isFirstResource: Boolean
+            ): Boolean {
                 return false
             }
 
-            override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+            override fun onResourceReady(
+                resource: Bitmap,
+                model: Any,
+                target: Target<Bitmap>,
+                dataSource: DataSource,
+                isFirstResource: Boolean
+            ): Boolean {
                 Palette.Builder(resource).maximumColorCount(8).generate { palette ->
                     val bgColor: Int
                     val textColor: Int
@@ -108,8 +120,12 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
                             putExtra(Intent.EXTRA_TEXT, post.title + "\n" + post.url)
                             type = "text/plain"
                         }
-                        context.startActivity(Intent.createChooser(share,
-                                context.getString(R.string.share) + " " + post.title))
+                        context.startActivity(
+                            Intent.createChooser(
+                                share,
+                                context.getString(R.string.share) + " " + post.title
+                            )
+                        )
                     }
                     R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
                     R.id.view_thumb -> {

@@ -31,10 +31,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import me.ikirby.ithomereader.R
 
 class BottomSheetMenu(
-        context: Context,
-        private val bottomSheetMenuListener: BottomSheetMenuListener,
-        private val iconSize: Int = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_menu_item_icon_size))
-    : BottomSheetDialog(context) {
+    context: Context,
+    private val bottomSheetMenuListener: BottomSheetMenuListener,
+    private val iconSize: Int = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_menu_item_icon_size)
+) : BottomSheetDialog(context) {
 
     init {
         setOnShowListener { dialog ->

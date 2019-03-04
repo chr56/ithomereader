@@ -47,8 +47,7 @@ class ArticleListFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = LayoutInflater.from(context).inflate(R.layout.list_layout, container, false)
         layoutManager = LinearLayoutManager(activity)
         view.list_view.layoutManager = layoutManager
@@ -90,7 +89,8 @@ class ArticleListFragment : BaseFragment() {
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
             if (showBanner) {
                 adapter.bannerLayoutManager.onRestoreInstanceState(
-                        savedInstanceState.getParcelable(KEY_BANNER_STATE))
+                    savedInstanceState.getParcelable(KEY_BANNER_STATE)
+                )
             }
         }
 
@@ -154,7 +154,7 @@ class ArticleListFragment : BaseFragment() {
             launch {
                 val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
                 val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
-                        .split(", ").dropLastWhile { it.isEmpty() }.toTypedArray()
+                    .split(", ").dropLastWhile { it.isEmpty() }.toTypedArray()
                 val customFilter = keywords.isNotEmpty()
                 val articles = withContext(Dispatchers.IO) {
                     if (isRefresh) {

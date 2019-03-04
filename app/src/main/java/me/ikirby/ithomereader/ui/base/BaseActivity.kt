@@ -95,7 +95,12 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
     protected fun setTitleCustom(title: String?) {
         if (!BaseApplication.isNightMode && BaseApplication.isOStyleLight) {
             val text = SpannableString(title)
-            text.setSpan(ForegroundColorSpan(getColor(R.color.colorPrimary)), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            text.setSpan(
+                ForegroundColorSpan(getColor(R.color.colorPrimary)),
+                0,
+                text.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
             setTitle(text)
         } else {
             setTitle(title)

@@ -24,11 +24,19 @@ object UiUtil {
                 R.color.colorActionBarBackground
             }
             val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ActivityManager.TaskDescription(activity.getString(R.string.app_name), R.mipmap.ic_launcher, activity.getColor(descriptionColorRes))
+                ActivityManager.TaskDescription(
+                    activity.getString(R.string.app_name),
+                    R.mipmap.ic_launcher,
+                    activity.getColor(descriptionColorRes)
+                )
             } else {
                 val icon = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
                 @Suppress("DEPRECATION")
-                ActivityManager.TaskDescription(activity.getString(R.string.app_name), icon, activity.getColor(descriptionColorRes))
+                ActivityManager.TaskDescription(
+                    activity.getString(R.string.app_name),
+                    icon,
+                    activity.getColor(descriptionColorRes)
+                )
             }
             activity.setTaskDescription(description)
         } else {
@@ -40,7 +48,8 @@ object UiUtil {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
             } else {
                 if (isOStyleLight) {
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    window.decorView.systemUiVisibility =
+                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 } else {
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 }

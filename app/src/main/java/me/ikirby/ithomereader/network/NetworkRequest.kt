@@ -19,10 +19,10 @@ internal object NetworkRequest {
     @Throws(IOException::class)
     fun getDocument(url: String, headers: Map<String, String>): Document {
         return Jsoup.connect(url)
-                .headers(headers)
-                .ignoreContentType(true)
-                .timeout(TIMEOUT)
-                .get()
+            .headers(headers)
+            .ignoreContentType(true)
+            .timeout(TIMEOUT)
+            .get()
     }
 
     /**
@@ -33,15 +33,14 @@ internal object NetworkRequest {
      * @throws IOException 网络请求异常
      */
     @Throws(IOException::class)
-    fun getDocument(url: String, headers: Map<String, String>,
-                    postData: Map<String, String>): Document {
+    fun getDocument(url: String, headers: Map<String, String>, postData: Map<String, String>): Document {
         return Jsoup.connect(url)
-                .headers(headers)
-                .ignoreContentType(true)
-                .timeout(TIMEOUT)
-                .data(postData)
-                .method(Connection.Method.POST)
-                .get()
+            .headers(headers)
+            .ignoreContentType(true)
+            .timeout(TIMEOUT)
+            .data(postData)
+            .method(Connection.Method.POST)
+            .get()
     }
 
     /**
@@ -54,10 +53,10 @@ internal object NetworkRequest {
     @Throws(IOException::class)
     fun getResponse(url: String, headers: Map<String, String>): Connection.Response {
         return Jsoup.connect(url)
-                .headers(headers)
-                .ignoreContentType(true)
-                .timeout(TIMEOUT)
-                .execute()
+            .headers(headers)
+            .ignoreContentType(true)
+            .timeout(TIMEOUT)
+            .execute()
     }
 
     /**
@@ -69,15 +68,14 @@ internal object NetworkRequest {
      * @throws IOException 网络请求异常
      */
     @Throws(IOException::class)
-    fun getResponse(url: String, headers: Map<String, String>,
-                    postData: Map<String, String>): Connection.Response {
+    fun getResponse(url: String, headers: Map<String, String>, postData: Map<String, String>): Connection.Response {
         return Jsoup.connect(url)
-                .headers(headers)
-                .ignoreContentType(true)
-                .timeout(TIMEOUT)
-                .data(postData)
-                .method(Connection.Method.POST)
-                .execute()
+            .headers(headers)
+            .ignoreContentType(true)
+            .timeout(TIMEOUT)
+            .data(postData)
+            .method(Connection.Method.POST)
+            .execute()
     }
 
     /**
@@ -89,14 +87,13 @@ internal object NetworkRequest {
      * @throws IOException 网络请求异常
      */
     @Throws(IOException::class)
-    fun getResponse(url: String, headers: Map<String, String>,
-                    payload: String): Connection.Response {
+    fun getResponse(url: String, headers: Map<String, String>, payload: String): Connection.Response {
         return Jsoup.connect(url)
-                .headers(headers)
-                .ignoreContentType(true)
-                .timeout(TIMEOUT)
-                .requestBody(payload)
-                .method(Connection.Method.POST)
-                .execute()
+            .headers(headers)
+            .ignoreContentType(true)
+            .timeout(TIMEOUT)
+            .requestBody(payload)
+            .method(Connection.Method.POST)
+            .execute()
     }
 }

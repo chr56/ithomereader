@@ -17,8 +17,13 @@ import java.util.regex.Pattern
 object ArticleApiImpl : ArticleApi {
     private val tag = javaClass.simpleName
 
-    override fun getArticleList(page: Int, filterLapin: Boolean, customFilter: Boolean, keywords: Array<String>?,
-                                oldList: ArrayList<Article>?): List<Article>? {
+    override fun getArticleList(
+        page: Int,
+        filterLapin: Boolean,
+        customFilter: Boolean,
+        keywords: Array<String>?,
+        oldList: ArrayList<Article>?
+    ): List<Article>? {
         try {
             val doc = ITHomeApi.getNewsListDoc(page)
             val list = mutableListOf<Article>()
@@ -72,8 +77,7 @@ object ArticleApiImpl : ArticleApi {
             if (matcher.find()) {
                 gradeHtml = matcher.group(1).replace(");", "")
                 val gradeDoc = Jsoup.parse(gradeHtml)
-                val score = gradeDoc.selectFirst(".text .sd")?.text()
-                        ?: gradeDoc.selectFirst(".text").text()
+                val score = gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text").text()
 
                 val bt = gradeDoc.select(".bt span div")
                 val trash = bt[0].text()

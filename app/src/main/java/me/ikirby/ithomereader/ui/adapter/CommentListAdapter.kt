@@ -20,11 +20,13 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.widget.CustomLinkTransformationMethod
 import java.util.*
 
-class CommentListAdapter(private val list: ArrayList<Comment>,
-                         private val inflater: LayoutInflater,
-                         private val activity: CommentsActivity,
-                         private val onLongClickListener: View.OnLongClickListener,
-                         private var cookie: String?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentListAdapter(
+    private val list: ArrayList<Comment>,
+    private val inflater: LayoutInflater,
+    private val activity: CommentsActivity,
+    private val onLongClickListener: View.OnLongClickListener,
+    private var cookie: String?
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val commentSupport: String = activity.getString(R.string.comment_support)
     private val commentAgainst: String = activity.getString(R.string.comment_against)
     private val commentIsSupport: String = activity.getString(R.string.comment_is_support)

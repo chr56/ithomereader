@@ -20,22 +20,22 @@ class UpdateCheckNotifyTask(private val showToast: Boolean) : AsyncTask<Void, Vo
         val parameter = "?_=" + System.currentTimeMillis()
         var updateInfo: UpdateInfo? = null
         val updateUrl = BaseApplication.instance.packageManager
-                .getApplicationInfo(BaseApplication.instance.packageName, PackageManager.GET_META_DATA)
-                .metaData.getString("update_url")
+            .getApplicationInfo(BaseApplication.instance.packageName, PackageManager.GET_META_DATA)
+            .metaData.getString("update_url")
 
         if (!updateUrl.isNullOrBlank()) {
             try {
                 val json = Jsoup.connect(updateUrl + parameter)
-                        .ignoreContentType(true)
-                        .timeout(5000).execute().body()
+                    .ignoreContentType(true)
+                    .timeout(5000).execute().body()
                 val info = JSONObject(json)
                 val versionCode = info.getInt("versionCode")
                 if (versionCode > BuildConfig.VERSION_CODE) {
                     updateInfo = UpdateInfo(
-                            versionCode,
-                            info.getString("version"),
-                            info.getString("log"),
-                            info.getString("url") + parameter
+                        versionCode,
+                        info.getString("version"),
+                        info.getString("log"),
+                        info.getString("url") + parameter
                     )
                 }
             } catch (e: Exception) {

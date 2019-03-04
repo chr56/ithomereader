@@ -30,8 +30,8 @@ class MainActivity : BaseActivity() {
         isGestureEnabled = false
 
         val fragments = listOf(
-                ArticleListFragment(),
-                TrendingListFragment()
+            ArticleListFragment(),
+            TrendingListFragment()
         )
 
         val adapter = object : FragmentPagerAdapter(supportFragmentManager) {
@@ -59,7 +59,8 @@ class MainActivity : BaseActivity() {
                 UpdateCheckNotifyTask(false).execute()
             }
             if (!preferences.contains(SETTINGS_KEY_VERSION)
-                    || BuildConfig.VERSION_CODE > preferences.getInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE)) {
+                || BuildConfig.VERSION_CODE > preferences.getInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE)
+            ) {
                 CleanUpTask().execute()
                 preferences.edit().putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE).apply()
             }
@@ -143,8 +144,9 @@ class MainActivity : BaseActivity() {
                 ClearCacheTask().execute()
             }
             R.id.action_settings -> startActivityForResult(
-                    Intent(this, SettingsActivity::class.java),
-                    THEME_CHANGE_REQUEST_CODE)
+                Intent(this, SettingsActivity::class.java),
+                THEME_CHANGE_REQUEST_CODE
+            )
         }
         return true
     }

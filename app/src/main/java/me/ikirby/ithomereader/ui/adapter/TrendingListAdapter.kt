@@ -22,7 +22,11 @@ import me.ikirby.ithomereader.util.copyToClipboard
 import me.ikirby.ithomereader.util.openLinkInBrowser
 import java.util.*
 
-class TrendingListAdapter(private val list: ArrayList<Trending>, private val context: Context, private var showThumb: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TrendingListAdapter(
+    private val list: ArrayList<Trending>,
+    private val context: Context,
+    private var showThumb: Boolean
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
@@ -152,7 +156,12 @@ class TrendingListAdapter(private val list: ArrayList<Trending>, private val con
                             putExtra(Intent.EXTRA_TEXT, post.title + "\n" + post.url)
                             type = "text/plain"
                         }
-                        context.startActivity(Intent.createChooser(share, context.getString(R.string.share) + " " + post.title))
+                        context.startActivity(
+                            Intent.createChooser(
+                                share,
+                                context.getString(R.string.share) + " " + post.title
+                            )
+                        )
                     }
                     R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
                     R.id.view_thumb -> {

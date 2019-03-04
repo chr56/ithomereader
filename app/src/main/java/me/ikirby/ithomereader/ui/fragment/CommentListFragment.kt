@@ -63,8 +63,7 @@ class CommentListFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.list_layout, container, false)
 
         layoutManager = LinearLayoutManager(activity)
@@ -82,13 +81,17 @@ class CommentListFragment : BaseFragment() {
 
         if (savedInstanceState == null || commentList.isEmpty()) {
             commentList = ArrayList()
-            adapter = CommentListAdapter(commentList, LayoutInflater.from(context),
-                    activity as CommentsActivity, onLongClickListener, cookie)
+            adapter = CommentListAdapter(
+                commentList, LayoutInflater.from(context),
+                activity as CommentsActivity, onLongClickListener, cookie
+            )
             view.list_view.adapter = adapter
         } else {
             page = savedInstanceState.getInt(KEY_PAGE)
-            adapter = CommentListAdapter(commentList, LayoutInflater.from(context),
-                    activity as CommentsActivity, onLongClickListener, cookie)
+            adapter = CommentListAdapter(
+                commentList, LayoutInflater.from(context),
+                activity as CommentsActivity, onLongClickListener, cookie
+            )
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
@@ -216,14 +219,20 @@ class CommentListFragment : BaseFragment() {
                         }
                         startActivity(intent)
                     }
-                    R.id.copy_content -> copyToClipboard(CLIP_TAG_COMMENT,
-                            Jsoup.clean(comment.content, "", Whitelist.none(),
-                                    Document.OutputSettings().prettyPrint(false)))
+                    R.id.copy_content -> copyToClipboard(
+                        CLIP_TAG_COMMENT,
+                        Jsoup.clean(
+                            comment.content, "", Whitelist.none(),
+                            Document.OutputSettings().prettyPrint(false)
+                        )
+                    )
                     R.id.share -> {
                         val nick = comment.nick
                         val title = activity!!.intent.getStringExtra(KEY_TITLE)
-                        val content = Jsoup.clean(comment.content, "", Whitelist.none(),
-                                Document.OutputSettings().prettyPrint(false))
+                        val content = Jsoup.clean(
+                            comment.content, "", Whitelist.none(),
+                            Document.OutputSettings().prettyPrint(false)
+                        )
                         val shareText = getString(R.string.share_comment_content, nick, title, content, url)
                         val share = Intent(Intent.ACTION_SEND).apply {
                             putExtra(Intent.EXTRA_TEXT, shareText)
@@ -237,7 +246,14 @@ class CommentListFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(id: String, hash: String, cookie: String?, url: String, lapinId: String?, isHotComment: Boolean = false): CommentListFragment {
+        fun newInstance(
+            id: String,
+            hash: String,
+            cookie: String?,
+            url: String,
+            lapinId: String?,
+            isHotComment: Boolean = false
+        ): CommentListFragment {
             val fragment = CommentListFragment()
             val args = Bundle()
             args.putString(KEY_NEWS_ID, id)

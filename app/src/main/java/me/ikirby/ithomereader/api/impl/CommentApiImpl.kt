@@ -11,8 +11,13 @@ import java.util.regex.Pattern
 object CommentApiImpl : CommentApi {
     private val tag = javaClass.simpleName
 
-    override fun getAllCommentsList(id: String, hash: String, page: Int,
-                                    oldList: ArrayList<Comment>?, isLapin: Boolean): List<Comment>? {
+    override fun getAllCommentsList(
+        id: String,
+        hash: String,
+        page: Int,
+        oldList: ArrayList<Comment>?,
+        isLapin: Boolean
+    ): List<Comment>? {
         try {
             val doc = ITHomeApi.getCommentsDoc(id, hash, page, isLapin)
             val list = mutableListOf<Comment>()
@@ -23,7 +28,7 @@ object CommentApiImpl : CommentApi {
                     val floor = comment.select(".info .p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
                     val content = comment.select(".comm p").html().replace("<br>", "\n")
-                            .replace("<span>", "").replace("</span>", "")
+                        .replace("<span>", "").replace("</span>", "")
                     val device = comment.select(".info .mobile a").text()
 
                     val commentVoteArea = comment.select(".comm_reply")[0]
@@ -31,7 +36,19 @@ object CommentApiImpl : CommentApi {
                     val supportCount = getMatchInt(commentVoteArea.select("a.s").text())
                     val againstCount = getMatchInt(commentVoteArea.select("a.a").text())
 
-                    list.add(Comment(nick, floor, posAndTime, content, device, parentId, parentId, supportCount, againstCount))
+                    list.add(
+                        Comment(
+                            nick,
+                            floor,
+                            posAndTime,
+                            content,
+                            device,
+                            parentId,
+                            parentId,
+                            supportCount,
+                            againstCount
+                        )
+                    )
 
                     val replies = comment.select(".reply li.gh")
                     if (!replies.isEmpty()) {
@@ -40,7 +57,7 @@ object CommentApiImpl : CommentApi {
                             val reFloor = reply.select(".p_floor").text()
                             val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
                             val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
-                                    .replace("<span>", "").replace("</span>", "")
+                                .replace("<span>", "").replace("</span>", "")
                             val reDevice = reply.select(".mobile a").text()
 
                             val replyVoteArea = reply.select(".comm_reply")[0]
@@ -48,7 +65,19 @@ object CommentApiImpl : CommentApi {
                             val reSupportCount = getMatchInt(replyVoteArea.select("a.s").text())
                             val reAgainstCount = getMatchInt(replyVoteArea.select("a.a").text())
 
-                            list.add(Comment(reNick, reFloor, rePosAndTime, reContent, reDevice, parentId, reSelfId, reSupportCount, reAgainstCount))
+                            list.add(
+                                Comment(
+                                    reNick,
+                                    reFloor,
+                                    rePosAndTime,
+                                    reContent,
+                                    reDevice,
+                                    parentId,
+                                    reSelfId,
+                                    reSupportCount,
+                                    reAgainstCount
+                                )
+                            )
                         }
                         if (replies.size >= 5 && parentId != "0") {
                             val moreReplies = getMoreRepliesList(parentId)
@@ -66,8 +95,13 @@ object CommentApiImpl : CommentApi {
         }
     }
 
-    override fun getHotCommentList(id: String, hash: String, page: Int,
-                                   oldList: ArrayList<Comment>?, isLapin: Boolean): List<Comment>? {
+    override fun getHotCommentList(
+        id: String,
+        hash: String,
+        page: Int,
+        oldList: ArrayList<Comment>?,
+        isLapin: Boolean
+    ): List<Comment>? {
         try {
             val doc = ITHomeApi.getHotCommentsDoc(id, hash, page, isLapin)
             val list = mutableListOf<Comment>()
@@ -78,7 +112,7 @@ object CommentApiImpl : CommentApi {
                     val floor = comment.select(".p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".posandtime").text())
                     val content = comment.getElementsByTag("p").html().replace("<br>", "\n")
-                            .replace("<span>", "").replace("</span>", "")
+                        .replace("<span>", "").replace("</span>", "")
                     val device = comment.select(".mobile a").text()
 
                     val commentVoteArea = comment.select(".r .comm_reply")[0]
@@ -86,7 +120,19 @@ object CommentApiImpl : CommentApi {
                     val supportCount = getMatchInt(commentVoteArea.select("a.s").text())
                     val againstCount = getMatchInt(commentVoteArea.select("a.a").text())
 
-                    list.add(Comment(nick, floor, posAndTime, content, device, null, selfId, supportCount, againstCount))
+                    list.add(
+                        Comment(
+                            nick,
+                            floor,
+                            posAndTime,
+                            content,
+                            device,
+                            null,
+                            selfId,
+                            supportCount,
+                            againstCount
+                        )
+                    )
                 }
             }
             return removeDuplicate(list, oldList)
@@ -107,7 +153,7 @@ object CommentApiImpl : CommentApi {
                     val reFloor = reply.select(".p_floor").text()
                     val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
                     val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
-                            .replace("<span>", "").replace("</span>", "")
+                        .replace("<span>", "").replace("</span>", "")
                     val reDevice = reply.select(".mobile a").text()
 
                     val replyVoteArea = reply.select(".comm_reply")[0]
@@ -115,7 +161,19 @@ object CommentApiImpl : CommentApi {
                     val reSupportCount = getMatchInt(replyVoteArea.select("a.s").text())
                     val reAgainstCount = getMatchInt(replyVoteArea.select("a.a").text())
 
-                    list.add(Comment(reNick, reFloor, rePosAndTime, reContent, reDevice, parentId, reSelfId, reSupportCount, reAgainstCount))
+                    list.add(
+                        Comment(
+                            reNick,
+                            reFloor,
+                            rePosAndTime,
+                            reContent,
+                            reDevice,
+                            parentId,
+                            reSelfId,
+                            reSupportCount,
+                            reAgainstCount
+                        )
+                    )
                 }
             }
             return list
@@ -125,8 +183,13 @@ object CommentApiImpl : CommentApi {
         }
     }
 
-    override fun postComment(id: String, parentId: String?, selfId: String?,
-                             commentContent: String, cookie: String): String? {
+    override fun postComment(
+        id: String,
+        parentId: String?,
+        selfId: String?,
+        commentContent: String,
+        cookie: String
+    ): String? {
         return try {
             ITHomeApi.postComment(id, parentId, selfId, commentContent, cookie)
         } catch (e: Exception) {
@@ -135,7 +198,7 @@ object CommentApiImpl : CommentApi {
         }
     }
 
-    override fun commentVote(id: String, typeId: Int, isCancel: Boolean, cookie: String):String? {
+    override fun commentVote(id: String, typeId: Int, isCancel: Boolean, cookie: String): String? {
         return try {
             ITHomeApi.commentVote(id, typeId, isCancel, cookie)
         } catch (e: Exception) {

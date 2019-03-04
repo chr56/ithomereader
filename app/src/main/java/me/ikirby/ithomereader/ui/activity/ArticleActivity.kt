@@ -167,10 +167,12 @@ class ArticleActivity : BaseActivity() {
     }
 
     private fun loadArticleContent() {
-        post_content.loadDataWithBaseURL(url,
-                getHead() + fullArticle.content + getFooter(),
-                "text/html; charset=utf-8",
-                "UTF-8", null)
+        post_content.loadDataWithBaseURL(
+            url,
+            getHead() + fullArticle.content + getFooter(),
+            "text/html; charset=utf-8",
+            "UTF-8", null
+        )
         newsId = fullArticle.newsId
         title = fullArticle.title
     }

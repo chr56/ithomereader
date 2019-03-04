@@ -12,7 +12,7 @@ import org.jsoup.Jsoup
 object LiveApiImpl : LiveApi {
     private val tag = javaClass.simpleName
 
-    override fun getLiveMessages(id: String):List<LiveMsg>? {
+    override fun getLiveMessages(id: String): List<LiveMsg>? {
         try {
             val msgs = JSONObject(ITHomeApi.getLiveMsgJson(id)).getJSONArray("contents")
             val list = mutableListOf<LiveMsg>()

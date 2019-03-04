@@ -13,8 +13,7 @@ class SettingsActivity : BaseActivity() {
         setTitleCustom(getString(R.string.settings))
         enableBackBtn()
 
-        supportFragmentManager.beginTransaction().add(android.R.id.content,
-                SettingsFragment()).commit()
+        supportFragmentManager.beginTransaction().add(android.R.id.content, SettingsFragment()).commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

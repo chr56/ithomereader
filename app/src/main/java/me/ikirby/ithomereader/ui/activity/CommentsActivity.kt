@@ -23,7 +23,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private lateinit var id: String
     private lateinit var title: String
     private lateinit var url: String
-    //    private lateinit var lapinId: String
+//    private lateinit var lapinId: String
     private lateinit var commentHash: String
 
     private lateinit var fragments: List<CommentListFragment>
@@ -125,8 +125,8 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         viewPager.visibility = View.VISIBLE
 
         fragments = listOf(
-                CommentListFragment.newInstance(id, hash, cookie, url, lapinId, true),
-                CommentListFragment.newInstance(id, hash, cookie, url, lapinId)
+            CommentListFragment.newInstance(id, hash, cookie, url, lapinId, true),
+            CommentListFragment.newInstance(id, hash, cookie, url, lapinId)
         )
 
         val adapter = object : FragmentPagerAdapter(supportFragmentManager) {

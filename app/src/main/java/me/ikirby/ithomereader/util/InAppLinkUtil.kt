@@ -21,10 +21,10 @@ fun openLink(context: Context, url: String) {
     } else {
         try {
             CustomTabsIntent.Builder()
-                    .setToolbarColor(UiUtil.getToolBarColor())
-                    .setShowTitle(true)
-                    .build()
-                    .launchUrl(context, Uri.parse(url))
+                .setToolbarColor(UiUtil.getToolBarColor())
+                .setShowTitle(true)
+                .build()
+                .launchUrl(context, Uri.parse(url))
         } catch (e: Exception) {
             ToastUtil.showToast(R.string.no_app_to_handle_intent)
         }
@@ -35,18 +35,18 @@ fun openLink(context: Context, url: String) {
 fun openLinkInBrowser(context: Context, url: String) {
     try {
         val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"))
-        val browseResolution = context.packageManager.resolveActivity(browseIntent,
-                PackageManager.MATCH_DEFAULT_ONLY)
+        val browseResolution = context.packageManager.resolveActivity(browseIntent, PackageManager.MATCH_DEFAULT_ONLY)
 
         val builder = CustomTabsIntent.Builder()
-                .setToolbarColor(UiUtil.getToolBarColor())
-                .setShowTitle(true)
+            .setToolbarColor(UiUtil.getToolBarColor())
+            .setShowTitle(true)
 
         val customTabsIntent = builder.build()
 
         customTabsIntent.intent.component = ComponentName(
-                browseResolution.activityInfo.applicationInfo.packageName,
-                browseResolution.activityInfo.name)
+            browseResolution.activityInfo.applicationInfo.packageName,
+            browseResolution.activityInfo.name
+        )
 
         customTabsIntent.launchUrl(context, Uri.parse(url))
     } catch (e: Exception) {

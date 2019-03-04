@@ -9,8 +9,7 @@ import me.ikirby.ithomereader.SETTINGS_KEY_LOAD_IMAGE_COND
 import me.ikirby.ithomereader.SETTINGS_KEY_SHOW_THUMB_COND
 
 private fun isWiFiConnected(): Boolean {
-    val manager = BaseApplication.instance
-            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val manager = BaseApplication.instance.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
         val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
         capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED) ?: false

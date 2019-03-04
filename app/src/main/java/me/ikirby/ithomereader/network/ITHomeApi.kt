@@ -17,7 +17,8 @@ object ITHomeApi {
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
     private const val SEARCH_URL = "https://dyn.ithome.com/search/adt_all_%s_0_%d.html"
-    private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.18 Safari/537.36"
+    private const val USER_AGENT =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.18 Safari/537.36"
     private const val LIVE_URL = "https://live.ithome.com/newsinfo/getnewsph?newsid="
     private const val LAPIN_AJAX_DATA_URL = "https://www.lapin365.com/comment/getajaxdata"
     private const val NEWS_GRADE_URL = "https://dyn.ithome.com/grade/"
@@ -31,8 +32,10 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun getHomePage(): Document {
-        return NetworkRequest.getDocument(HOME_URL,
-                getHeaders(null, null, null))
+        return NetworkRequest.getDocument(
+            HOME_URL,
+            getHeaders(null, null, null)
+        )
     }
 
 
@@ -45,8 +48,10 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun getNewsListDoc(page: Int): Document {
-        return NetworkRequest.getDocument(NEWS_URL + page,
-                getHeaders("XMLHttpRequest", null, null))
+        return NetworkRequest.getDocument(
+            NEWS_URL + page,
+            getHeaders("XMLHttpRequest", null, null)
+        )
     }
 
     /**
@@ -60,10 +65,10 @@ object ITHomeApi {
     @Throws(IOException::class, JSONException::class)
     fun getHotCommentsDoc(id: String, hash: String, page: Int, isLapin: Boolean): Document {
         val postData = mutableMapOf(
-                "newsID" to id,
-                "type" to "hotcomment",
-                "pid" to "" + page,
-                "order" to "false"
+            "newsID" to id,
+            "type" to "hotcomment",
+            "pid" to "" + page,
+            "order" to "false"
         )
 
         val url = if (isLapin) {
@@ -73,8 +78,11 @@ object ITHomeApi {
             AJAX_DATA_URL
         }
 
-        val response = NetworkRequest.getResponse(url,
-                getHeaders("XMLHttpRequest", null, null), postData)
+        val response = NetworkRequest.getResponse(
+            url,
+            getHeaders("XMLHttpRequest", null, null),
+            postData
+        )
 
         return Jsoup.parse(JSONObject(response.body()).getString("html"))
     }
@@ -91,10 +99,10 @@ object ITHomeApi {
     @Throws(IOException::class)
     fun getCommentsDoc(id: String, hash: String, page: Int, isLapin: Boolean): Document {
         val postData = mutableMapOf(
-                "newsID" to id,
-                "type" to "commentpage",
-                "page" to "" + page,
-                "order" to "false"
+            "newsID" to id,
+            "type" to "commentpage",
+            "page" to "" + page,
+            "order" to "false"
         )
 
         val url = if (isLapin) {
@@ -104,8 +112,11 @@ object ITHomeApi {
             AJAX_DATA_URL
         }
 
-        return NetworkRequest.getDocument(url,
-                getHeaders("XMLHttpRequest", null, null), postData)
+        return NetworkRequest.getDocument(
+            url,
+            getHeaders("XMLHttpRequest", null, null),
+            postData
+        )
     }
 
     /**
@@ -118,12 +129,15 @@ object ITHomeApi {
     @Throws(IOException::class)
     fun getMoreReplies(parentId: String): Document {
         val postData = mapOf(
-                "commentid" to parentId,
-                "type" to "getmorelou"
+            "commentid" to parentId,
+            "type" to "getmorelou"
         )
 
-        return NetworkRequest.getDocument(AJAX_DATA_URL,
-                getHeaders("XMLHttpRequest", null, null), postData)
+        return NetworkRequest.getDocument(
+            AJAX_DATA_URL,
+            getHeaders("XMLHttpRequest", null, null),
+            postData
+        )
     }
 
     /**
@@ -138,14 +152,16 @@ object ITHomeApi {
      * @throws IOException 网络请求异常
      */
     @Throws(IOException::class)
-    fun postComment(id: String, parentId: String?, selfId: String?,
-                    commentContent: String, cookie: String): String {
+    fun postComment(
+        id: String, parentId: String?, selfId: String?,
+        commentContent: String, cookie: String
+    ): String {
         val postData = mutableMapOf(
-                "newsid" to id,
-                "commentNick" to "undefined",
-                "txtCode" to "undefined",
-                "type" to "comment",
-                "commentContent" to commentContent
+            "newsid" to id,
+            "commentNick" to "undefined",
+            "txtCode" to "undefined",
+            "type" to "comment",
+            "commentContent" to commentContent
         )
         postData["newsid"] = id
         postData["commentNick"] = "undefined"
@@ -157,8 +173,13 @@ object ITHomeApi {
         }
 
 
-        return NetworkRequest.getResponse(COMMENT_POST_URL, getHeaders("XMLHttpRequest",
-                "application/x-www-form-urlencoded", cookie), postData).body()
+        return NetworkRequest.getResponse(
+            COMMENT_POST_URL, getHeaders(
+                "XMLHttpRequest",
+                "application/x-www-form-urlencoded", cookie
+            ),
+            postData
+        ).body()
     }
 
     /**
@@ -172,8 +193,11 @@ object ITHomeApi {
     @Throws(IOException::class)
     fun login(username: String, password: String): String? {
         val payload = "{\"username\":\"$username\", \"password\":\"$password\"}"
-        val response = NetworkRequest.getResponse(LOGIN_URL,
-                getHeaders("XMLHttpRequest", "application/json", null), payload)
+        val response = NetworkRequest.getResponse(
+            LOGIN_URL,
+            getHeaders("XMLHttpRequest", "application/json", null),
+            payload
+        )
         return response.cookie("user")
     }
 
@@ -187,8 +211,10 @@ object ITHomeApi {
     @SuppressLint("DefaultLocale")
     @Throws(IOException::class)
     fun getSearchDoc(keyword: String, page: Int): Document {
-        return NetworkRequest.getDocument(String.format(SEARCH_URL, keyword, page),
-                getHeaders(null, null, null))
+        return NetworkRequest.getDocument(
+            String.format(SEARCH_URL, keyword, page),
+            getHeaders(null, null, null)
+        )
     }
 
     /**
@@ -202,11 +228,10 @@ object ITHomeApi {
      * @throws IOException 网络请求异常
      */
     @Throws(IOException::class)
-    fun commentVote(id: String, typeId: Int, isCancel: Boolean,
-                    cookie: String): String {
+    fun commentVote(id: String, typeId: Int, isCancel: Boolean, cookie: String): String {
         val postData = mutableMapOf(
-                "commentid" to id,
-                "typeid" to "" + typeId
+            "commentid" to id,
+            "typeid" to "" + typeId
         )
         if (isCancel) {
             postData["type"] = "loginCancleReplyVote"
@@ -214,8 +239,13 @@ object ITHomeApi {
             postData["type"] = "loginReplyVote"
         }
 
-        return NetworkRequest.getResponse(COMMENT_POST_URL, getHeaders("XMLHttpRequest",
-                "application/x-www-form-urlencoded", cookie), postData).body()
+        return NetworkRequest.getResponse(
+            COMMENT_POST_URL, getHeaders(
+                "XMLHttpRequest",
+                "application/x-www-form-urlencoded", cookie
+            ),
+            postData
+        ).body()
     }
 
     /**
@@ -226,8 +256,10 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun getLiveMsgJson(id: String): String {
-        return NetworkRequest.getResponse(LIVE_URL + id,
-                getHeaders(null, null, null)).body()
+        return NetworkRequest.getResponse(
+            LIVE_URL + id,
+            getHeaders(null, null, null)
+        ).body()
     }
 
     /**
@@ -238,8 +270,10 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun getNewsGrade(id: String, cookie: String?): String {
-        return NetworkRequest.getResponse(NEWS_GRADE_URL + id,
-                getHeaders("XMLHttpRequest", null, cookie)).body()
+        return NetworkRequest.getResponse(
+            NEWS_GRADE_URL + id,
+            getHeaders("XMLHttpRequest", null, cookie)
+        ).body()
     }
 
     /**
@@ -253,13 +287,17 @@ object ITHomeApi {
     @Throws(IOException::class)
     fun newsVote(id: String, type: Int, cookie: String): String {
         val postData = mapOf(
-                "newsID" to id,
-                "grade" to "" + type
+            "newsID" to id,
+            "grade" to "" + type
         )
-        return NetworkRequest.getResponse(NEWS_GRADE_VOTE_URL,
-                getHeaders("XMLHttpRequest",
-                        "application/x-www-form-urlencoded", cookie),
-                postData).body()
+        return NetworkRequest.getResponse(
+            NEWS_GRADE_VOTE_URL,
+            getHeaders(
+                "XMLHttpRequest",
+                "application/x-www-form-urlencoded", cookie
+            ),
+            postData
+        ).body()
     }
 
     /**
@@ -269,10 +307,9 @@ object ITHomeApi {
      * @param cookie Cookie
      * @return 请求头 HashMap
      */
-    private fun getHeaders(xRequestedWith: String?,
-                           contentType: String?, cookie: String?): Map<String, String> {
+    private fun getHeaders(xRequestedWith: String?, contentType: String?, cookie: String?): Map<String, String> {
         val headers = mutableMapOf(
-                "User-Agent" to USER_AGENT
+            "User-Agent" to USER_AGENT
         )
         if (xRequestedWith != null) {
             headers["X-Requested-With"] = xRequestedWith

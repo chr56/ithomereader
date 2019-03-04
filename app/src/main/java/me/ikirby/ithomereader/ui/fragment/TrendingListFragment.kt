@@ -35,8 +35,7 @@ class TrendingListFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = LayoutInflater.from(context).inflate(R.layout.list_layout, container, false)
 
         layoutManager = LinearLayoutManager(activity)

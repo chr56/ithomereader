@@ -26,9 +26,10 @@ class XRecyclerView : RecyclerView {
     override fun onScrolled(dx: Int, dy: Int) {
         super.onScrolled(dx, dy)
         if (!isAllContentLoaded
-                && isLinearLayoutManager
-                && dy > 0
-                && onBottomReachedListener != null) {
+            && isLinearLayoutManager
+            && dy > 0
+            && onBottomReachedListener != null
+        ) {
             val layoutManager = layoutManager as LinearLayoutManager?
             if (layoutManager != null) {
                 val visibleItemCount = layoutManager.childCount
@@ -36,7 +37,8 @@ class XRecyclerView : RecyclerView {
                 val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                        && firstVisibleItemPosition >= 0) {
+                    && firstVisibleItemPosition >= 0
+                ) {
                     onBottomReachedListener?.onBottomReached()
                 }
             }

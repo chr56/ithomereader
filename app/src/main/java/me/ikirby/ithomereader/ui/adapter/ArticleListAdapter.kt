@@ -24,10 +24,12 @@ import me.ikirby.ithomereader.util.copyToClipboard
 import me.ikirby.ithomereader.util.openLinkInBrowser
 import kotlin.math.roundToInt
 
-class ArticleListAdapter(private val list: ArrayList<Article>,
-                         private var focusSlideAdapter: SlideBannerAdapter?,
-                         private val context: Context,
-                         private var showThumb: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticleListAdapter(
+    private val list: ArrayList<Article>,
+    private var focusSlideAdapter: SlideBannerAdapter?,
+    private val context: Context,
+    private var showThumb: Boolean
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val bannerLayoutManager: LinearLayoutManager = LinearLayoutManager(context)
     private var cachedMinimumHeight = 0
     private var wasShowThumb = true
@@ -193,8 +195,12 @@ class ArticleListAdapter(private val list: ArrayList<Article>,
                             putExtra(Intent.EXTRA_TEXT, post.title + "\n" + post.url)
                             type = "text/plain"
                         }
-                        context.startActivity(Intent.createChooser(share,
-                                context.getString(R.string.share) + " " + post.title))
+                        context.startActivity(
+                            Intent.createChooser(
+                                share,
+                                context.getString(R.string.share) + " " + post.title
+                            )
+                        )
                     }
                     R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
                     R.id.view_thumb -> {

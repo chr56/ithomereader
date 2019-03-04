@@ -8,7 +8,9 @@ import android.util.Log
 object UnknownExceptionHandler {
 
     fun init(context: Context) {
-        Thread.setDefaultUncaughtExceptionHandler { _, e -> handleUncaughtException(context, Log.getStackTraceString(e)) }
+        Thread.setDefaultUncaughtExceptionHandler { _, e ->
+            handleUncaughtException(context, Log.getStackTraceString(e))
+        }
     }
 
     private fun handleUncaughtException(context: Context, stackTrace: String) {
