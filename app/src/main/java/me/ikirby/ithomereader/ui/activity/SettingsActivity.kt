@@ -2,6 +2,7 @@ package me.ikirby.ithomereader.ui.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.fragment.SettingsFragment
@@ -18,8 +19,13 @@ class SettingsActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> onBackPressed()
         }
         return false
+    }
+
+    override fun onBackPressed() {
+        BaseApplication.instance.loadPreferences()
+        super.onBackPressed()
     }
 }

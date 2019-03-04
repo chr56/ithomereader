@@ -51,4 +51,9 @@ class BaseApplication : Application() {
         }
         hasCheckedAutoNightMode = true
     }
+
+    fun switchNightMode() {
+        isNightMode = !isNightMode
+        preferences.edit().putBoolean(SETTINGS_KEY_NIGHT_MODE, isNightMode).apply()
+    }
 }

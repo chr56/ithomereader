@@ -2,7 +2,6 @@ package me.ikirby.ithomereader.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -55,14 +54,17 @@ class MainActivity : BaseActivity() {
         viewPager!!.adapter = adapter
 
         if (savedInstanceState == null) {
-            if (preferences.getBoolean(SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH, true)) {
+            if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH, true)) {
                 UpdateCheckNotifyTask(false).execute()
             }
-            if (!preferences.contains(SETTINGS_KEY_VERSION)
-                || BuildConfig.VERSION_CODE > preferences.getInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE)
+            if (!BaseApplication.preferences.contains(SETTINGS_KEY_VERSION)
+                || BuildConfig.VERSION_CODE > BaseApplication.preferences.getInt(
+                    SETTINGS_KEY_VERSION,
+                    BuildConfig.VERSION_CODE
+                )
             ) {
                 CleanUpTask().execute()
-                preferences.edit().putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE).apply()
+                BaseApplication.preferences.edit().putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE).apply()
             }
 
             val cookieManager = CookieManager.getInstance()
@@ -136,8 +138,8 @@ class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.action_refresh -> return false
             R.id.action_night_mode -> {
-                preferences.edit().putBoolean(SETTINGS_KEY_NIGHT_MODE, !BaseApplication.isNightMode).apply()
-                reloadTheme()
+                BaseApplication.instance.switchNightMode()
+                recreate()
             }
             R.id.action_clearcache -> {
                 ToastUtil.showToast(R.string.cache_clearing)
@@ -153,7 +155,7 @@ class MainActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == THEME_CHANGE_REQUEST_CODE) {
-            reloadTheme()
+            recreate()
         }
     }
 
@@ -164,10 +166,5 @@ class MainActivity : BaseActivity() {
 
     override fun swipeRight(): Boolean {
         return false
-    }
-
-    private fun reloadTheme() {
-        BaseApplication.instance.loadPreferences()
-        Handler().post { recreate() }
     }
 }

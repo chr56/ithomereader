@@ -39,7 +39,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         url = intent.getStringExtra(KEY_URL)
 //        lapinId = intent.getStringExtra("lapinId")
 
-        cookie = preferences.getString(SETTINGS_KEY_USER_HASH, null)
+        cookie = BaseApplication.preferences.getString(SETTINGS_KEY_USER_HASH, null)
 
         if (savedInstanceState != null && savedInstanceState.containsKey("comment_hash")) {
             commentHash = savedInstanceState.getString("comment_hash", "")

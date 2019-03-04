@@ -117,6 +117,6 @@ class CommentPostActivity : BaseActivity() {
     }
 
     fun loadCookie() {
-        cookie = preferences.getString(SETTINGS_KEY_USER_HASH, null)
+        cookie = BaseApplication.preferences.getString(SETTINGS_KEY_USER_HASH, null)
     }
 }

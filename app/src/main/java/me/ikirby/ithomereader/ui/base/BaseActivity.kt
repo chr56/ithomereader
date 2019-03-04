@@ -1,7 +1,6 @@
 package me.ikirby.ithomereader.ui.base
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -22,8 +21,6 @@ import kotlin.coroutines.CoroutineContext
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity(), CoroutineScope {
-    protected lateinit var preferences: SharedPreferences
-
     private lateinit var mGestureDetector: GestureDetector
     protected var isGestureEnabled: Boolean = false
 
@@ -32,7 +29,6 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
         get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        preferences = BaseApplication.preferences
         isGestureEnabled = BaseApplication.isGestureEnabled
         UiUtil.setNightMode(this, BaseApplication.isNightMode, BaseApplication.isOStyleLight)
         super.onCreate(savedInstanceState)
