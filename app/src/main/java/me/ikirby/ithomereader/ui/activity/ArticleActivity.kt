@@ -171,7 +171,8 @@ class ArticleActivity : BaseActivity() {
             url,
             getHead() + fullArticle.content + getFooter(),
             "text/html; charset=utf-8",
-            "UTF-8", null
+            "UTF-8",
+            null
         )
         newsId = fullArticle.newsId
         title = fullArticle.title
