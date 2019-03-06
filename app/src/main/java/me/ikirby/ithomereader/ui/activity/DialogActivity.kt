@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_update_dialog.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.KEY_UPDATE_INFO
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_IGNORE_VERSION_CODE
 import me.ikirby.ithomereader.entity.UpdateInfo
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.openLink
@@ -29,6 +30,7 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
 
             btn_update.setOnClickListener(this)
             btn_cancel.setOnClickListener(this)
+            btn_ignore.setOnClickListener(this)
         } else {
             finish()
         }
@@ -38,9 +40,13 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
         when (view.id) {
             R.id.btn_update -> {
                 openLink(this, updateInfo!!.url)
-                finish()
             }
             R.id.btn_cancel -> finish()
+            R.id.btn_ignore -> BaseApplication.preferences.edit().putInt(
+                SETTINGS_KEY_IGNORE_VERSION_CODE,
+                updateInfo!!.versionCode
+            ).apply()
         }
+        finish()
     }
 }

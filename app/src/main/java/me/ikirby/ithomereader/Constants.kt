@@ -26,6 +26,8 @@ const val SETTINGS_KEY_NIGHT_MODE_END_TIME = "night_mode_end_time"
 const val SETTINGS_KEY_CHECK_UPDATE = "check_for_update"
 const val SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH = "check_update_on_launch"
 const val SETTINGS_KEY_VERSION = "version"
+const val SETTINGS_KEY_IGNORE_VERSION_CODE = "ignore_version_code"
+
 const val SETTINGS_KEY_GO_FULL_SITE = "go_full_site"
 const val SETTINGS_KEY_LIB_ANDROIDX = "lib_androidx"
 const val SETTINGS_KEY_LIB_MDC = "lib_mdc"
