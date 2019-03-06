@@ -86,6 +86,8 @@
         <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
     <style name="AppTheme.CommonDialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
@@ -98,6 +100,8 @@
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
     <style name="AppTheme.CommonDialog.OStyle" parent="Theme.MaterialComponents.Light.Dialog">
@@ -110,6 +114,8 @@
         <item name="colorOnSecondary">@color/colorOnSecondary_white</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
     <style name="BottomSheetMenu">
