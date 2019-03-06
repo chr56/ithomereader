@@ -89,3 +89,24 @@ pre {
   max-width: 100% !important;
   overflow: auto;
 }
+
+table {
+  display: table;
+  margin-bottom: 16px;
+  border-collapse: collapse;
+  border-color: grey;
+  table-layout: fixed;
+  border-spacing: 0;
+}
+
+table .firstRow td {
+  background-color: #ae000e;
+  color: #fff;
+  text-align: center;
+  word-break: break-all;
+}
+
+table td, table th {
+  padding: 9pt 10px;
+  border: 1px solid rgba(255,255,255,.05);
+}

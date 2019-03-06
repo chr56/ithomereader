@@ -21,7 +21,7 @@ private fun getFontSize(): String {
         "2" -> fontSize = 18
         "-2" -> fontSize = 14
     }
-    return "<style>p{font-size:${fontSize}px}</style>"
+    return "<style>p,table{font-size:${fontSize}px}</style>"
 }
 
 fun getJs() = "<script src='file:///android_asset/js/base.js'></script>"
