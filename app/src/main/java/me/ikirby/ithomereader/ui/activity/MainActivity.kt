@@ -177,7 +177,7 @@ class MainActivity : BaseActivity() {
     private fun switchThemeWithTransition() {
         val rootView = window.decorView.rootView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val bitmap = Bitmap.createBitmap(rootView.width, rootView.height, Bitmap.Config.RGB_565)
+            val bitmap = Bitmap.createBitmap(rootView.width, rootView.height, Bitmap.Config.ARGB_8888)
             val locationOfRootView = IntArray(2)
             rootView.getLocationInWindow(locationOfRootView)
             PixelCopy.request(

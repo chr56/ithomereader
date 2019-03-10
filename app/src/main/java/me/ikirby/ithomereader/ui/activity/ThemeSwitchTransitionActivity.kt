@@ -36,7 +36,7 @@ class ThemeSwitchTransitionActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             finish()
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            overridePendingTransition(0, android.R.anim.fade_out)
         }, 100)
     }
 
