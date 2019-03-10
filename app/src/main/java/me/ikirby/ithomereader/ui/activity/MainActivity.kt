@@ -199,7 +199,7 @@ class MainActivity : BaseActivity() {
             )
         } else {
             rootView.isDrawingCacheEnabled = true
-            ThemeSwitchTransactionActivity.screenshot = rootView.drawingCache
+            ThemeSwitchTransactionActivity.screenshot = Bitmap.createBitmap(rootView.drawingCache)
             rootView.isDrawingCacheEnabled = false
             startThemeSwitchTransaction()
         }
