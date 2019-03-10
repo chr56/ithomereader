@@ -9,7 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import me.ikirby.ithomereader.KEY_SYSTEM_UI_VISIBILITY
 
-class ThemeSwitchTransactionActivity : AppCompatActivity() {
+class ThemeSwitchTransitionActivity : AppCompatActivity() {
 
     companion object {
         var screenshot: Bitmap? = null

@@ -144,7 +144,7 @@ class MainActivity : BaseActivity() {
             R.id.action_refresh -> return false
             R.id.action_night_mode -> {
                 BaseApplication.instance.switchNightMode()
-                switchThemeWithTransaction()
+                switchThemeWithTransition()
             }
             R.id.action_clearcache -> {
                 ToastUtil.showToast(R.string.cache_clearing)
@@ -174,7 +174,7 @@ class MainActivity : BaseActivity() {
     }
 
     @Suppress("DEPRECATION")
-    private fun switchThemeWithTransaction() {
+    private fun switchThemeWithTransition() {
         val rootView = window.decorView.rootView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val bitmap = Bitmap.createBitmap(rootView.width, rootView.height, Bitmap.Config.RGB_565)
@@ -191,22 +191,22 @@ class MainActivity : BaseActivity() {
                 bitmap,
                 { copyResult ->
                     if (copyResult == PixelCopy.SUCCESS) {
-                        ThemeSwitchTransactionActivity.screenshot = bitmap
-                        startThemeSwitchTransaction()
+                        ThemeSwitchTransitionActivity.screenshot = bitmap
+                        startThemeSwitchTransition()
                     }
                 },
                 Handler()
             )
         } else {
             rootView.isDrawingCacheEnabled = true
-            ThemeSwitchTransactionActivity.screenshot = Bitmap.createBitmap(rootView.drawingCache)
+            ThemeSwitchTransitionActivity.screenshot = Bitmap.createBitmap(rootView.drawingCache)
             rootView.isDrawingCacheEnabled = false
-            startThemeSwitchTransaction()
+            startThemeSwitchTransition()
         }
     }
 
-    private fun startThemeSwitchTransaction() {
-        val intent = Intent(this@MainActivity, ThemeSwitchTransactionActivity::class.java).apply {
+    private fun startThemeSwitchTransition() {
+        val intent = Intent(this@MainActivity, ThemeSwitchTransitionActivity::class.java).apply {
             putExtra(KEY_SYSTEM_UI_VISIBILITY, window.decorView.systemUiVisibility)
         }
         startActivity(intent)
