@@ -1,9 +1,14 @@
 package me.ikirby.ithomereader.ui.activity
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
+import android.view.PixelCopy
 import android.view.View
 import android.webkit.CookieManager
 import androidx.appcompat.widget.SearchView
@@ -139,7 +144,7 @@ class MainActivity : BaseActivity() {
             R.id.action_refresh -> return false
             R.id.action_night_mode -> {
                 BaseApplication.instance.switchNightMode()
-                recreate()
+                switchThemeWithTransaction()
             }
             R.id.action_clearcache -> {
                 ToastUtil.showToast(R.string.cache_clearing)
@@ -166,5 +171,48 @@ class MainActivity : BaseActivity() {
 
     override fun swipeRight(): Boolean {
         return false
+    }
+
+    @Suppress("DEPRECATION")
+    private fun switchThemeWithTransaction() {
+        val rootView = window.decorView.rootView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val bitmap = Bitmap.createBitmap(rootView.width, rootView.height, Bitmap.Config.RGB_565)
+            val locationOfRootView = IntArray(2)
+            rootView.getLocationInWindow(locationOfRootView)
+            PixelCopy.request(
+                window,
+                Rect(
+                    locationOfRootView[0],
+                    locationOfRootView[1],
+                    locationOfRootView[0] + rootView.width,
+                    locationOfRootView[1] + rootView.height
+                ),
+                bitmap,
+                { copyResult ->
+                    if (copyResult == PixelCopy.SUCCESS) {
+                        ThemeSwitchTransactionActivity.screenshot = bitmap
+                        startThemeSwitchTransaction()
+                    }
+                },
+                Handler()
+            )
+        } else {
+            rootView.isDrawingCacheEnabled = true
+            ThemeSwitchTransactionActivity.screenshot = rootView.drawingCache
+            rootView.isDrawingCacheEnabled = false
+            startThemeSwitchTransaction()
+        }
+    }
+
+    private fun startThemeSwitchTransaction() {
+        val intent = Intent(this@MainActivity, ThemeSwitchTransactionActivity::class.java).apply {
+            putExtra(KEY_SYSTEM_UI_VISIBILITY, window.decorView.systemUiVisibility)
+        }
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        Handler().postDelayed({
+            recreate()
+        }, 50)
     }
 }
