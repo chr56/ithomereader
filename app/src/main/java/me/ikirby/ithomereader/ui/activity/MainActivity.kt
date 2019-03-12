@@ -206,7 +206,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startThemeSwitchTransition() {
-        val intent = Intent(this@MainActivity, ThemeSwitchTransitionActivity::class.java).apply {
+        val intent = Intent(this, ThemeSwitchTransitionActivity::class.java).apply {
             putExtra(KEY_SYSTEM_UI_VISIBILITY, window.decorView.systemUiVisibility)
         }
         startActivity(intent)
