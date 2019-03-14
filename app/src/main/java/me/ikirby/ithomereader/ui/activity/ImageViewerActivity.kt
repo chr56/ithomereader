@@ -198,7 +198,8 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
                 override fun onBottomSheetMenuItemSelected(item: MenuItem) {
                     when (item.itemId) {
-                        R.id.context_download_img -> checkPermission()
+                        // TODO Uncomment after adapting to Q
+                        // R.id.context_download_img -> checkPermission()
                         R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, url)
                     }
                 }
