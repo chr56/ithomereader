@@ -7,7 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.article_grade_dialog.view.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.KEY_NEWS_ID
 import me.ikirby.ithomereader.R

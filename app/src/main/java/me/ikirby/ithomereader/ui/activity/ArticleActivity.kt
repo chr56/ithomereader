@@ -5,18 +5,37 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.webkit.*
+import android.webkit.JavascriptInterface
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
+import me.ikirby.ithomereader.KEY_FULL_ARTICLE
+import me.ikirby.ithomereader.KEY_LIVE_INFO
+import me.ikirby.ithomereader.KEY_NEWS_ID
+import me.ikirby.ithomereader.KEY_READ_PROGRESS
+import me.ikirby.ithomereader.KEY_TITLE
+import me.ikirby.ithomereader.KEY_URL
+import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.entity.FullArticle
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.ArticleGradeDialog
 import me.ikirby.ithomereader.ui.util.ToastUtil
-import me.ikirby.ithomereader.util.*
+import me.ikirby.ithomereader.util.convertDpToPixel
+import me.ikirby.ithomereader.util.copyToClipboard
+import me.ikirby.ithomereader.util.getFooter
+import me.ikirby.ithomereader.util.getHead
+import me.ikirby.ithomereader.util.getScrollProgress
+import me.ikirby.ithomereader.util.openLink
+import me.ikirby.ithomereader.util.openLinkInBrowser
+import me.ikirby.ithomereader.util.shouldLoadImageAutomatically
 
 class ArticleActivity : BaseActivity() {
 
@@ -34,7 +53,7 @@ class ArticleActivity : BaseActivity() {
         setTitleCustom("")
         enableBackBtn()
 
-        url = intent.getStringExtra(KEY_URL)
+        url = intent.getStringExtra(KEY_URL) ?: ""
         title = intent.getStringExtra(KEY_TITLE) ?: ""
 
         if (url.contains("live.ithome.com")) {

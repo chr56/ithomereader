@@ -3,7 +3,11 @@ package me.ikirby.ithomereader.task
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.BuildConfig
+import me.ikirby.ithomereader.KEY_UPDATE_INFO
+import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_IGNORE_VERSION_CODE
 import me.ikirby.ithomereader.entity.UpdateInfo
 import me.ikirby.ithomereader.ui.activity.DialogActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
@@ -46,7 +50,8 @@ class UpdateCheckNotifyTask(private val showToast: Boolean) : AsyncTask<Void, Vo
     override fun onPostExecute(updateInfo: UpdateInfo?) {
         if (updateInfo != null) {
             if (showToast
-                || BaseApplication.preferences.getInt(SETTINGS_KEY_IGNORE_VERSION_CODE, 0) != updateInfo.versionCode) {
+                || BaseApplication.preferences.getInt(SETTINGS_KEY_IGNORE_VERSION_CODE, 0) != updateInfo.versionCode
+            ) {
                 val context = BaseApplication.instance
                 val intent = Intent(context, DialogActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK

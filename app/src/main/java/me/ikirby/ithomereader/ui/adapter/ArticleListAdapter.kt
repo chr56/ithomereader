@@ -4,7 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.post_list_item.view.*
 import kotlinx.android.synthetic.main.slide_recycler.view.*
-import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
+import me.ikirby.ithomereader.KEY_TITLE
+import me.ikirby.ithomereader.KEY_URL
+import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SLIDE_SCROLL_INTERVAL
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.activity.ArticleActivity
 import me.ikirby.ithomereader.ui.activity.ImageViewerActivity

@@ -21,7 +21,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_image_viewer.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
@@ -61,7 +66,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
-        url = intent.getStringExtra(KEY_URL)
+        url = intent.getStringExtra(KEY_URL) ?: ""
 
         photo_view.setOnClickListener(this)
         image_menu_btn.setOnClickListener(this)
@@ -117,10 +122,14 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     }
 
     private fun checkPermission() {
+        // TODO Adapt to Android Q
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             saveImage()
         } else {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE)
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                STORAGE_PERMISSION_REQUEST_CODE
+            )
         }
     }
 
@@ -131,7 +140,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                 val pathname = getFullPath(url)
                 try {
                     val file = File(pathname)
-                    file.parentFile.mkdirs()
+                    file.parentFile?.mkdirs()
                     if (file.exists()) {
                         withContext(Dispatchers.Main) { ToastUtil.showToast(R.string.file_exists) }
                         return@withContext
@@ -154,7 +163,11 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 saveImage()

@@ -16,7 +16,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_viewpager.*
-import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.BuildConfig
+import me.ikirby.ithomereader.KEY_KEYWORD
+import me.ikirby.ithomereader.KEY_SYSTEM_UI_VISIBILITY
+import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH
+import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
+import me.ikirby.ithomereader.SETTINGS_KEY_VERSION
+import me.ikirby.ithomereader.THEME_CHANGE_REQUEST_CODE
 import me.ikirby.ithomereader.task.CleanUpTask
 import me.ikirby.ithomereader.task.ClearCacheTask
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
