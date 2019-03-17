@@ -1,9 +1,9 @@
 package me.ikirby.ithomereader.ui.activity
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -30,15 +30,15 @@ import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.STORAGE_PERMISSION_REQUEST_CODE
+import me.ikirby.ithomereader.SAF_CREATE_REQUEST_CODE
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.copyToClipboard
-import me.ikirby.ithomereader.util.getFullPath
+import me.ikirby.ithomereader.util.getFileName
+import me.ikirby.ithomereader.util.getImageMimeType
 import me.ikirby.ithomereader.util.writeFile
-import java.io.File
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
@@ -87,6 +87,14 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         super.onDestroy()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SAF_CREATE_REQUEST_CODE && data != null) {
+                saveImage(data.data)
+            }
+        }
+    }
+
     private fun loadImage() {
         load_tip.setOnClickListener(null)
         load_tip.visibility = View.VISIBLE
@@ -121,58 +129,36 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         }).into(photo_view)
     }
 
-    private fun checkPermission() {
-        // TODO Adapt to Android Q
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            saveImage()
-        } else {
-            requestPermissions(
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                STORAGE_PERMISSION_REQUEST_CODE
-            )
+    private fun createImageFile() {
+        val fileName = getFileName(url)
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = getImageMimeType(fileName)
+            putExtra(Intent.EXTRA_TITLE, fileName)
         }
+        startActivityForResult(intent, SAF_CREATE_REQUEST_CODE)
     }
 
-    private fun saveImage() {
+    private fun saveImage(uri: Uri) {
         launch {
             withContext(Dispatchers.IO) {
                 val target = Glide.with(this@ImageViewerActivity).downloadOnly().load(url).submit()
-                val pathname = getFullPath(url)
                 try {
-                    val file = File(pathname)
-                    file.parentFile?.mkdirs()
-                    if (file.exists()) {
-                        withContext(Dispatchers.Main) { ToastUtil.showToast(R.string.file_exists) }
-                        return@withContext
-                    }
-                    writeFile(pathname, target.get())
-                    MediaScannerConnection.scanFile(
-                        this@ImageViewerActivity,
-                        arrayOf(pathname),
-                        arrayOf("image/*"),
-                        null
-                    )
+                    writeFile(contentResolver.openOutputStream(uri), target.get())
                     withContext(Dispatchers.Main) {
-                        ToastUtil.showToast(getString(R.string.image_saved_to) + pathname)
+                        val intent = Intent().apply {
+                            action = Intent.ACTION_MEDIA_SCANNER_SCAN_FILE
+                            data = uri
+                        }
+                        sendBroadcast(intent)
+                        ToastUtil.showToast(R.string.image_saved)
                     }
                 } catch (e: IOException) {
                     Logger.e("ImageViewerActivity", "saveImage", e)
-                    withContext(Dispatchers.Main) { ToastUtil.showToast(R.string.save_fail) }
+                    withContext(Dispatchers.Main) {
+                        ToastUtil.showToast(R.string.save_fail)
+                    }
                 }
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                saveImage()
-            } else {
-                ToastUtil.showToast(R.string.permission_denied)
             }
         }
     }
@@ -198,8 +184,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
                 override fun onBottomSheetMenuItemSelected(item: MenuItem) {
                     when (item.itemId) {
-                        // TODO Uncomment after adapting to Q
-                        // R.id.context_download_img -> checkPermission()
+                        R.id.context_download_img -> createImageFile()
                         R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, url)
                     }
                 }

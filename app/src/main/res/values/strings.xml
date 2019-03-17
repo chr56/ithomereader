@@ -23,9 +23,9 @@
     <string name="pref_font_size">字体大小</string>
     <string name="pref_image_loading">图片加载</string>
     <string name="download_image">保存图片</string>
-    <string name="image_saved_to">"图片已保存到 "</string>
+    <string name="image_saved">图片已保存</string>
     <string name="permission_denied">权限被拒绝，无法写入文件</string>
-    <string name="save_fail">保存失败，请检查权限</string>
+    <string name="save_fail">保存失败，出现错误</string>
     <string name="open_source">开源相关</string>
     <string name="pref_night_mode">夜间模式</string>
     <string name="day_mode">日间模式</string>
