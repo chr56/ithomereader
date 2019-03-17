@@ -22,9 +22,11 @@ fun clearCache() {
 private fun deleteDir(dir: File): Boolean {
     if (dir.isDirectory) {
         val children = dir.list()
-        for (child in children) {
-            if (!deleteDir(File(dir, child))) {
-                return false
+        if (children != null) {
+            for (child in children) {
+                if (!deleteDir(File(dir, child))) {
+                    return false
+                }
             }
         }
     }
