@@ -13,7 +13,7 @@
         <item name="android:navigationBarDividerColor">@color/navigation_bar_divider_light</item>
     </style>
 
-    <style name="AppTheme.OStyle" parent="AppBaseTheme.OStyle">
+    <style name="AppTheme.White" parent="AppBaseTheme.White">
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:navigationBarDividerColor">@color/navigation_bar_divider_light</item>

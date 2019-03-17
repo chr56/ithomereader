@@ -76,11 +76,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-            val oStyleLightSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_WHITE_THEME)
+            val whiteThemeSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_WHITE_THEME)
             val swipeBackSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_SWIPE_GESTURE)
             val useBottomNavSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_USE_BOTTOM_NAV)
 
-            oStyleLightSwitch?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            whiteThemeSwitch?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
                 activity?.setResult(Activity.RESULT_OK)
                 true
             }

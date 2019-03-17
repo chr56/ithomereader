@@ -8,7 +8,7 @@ import java.util.regex.Pattern
 fun getCss(): String {
     return when {
         BaseApplication.isNightMode -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_night.css'>"
-        BaseApplication.isOStyleLight -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_white.css'>"
+        BaseApplication.isWhiteTheme -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_white.css'>"
         else -> "<link rel='stylesheet' href='file:///android_asset/css/base_style.css'>"
     }
 }

@@ -13,7 +13,7 @@ class BaseApplication : Application() {
             private set
         var isNightMode: Boolean = false
             private set
-        var isOStyleLight: Boolean = false
+        var isWhiteTheme: Boolean = false
             private set
         var isGestureEnabled: Boolean = false
             private set
@@ -37,7 +37,7 @@ class BaseApplication : Application() {
 
     fun loadPreferences() {
         isNightMode = preferences.getBoolean(SETTINGS_KEY_NIGHT_MODE, false)
-        isOStyleLight = preferences.getBoolean(SETTINGS_KEY_WHITE_THEME, false)
+        isWhiteTheme = preferences.getBoolean(SETTINGS_KEY_WHITE_THEME, false)
         isGestureEnabled = preferences.getBoolean(SETTINGS_KEY_SWIPE_GESTURE, true)
     }
 

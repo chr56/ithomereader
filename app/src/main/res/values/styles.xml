@@ -44,9 +44,9 @@
         <item name="actionBarColor">@color/colorActionBarBackground_night</item>
     </style>
 
-    <style name="AppBaseTheme.OStyle" parent="Theme.MaterialComponents.Light">
+    <style name="AppBaseTheme.White" parent="Theme.MaterialComponents.Light">
         <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
-        <item name="actionBarTheme">@style/AppBaseTheme.OStyle.ActionBar.Theme</item>
+        <item name="actionBarTheme">@style/AppBaseTheme.White.ActionBar.Theme</item>
         <item name="colorPrimary">@color/colorPrimary_white</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
@@ -66,13 +66,13 @@
 
     <style name="AppTheme.Light" parent="AppBaseTheme.Light" />
 
-    <style name="AppTheme.OStyle" parent="AppBaseTheme.OStyle" />
+    <style name="AppTheme.White" parent="AppBaseTheme.White" />
 
     <style name="AppBaseTheme.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
         <item name="background">?actionBarColor</item>
     </style>
 
-    <style name="AppBaseTheme.OStyle.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar">
+    <style name="AppBaseTheme.White.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="colorControlNormal">@color/colorPrimary_white</item>
     </style>
 
@@ -104,7 +104,7 @@
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
-    <style name="AppTheme.CommonDialog.OStyle" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="AppTheme.CommonDialog.White" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary_white</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
@@ -146,7 +146,7 @@
         <item name="colorAccent">@color/colorSecondary</item>
     </style>
 
-    <style name="BottomSheetDialog.OStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+    <style name="BottomSheetDialog.White" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 

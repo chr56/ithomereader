@@ -60,8 +60,8 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="o_style_light"
-            android:summary="@string/pref_o_style_light_summary"
-            android:title="@string/pref_o_style_light" />
+            android:summary="@string/pref_white_theme_summary"
+            android:title="@string/pref_white_theme" />
 
         <SwitchPreference
             android:defaultValue="true"

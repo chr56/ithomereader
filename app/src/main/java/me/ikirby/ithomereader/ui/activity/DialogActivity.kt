@@ -19,7 +19,7 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
-        UiUtil.setNightModeForDialogActivity(this, BaseApplication.isNightMode, BaseApplication.isOStyleLight)
+        UiUtil.setNightModeForDialogActivity(this, BaseApplication.isNightMode, BaseApplication.isWhiteTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_dialog)
 

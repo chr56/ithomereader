@@ -39,7 +39,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         }
         when {
             BaseApplication.isNightMode -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog)
-            BaseApplication.isOStyleLight -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog_OStyle)
+            BaseApplication.isWhiteTheme -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog_White)
             else -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog_Light)
         }
     }

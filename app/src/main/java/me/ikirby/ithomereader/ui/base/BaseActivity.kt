@@ -2,9 +2,6 @@ package me.ikirby.ithomereader.ui.base
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.GestureDetector
 import android.view.Menu
 import android.view.MotionEvent
@@ -30,7 +27,7 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isGestureEnabled = BaseApplication.isGestureEnabled
-        UiUtil.setNightMode(this, BaseApplication.isNightMode, BaseApplication.isOStyleLight)
+        UiUtil.setNightMode(this, BaseApplication.isNightMode, BaseApplication.isWhiteTheme)
         super.onCreate(savedInstanceState)
         mGestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onFling(e1: MotionEvent, e2: MotionEvent, v: Float, v1: Float): Boolean {
@@ -51,8 +48,8 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
     protected open fun initView() {}
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (!BaseApplication.isNightMode && BaseApplication.isOStyleLight) {
-            UiUtil.tintMenuIcon(menu, R.color.colorPrimary)
+        if (!BaseApplication.isNightMode && BaseApplication.isWhiteTheme) {
+            UiUtil.tintMenuIcon(menu, R.color.colorPrimary_white)
         } else {
             UiUtil.tintMenuIcon(menu, android.R.color.white)
         }
@@ -89,17 +86,17 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
     }
 
     protected fun setTitleCustom(title: String?) {
-        if (!BaseApplication.isNightMode && BaseApplication.isOStyleLight) {
-            val text = SpannableString(title)
-            text.setSpan(
-                ForegroundColorSpan(getColor(R.color.colorPrimary)),
-                0,
-                text.length,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE
-            )
-            setTitle(text)
-        } else {
-            setTitle(title)
-        }
+//        if (!BaseApplication.isNightMode && BaseApplication.isWhiteTheme) {
+//            val text = SpannableString(title)
+//            text.setSpan(
+//                ForegroundColorSpan(getColor(R.color.colorPrimary)),
+//                0,
+//                text.length,
+//                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+//            )
+//            setTitle(text)
+//        } else {
+        setTitle(title)
+//        }
     }
 }

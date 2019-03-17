@@ -14,10 +14,10 @@ import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 
 object UiUtil {
 
-    fun setNightMode(activity: Activity, isNightMode: Boolean, isOStyleLight: Boolean) {
+    fun setNightMode(activity: Activity, isNightMode: Boolean, isWhiteTheme: Boolean) {
         if (!isNightMode) {
-            val descriptionColorRes = if (isOStyleLight) {
-                activity.setTheme(R.style.AppTheme_OStyle)
+            val descriptionColorRes = if (isWhiteTheme) {
+                activity.setTheme(R.style.AppTheme_White)
                 R.color.colorActionBarBackground_white
             } else {
                 activity.setTheme(R.style.AppTheme_Light)
@@ -47,7 +47,7 @@ object UiUtil {
             if (isNightMode) {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
             } else {
-                if (isOStyleLight) {
+                if (isWhiteTheme) {
                     window.decorView.systemUiVisibility =
                         View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 } else {
@@ -60,10 +60,10 @@ object UiUtil {
         }
     }
 
-    fun setNightModeForDialogActivity(dialogActivity: Activity, isNightMode: Boolean, isOStyleLight: Boolean) {
+    fun setNightModeForDialogActivity(dialogActivity: Activity, isNightMode: Boolean, isWhiteTheme: Boolean) {
         if (!isNightMode) {
-            if (isOStyleLight) {
-                dialogActivity.setTheme(R.style.AppTheme_CommonDialog_OStyle)
+            if (isWhiteTheme) {
+                dialogActivity.setTheme(R.style.AppTheme_CommonDialog_White)
             } else {
                 dialogActivity.setTheme(R.style.AppTheme_CommonDialog_Light)
             }
@@ -99,7 +99,7 @@ object UiUtil {
 
     fun getToolBarColor(): Int {
         return if (!BaseApplication.isNightMode) {
-            if (BaseApplication.isOStyleLight) {
+            if (BaseApplication.isWhiteTheme) {
                 BaseApplication.instance.getColor(R.color.colorActionBarBackground_white)
             } else {
                 BaseApplication.instance.getColor(R.color.colorActionBarBackground)
@@ -119,7 +119,7 @@ object UiUtil {
 
     fun getAccentColorRes(): Int {
         return if (!BaseApplication.isNightMode) {
-            if (BaseApplication.isOStyleLight) {
+            if (BaseApplication.isWhiteTheme) {
                 R.color.colorPrimary
             } else {
                 R.color.colorSecondary
