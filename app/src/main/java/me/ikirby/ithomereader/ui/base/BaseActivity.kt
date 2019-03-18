@@ -2,6 +2,9 @@ package me.ikirby.ithomereader.ui.base
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.GestureDetector
 import android.view.Menu
 import android.view.MotionEvent
@@ -86,17 +89,17 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
     }
 
     protected fun setTitleCustom(title: String?) {
-//        if (!BaseApplication.isNightMode && BaseApplication.isWhiteTheme) {
-//            val text = SpannableString(title)
-//            text.setSpan(
-//                ForegroundColorSpan(getColor(R.color.colorPrimary)),
-//                0,
-//                text.length,
-//                Spannable.SPAN_INCLUSIVE_INCLUSIVE
-//            )
-//            setTitle(text)
-//        } else {
-        setTitle(title)
-//        }
+        if (!BaseApplication.isNightMode && BaseApplication.isWhiteTheme) {
+            val text = SpannableString(title)
+            text.setSpan(
+                ForegroundColorSpan(getColor(R.color.colorPrimary)),
+                0,
+                text.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+            setTitle(text)
+        } else {
+            setTitle(title)
+        }
     }
 }

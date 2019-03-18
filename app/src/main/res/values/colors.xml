@@ -14,7 +14,7 @@
     <!-- New material color system -->
     <!-- light theme -->
     <color name="colorPrimary">#d22222</color>
-    <color name="colorPrimaryVariant">#990000</color>
+    <color name="colorPrimaryVariant">#d22222</color>
     <color name="colorSecondary">#1976d2</color>
     <color name="colorSecondaryVariant">#004ba0</color>
     <color name="colorOnPrimary">#ffffff</color>
@@ -22,18 +22,18 @@
     <color name="colorActionBarBackground">#d22222</color>
     <!-- night theme -->
     <color name="colorPrimary_night">#990000</color>
-    <color name="colorPrimaryVariant_night">#650000</color>
+    <color name="colorPrimaryVariant_night">#990000</color>
     <color name="colorSecondary_night">#42a5f5</color>
     <color name="colorSecondaryVariant_night">#0077c2</color>
     <color name="colorOnPrimary_night">#ffffff</color>
     <color name="colorOnSecondary_night">#ffffff</color>
     <color name="colorActionBarBackground_night">#990000</color>
     <!-- white theme -->
-    <color name="colorPrimary_white">#212121</color>
-    <color name="colorPrimaryVariant_white">#ffffff</color>
+    <color name="colorPrimary_white">#d22222</color>
+    <color name="colorPrimaryVariant_white">#f5f5f5</color>
     <color name="colorSecondary_white">#d22222</color>
     <color name="colorSecondaryVariant_white">#990000</color>
     <color name="colorOnPrimary_white">#ffffff</color>
     <color name="colorOnSecondary_white">#ffffff</color>
-    <color name="colorActionBarBackground_white">#ffffff</color>
+    <color name="colorActionBarBackground_white">#f5f5f5</color>
 </resources>
