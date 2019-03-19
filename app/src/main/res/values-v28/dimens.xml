@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ambient_shadow_alpha">0.039</dimen>
+    <dimen name="spot_shadow_alpha">0.19</dimen>
+</resources>

@@ -1,6 +1,8 @@
 <resources>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
@@ -16,6 +18,8 @@
     </style>
 
     <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
@@ -30,6 +34,8 @@
     </style>
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
@@ -45,6 +51,8 @@
     </style>
 
     <style name="AppBaseTheme.White" parent="Theme.MaterialComponents.Light">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
         <item name="actionBarTheme">@style/AppBaseTheme.White.ActionBar.Theme</item>
         <item name="colorPrimary">@color/colorPrimary_white</item>
@@ -77,6 +85,8 @@
     </style>
 
     <style name="AppTheme.CommonDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
@@ -91,6 +101,8 @@
     </style>
 
     <style name="AppTheme.CommonDialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
@@ -105,6 +117,8 @@
     </style>
 
     <style name="AppTheme.CommonDialog.White" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
+        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="colorPrimary">@color/colorPrimary_white</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>

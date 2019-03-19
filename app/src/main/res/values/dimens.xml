@@ -8,4 +8,6 @@
     <dimen name="bottom_sheet_menu_item_icon_size">24dp</dimen>
     <dimen name="dialog_bottom_padding">6dp</dimen>
     <dimen name="horizontal_padding_dialog">24dp</dimen>
+    <dimen name="ambient_shadow_alpha">0.029</dimen>
+    <dimen name="spot_shadow_alpha">0.09</dimen>
 </resources>
