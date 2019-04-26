@@ -1,25 +1,23 @@
 package me.ikirby.ithomereader.util
 
-import java.util.*
+import java.util.Calendar
 import java.util.regex.Pattern
 
 fun getMatchInt(s: String): Int {
     val pattern = Pattern.compile("(?<=[/(])(\\d+)")
     val matcher = pattern.matcher(s)
-    var result: String
-    try {
-        if (matcher.find()) {
-            result = matcher.group(0)
-        } else {
-            return 0
+    var result = ""
+    return try {
+        while (matcher.find()) {
+            val group = matcher.group(0)
+            if (group != "0") {
+                result += group
+            }
         }
-        if (matcher.groupCount() > 2 && result.length == 1) {
-            result = matcher.group(1) + matcher.group(2)
-        }
-        return Integer.parseInt(result)
+        Integer.parseInt(result)
     } catch (e: Exception) {
         Logger.e("ParseUtil", "getMatchInt", e)
-        return 0
+        0
     }
 }
 

@@ -41,7 +41,6 @@ class ArticleActivity : BaseActivity() {
 
     private lateinit var title: String
     private lateinit var url: String
-    private lateinit var newsId: String
     private lateinit var fullArticle: FullArticle
     private var isLiveInfo = false
     private var readProgress = 0F
@@ -193,7 +192,6 @@ class ArticleActivity : BaseActivity() {
             "UTF-8",
             null
         )
-        newsId = fullArticle.newsId
         title = fullArticle.title
     }
 
@@ -207,9 +205,9 @@ class ArticleActivity : BaseActivity() {
     }
 
     private fun showComments() {
-        if (::newsId.isInitialized) {
+        if (::fullArticle.isInitialized) {
             val intent = Intent(this, CommentsActivity::class.java).apply {
-                putExtra(KEY_NEWS_ID, newsId)
+                putExtra(KEY_NEWS_ID, fullArticle.newsIdHash)
                 putExtra(KEY_TITLE, title)
                 putExtra(KEY_URL, url)
                 // putExtra("lapinId", lapinId)
@@ -219,8 +217,8 @@ class ArticleActivity : BaseActivity() {
     }
 
     private fun showGrade() {
-        if (::newsId.isInitialized) {
-            val dialog = ArticleGradeDialog.newInstance(newsId)
+        if (::fullArticle.isInitialized) {
+            val dialog = ArticleGradeDialog.newInstance(fullArticle.newsId)
             dialog.show(supportFragmentManager, "gradeDialog")
         }
     }

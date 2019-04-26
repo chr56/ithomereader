@@ -179,16 +179,13 @@ object ArticleApiImpl : ArticleApi {
             val doc = Jsoup.connect(url).timeout(5000).get()
             val title: String
             val time: String
-            val newsId: String
+            val newsId: String = "" + getMatchInt(url)
+            val newsIdHash: String
             val post: Element?
             if (isLiveInfo) {
                 post = doc.getElementById("about_info_show")
                 title = doc.getElementsByTag("title")?.text() ?: ""
                 time = ""
-            } else if (url.contains("wap.") || url.contains("m.")) {
-                post = doc.select(".news-content")?.get(0)
-                title = doc.select("h1.title")?.text() ?: ""
-                time = doc.select(".news-mes")?.text() ?: ""
             } else {
                 post = doc.getElementById("paragraph")
                 val meta = doc.getElementsByClass("post_title")
@@ -229,28 +226,14 @@ object ArticleApiImpl : ArticleApi {
 //            post.select("embed").remove()
             var content = "<div id=\"header\"><h2>$title</h2><p>$time</p></div>"
             content += post.toString().replace("<script.*</script>".toRegex(), "")
-            if (url.contains("wap.") || url.contains("m.")) {
-                val ids = doc.getElementById("newsID")
-                newsId = if (ids != null) {
-                    ids.attr("data-news-id")
-                    //lapinId = ids.attr("data-lapin-id")
-                } else {
-                    "" + getMatchInt(url)
-                }
-            } else if (url.contains("live.")) {
-                newsId = "" + getMatchInt(url)
+
+            val ifComment = doc.getElementById("ifcomment")
+            newsIdHash = if (ifComment != null) {
+                ifComment.attr("data")
             } else {
-                val ifComment = doc.getElementById("ifcomment")
-                newsId = if (ifComment != null) {
-                    ifComment.attr("data")
-                    //                        if (url!!.contains("lapin")) {
-                    //                            lapinId = ifComment.attr("datalapin")
-                    //                        }
-                } else {
-                    "" + getMatchInt(url)
-                }
+                ""
             }
-            return FullArticle(newsId, title, time, content)
+            return FullArticle(newsId, newsIdHash, title, time, content)
         } catch (e: Exception) {
             Logger.e(tag, "getFullArticle", e)
             return null

@@ -66,22 +66,6 @@
                     android:pathPattern="/0/.*/.*.htm"
                     android:scheme="https" />
                 <data
-                    android:host="wap.ithome.com"
-                    android:pathPattern="/html/.*.htm"
-                    android:scheme="http" />
-                <data
-                    android:host="wap.ithome.com"
-                    android:pathPattern="/html/.*.htm"
-                    android:scheme="https" />
-                <data
-                    android:host="m.ithome.com"
-                    android:pathPattern="/html/.*.htm"
-                    android:scheme="http" />
-                <data
-                    android:host="m.ithome.com"
-                    android:pathPattern="/html/.*.htm"
-                    android:scheme="https" />
-                <data
                     android:host="live.ithome.com"
                     android:pathPattern="/item/.*.htm"
                     android:scheme="http" />
