@@ -81,6 +81,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == COMMENT_POSTED_REQUEST_CODE) {
             goToAllComments()
             val refreshBtn = findViewById<View>(R.id.action_refresh)
@@ -135,7 +136,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             CommentListFragment.newInstance(id, hash, cookie, url, lapinId)
         )
 
-        val adapter = object : FragmentPagerAdapter(supportFragmentManager) {
+        val adapter = object : FragmentPagerAdapter(supportFragmentManager, RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getItem(position: Int): Fragment {
                 return fragments[position]
             }

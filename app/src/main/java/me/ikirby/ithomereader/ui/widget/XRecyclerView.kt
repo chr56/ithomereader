@@ -18,7 +18,7 @@ class XRecyclerView : RecyclerView {
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun setLayoutManager(layout: RecyclerView.LayoutManager?) {
+    override fun setLayoutManager(layout: LayoutManager?) {
         super.setLayoutManager(layout)
         isLinearLayoutManager = layout is LinearLayoutManager
     }

@@ -46,7 +46,7 @@ class MainActivity : BaseActivity() {
             TrendingListFragment()
         )
 
-        val adapter = object : FragmentPagerAdapter(supportFragmentManager) {
+        val adapter = object : FragmentPagerAdapter(supportFragmentManager, RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getItem(position: Int): Fragment {
                 return fragments[position]
             }
@@ -167,6 +167,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == THEME_CHANGE_REQUEST_CODE) {
             recreate()
         }
