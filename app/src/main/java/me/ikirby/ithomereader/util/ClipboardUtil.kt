@@ -12,6 +12,6 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 fun copyToClipboard(tag: String, content: String) {
     val clipboardManager = BaseApplication.instance.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(tag, content)
-    clipboardManager.primaryClip = clip
+    clipboardManager.setPrimaryClip(clip)
     ToastUtil.showToast(R.string.copied_to_clipboard)
 }

@@ -61,6 +61,7 @@ android {
         }
     }
     packagingOptions {
+        pickFirst("META-INF/atomicfu.kotlin_module")
         exclude 'META-INF/CHANGES'
         exclude 'META-INF/README.md'
         exclude 'META-INF/LICENSE'

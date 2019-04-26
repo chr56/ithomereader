@@ -88,9 +88,10 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SAF_CREATE_REQUEST_CODE && data != null) {
-                saveImage(data.data)
+                saveImage(data.data!!)
             }
         }
     }
@@ -144,7 +145,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             withContext(Dispatchers.IO) {
                 val target = Glide.with(this@ImageViewerActivity).downloadOnly().load(url).submit()
                 try {
-                    writeFile(contentResolver.openOutputStream(uri), target.get())
+                    writeFile(contentResolver.openOutputStream(uri)!!, target.get())
                     withContext(Dispatchers.Main) {
                         val intent = Intent().apply {
                             action = Intent.ACTION_MEDIA_SCANNER_SCAN_FILE
