@@ -8,6 +8,7 @@ import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.SETTINGS_KEY_LOAD_IMAGE_COND
 import me.ikirby.ithomereader.SETTINGS_KEY_SHOW_THUMB_COND
 
+@Suppress("DEPRECATION")
 private fun isWiFiConnected(): Boolean {
     val manager = BaseApplication.instance.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -15,7 +16,6 @@ private fun isWiFiConnected(): Boolean {
         capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED) ?: false
     } else {
         val info = manager.activeNetworkInfo
-        @Suppress("DEPRECATION")
         info != null && info.type == ConnectivityManager.TYPE_WIFI
     }
 }

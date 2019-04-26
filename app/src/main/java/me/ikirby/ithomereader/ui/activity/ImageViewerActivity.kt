@@ -3,6 +3,7 @@ package me.ikirby.ithomereader.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -147,11 +148,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                 try {
                     writeFile(contentResolver.openOutputStream(uri)!!, target.get())
                     withContext(Dispatchers.Main) {
-                        val intent = Intent().apply {
-                            action = Intent.ACTION_MEDIA_SCANNER_SCAN_FILE
-                            data = uri
-                        }
-                        sendBroadcast(intent)
+                        MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(uri.toString()), null, null)
                         ToastUtil.showToast(R.string.image_saved)
                     }
                 } catch (e: IOException) {

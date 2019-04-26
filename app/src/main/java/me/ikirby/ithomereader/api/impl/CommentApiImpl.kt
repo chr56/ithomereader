@@ -225,7 +225,7 @@ object CommentApiImpl : CommentApi {
         val idMatch = Pattern.compile("\\d+")
         val matcher = idMatch.matcher(strContainingId)
         return if (matcher.find()) {
-            matcher.group(0)
+            matcher.group()
         } else "0"
     }
 

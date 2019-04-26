@@ -75,7 +75,7 @@ object ArticleApiImpl : ArticleApi {
             val pattern = Pattern.compile("^var gradestr = '(.+)';$", Pattern.MULTILINE)
             val matcher = pattern.matcher(gradeHtml)
             if (matcher.find()) {
-                gradeHtml = matcher.group(1).replace(");", "")
+                gradeHtml = matcher.group(1)!!.replace(");", "")
                 val gradeDoc = Jsoup.parse(gradeHtml)
                 val score = gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text").text()
 

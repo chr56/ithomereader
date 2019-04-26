@@ -14,7 +14,11 @@ fun getMatchInt(s: String): Int {
                 result += group
             }
         }
-        Integer.parseInt(result)
+        if (result.isNotEmpty()) {
+            Integer.parseInt(result)
+        } else {
+            0
+        }
     } catch (e: Exception) {
         Logger.e("ParseUtil", "getMatchInt", e)
         0
