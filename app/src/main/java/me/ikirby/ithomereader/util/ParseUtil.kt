@@ -29,7 +29,6 @@ fun canHandleURL(url: String): Boolean {
     return url.contains("www.ithome.com/html")
             || url.contains("www.ithome.com/0/")
             || url.contains("live.ithome.com")
-            || url.contains("m.ithome.com/html")
             || url.contains("lapin.ithome.com/html")
 }
 
