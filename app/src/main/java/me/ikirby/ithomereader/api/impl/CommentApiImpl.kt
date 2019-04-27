@@ -210,7 +210,7 @@ object CommentApiImpl : CommentApi {
     override fun getCommentHash(id: String): String? {
         try {
             val doc = Jsoup.connect(ITHomeApi.IFCOMMENT_URL + id).timeout(5000).get()
-            val pattern = Pattern.compile("var commentpage = '(.+)';")
+            val pattern = Pattern.compile("var .+ = '(.{16})';")
             val matcher = pattern.matcher(doc.html())
             if (matcher.find()) {
                 return matcher.group(1)

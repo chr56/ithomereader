@@ -19,6 +19,7 @@ import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
 import me.ikirby.ithomereader.KEY_FULL_ARTICLE
 import me.ikirby.ithomereader.KEY_LIVE_INFO
 import me.ikirby.ithomereader.KEY_NEWS_ID
+import me.ikirby.ithomereader.KEY_NEWS_ID_HASH
 import me.ikirby.ithomereader.KEY_READ_PROGRESS
 import me.ikirby.ithomereader.KEY_TITLE
 import me.ikirby.ithomereader.KEY_URL
@@ -207,7 +208,8 @@ class ArticleActivity : BaseActivity() {
     private fun showComments() {
         if (::fullArticle.isInitialized) {
             val intent = Intent(this, CommentsActivity::class.java).apply {
-                putExtra(KEY_NEWS_ID, fullArticle.newsIdHash)
+                putExtra(KEY_NEWS_ID, fullArticle.newsId)
+                putExtra(KEY_NEWS_ID_HASH, fullArticle.newsIdHash)
                 putExtra(KEY_TITLE, title)
                 putExtra(KEY_URL, url)
                 // putExtra("lapinId", lapinId)

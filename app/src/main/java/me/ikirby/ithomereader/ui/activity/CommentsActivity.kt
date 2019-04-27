@@ -15,6 +15,7 @@ import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.COMMENT_POSTED_REQUEST_CODE
 import me.ikirby.ithomereader.KEY_NEWS_ID
+import me.ikirby.ithomereader.KEY_NEWS_ID_HASH
 import me.ikirby.ithomereader.KEY_TITLE
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
@@ -27,6 +28,7 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private lateinit var id: String
+    private lateinit var newsIdHash: String
     private lateinit var title: String
     private lateinit var url: String
     //    private lateinit var lapinId: String
@@ -41,6 +43,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         enableBackBtn()
 
         id = intent.getStringExtra(KEY_NEWS_ID) ?: ""
+        newsIdHash = intent.getStringExtra(KEY_NEWS_ID_HASH) ?: ""
         title = intent.getStringExtra(KEY_TITLE) ?: ""
         url = intent.getStringExtra(KEY_URL) ?: ""
 //        lapinId = intent.getStringExtra("lapinId")
@@ -111,10 +114,10 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         load_progress.visibility = View.VISIBLE
         load_text.visibility = View.GONE
         launch {
-            val hash = withContext(Dispatchers.IO) { CommentApiImpl.getCommentHash(id) }
+            val hash = withContext(Dispatchers.IO) { CommentApiImpl.getCommentHash(newsIdHash) }
             if (hash != null) {
                 commentHash = hash
-                loadPages(id, hash, cookie, url, null)
+                loadPages(id, commentHash, cookie, url, null)
             } else {
                 ToastUtil.showToast(R.string.timeout_no_internet)
                 load_text.visibility = View.VISIBLE
