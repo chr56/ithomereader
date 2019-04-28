@@ -10,6 +10,8 @@ import org.json.JSONObject
 import org.jsoup.Jsoup
 
 object LiveApiImpl : LiveApi {
+    private const val LIVE_PAGE_URL = "https://live.ithome.com/item/%s.htm"
+
     private val tag = javaClass.simpleName
 
     override fun getLiveMessages(id: String): List<LiveMsg>? {
@@ -33,5 +35,16 @@ object LiveApiImpl : LiveApi {
             Logger.e(tag, "getLiveMessages", e)
         }
         return null
+    }
+
+    override fun getNewsIdHash(id: String): String? {
+        return try {
+            val html = ITHomeApi.getPageDoc(String.format(LIVE_PAGE_URL, id))
+            val ifCommentSrc = html.getElementById("ifcomment").attr("src")
+            ifCommentSrc.split("/").last()
+        } catch (e: Exception) {
+            Logger.e(tag, "getNewsIdHash", e)
+            null
+        }
     }
 }

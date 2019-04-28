@@ -13,6 +13,7 @@ import me.ikirby.ithomereader.KEY_LIST_STATE
 import me.ikirby.ithomereader.KEY_LIVE_INFO
 import me.ikirby.ithomereader.KEY_LIVE_MESSAGES
 import me.ikirby.ithomereader.KEY_NEWS_ID
+import me.ikirby.ithomereader.KEY_NEWS_ID_HASH
 import me.ikirby.ithomereader.KEY_TITLE
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
@@ -31,6 +32,7 @@ class LiveActivity : BaseActivity() {
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var url: String
     private lateinit var newsId: String
+    private lateinit var newsIdHash: String
     private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +96,10 @@ class LiveActivity : BaseActivity() {
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
+                val commentNewsIdHash = withContext(Dispatchers.IO) { LiveApiImpl.getNewsIdHash(newsId) }
+                if (commentNewsIdHash != null) {
+                    newsIdHash = commentNewsIdHash
+                }
                 UiUtil.switchVisibility(list_view, error_placeholder, liveMessages.size)
                 isLoading = false
                 swipe_refresh.isRefreshing = false
@@ -128,13 +134,16 @@ class LiveActivity : BaseActivity() {
     }
 
     private fun showComments() {
-        if (::newsId.isInitialized) {
+        if (::newsId.isInitialized && ::newsIdHash.isInitialized) {
             val intent = Intent(this, CommentsActivity::class.java).apply {
                 putExtra(KEY_NEWS_ID, newsId)
+                putExtra(KEY_NEWS_ID_HASH, newsIdHash)
                 putExtra(KEY_TITLE, getString(R.string.live))
                 putExtra(KEY_URL, url)
             }
             startActivity(intent)
+        } else {
+            ToastUtil.showToast(R.string.comment_basic_load_failed)
         }
     }
 }

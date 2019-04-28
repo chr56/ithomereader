@@ -176,7 +176,7 @@ object ArticleApiImpl : ArticleApi {
 
     override fun getFullArticle(url: String, loadImageAutomatically: Boolean, isLiveInfo: Boolean): FullArticle? {
         try {
-            val doc = Jsoup.connect(url).timeout(5000).get()
+            val doc = ITHomeApi.getPageDoc(url)
             val title: String
             val time: String
             val newsId: String = "" + getMatchInt(url)
@@ -229,7 +229,11 @@ object ArticleApiImpl : ArticleApi {
 
             val ifComment = doc.getElementById("ifcomment")
             newsIdHash = if (ifComment != null) {
-                ifComment.attr("data")
+                if (isLiveInfo) {
+                    ifComment.attr("src").split("/").last()
+                } else {
+                    ifComment.attr("data")
+                }
             } else {
                 ""
             }

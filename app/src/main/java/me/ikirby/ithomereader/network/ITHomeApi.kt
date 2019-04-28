@@ -301,6 +301,16 @@ object ITHomeApi {
     }
 
     /**
+     * 获取页面 Document
+     * @param url 页面链接
+     * @return 页面 Document
+     */
+    @Throws(IOException::class)
+    fun getPageDoc(url: String): Document {
+        return NetworkRequest.getDocument(url, getHeaders(null, null, null))
+    }
+
+    /**
      * 获取请求头
      * @param xRequestedWith X-Requested-With
      * @param contentType Content-Type
