@@ -15,6 +15,7 @@ fun showListPreferenceDialog(context: Context, preference: ListPreference) {
         .setItems(preference.entries) { _, which ->
             preference.value = preference.entryValues[which].toString()
         }
+        .setNegativeButton(R.string.cancel, null)
         .show()
 }
 
