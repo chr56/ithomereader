@@ -22,7 +22,6 @@ import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.ui.base.BaseActivity
-import me.ikirby.ithomereader.ui.dialog.LoginDialog
 import me.ikirby.ithomereader.ui.fragment.CommentListFragment
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
@@ -167,8 +166,9 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     fun showLoginDialog() {
         ToastUtil.showToast(R.string.please_login_first)
-        val dialog = LoginDialog.newInstance(cookie)
-        dialog.show(supportFragmentManager, "loginDialog")
+        me.ikirby.ithomereader.ui.dialog.showLoginDialog(this) {
+            loadCookie()
+        }
     }
 
     fun loadCookie() {

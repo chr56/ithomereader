@@ -21,7 +21,7 @@ import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.ui.base.BaseActivity
-import me.ikirby.ithomereader.ui.dialog.LoginDialog
+import me.ikirby.ithomereader.ui.dialog.showLoginDialog
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class CommentPostActivity : BaseActivity() {
@@ -92,11 +92,12 @@ class CommentPostActivity : BaseActivity() {
     private fun postComment() {
         if (cookie == null) {
             ToastUtil.showToast(R.string.please_login_first)
-            showLoginDialog()
+            showLoginDialog(this) { loadCookie() }
             return
         }
         post_comment_btn.isEnabled = false
         load_progress.visibility = View.VISIBLE
+
         val commentContent = post_comment_content.text.toString()
         launch {
             val result = withContext(Dispatchers.IO) {
@@ -114,11 +115,6 @@ class CommentPostActivity : BaseActivity() {
                 load_progress.visibility = View.GONE
             }
         }
-    }
-
-    private fun showLoginDialog() {
-        val dialog = LoginDialog.newInstance(cookie)
-        dialog.show(supportFragmentManager, "loginDialog")
     }
 
     fun loadCookie() {

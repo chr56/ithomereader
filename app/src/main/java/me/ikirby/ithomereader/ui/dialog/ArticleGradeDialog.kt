@@ -84,7 +84,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         if (cookie == null) {
             ToastUtil.showToast(R.string.please_login_first)
             if (activity != null) {
-                LoginDialog.newInstance(null).show(activity!!.supportFragmentManager, "loginDialog")
+                showLoginDialog(activity!!, null)
                 dismiss()
             }
             return

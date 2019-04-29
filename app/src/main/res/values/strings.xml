@@ -45,6 +45,7 @@
     <string name="login_btn_dialog">登录</string>
     <string name="user_pass_empty">用户名和密码不能为空</string>
     <string name="cancel">取消</string>
+    <string name="ok">确定</string>
     <string name="login_success">登录成功</string>
     <string name="login_failed">登录失败，请检查网络或用户名/密码是否正确</string>
     <string name="logout_btn">退出已登录帐号</string>
@@ -103,4 +104,6 @@
     <string name="pref_night_start_time">夜间模式开始时间</string>
     <string name="pref_night_end_time">夜间模式结束时间</string>
     <string name="ignore_version">忽略此版本</string>
+    <string name="logout_title">退出软媒通行证</string>
+    <string name="logout_message">要退出登录 %s 吗？</string>
 </resources>

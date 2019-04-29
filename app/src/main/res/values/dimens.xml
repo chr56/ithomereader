@@ -10,4 +10,5 @@
     <dimen name="horizontal_padding_dialog">24dp</dimen>
     <dimen name="ambient_shadow_alpha">0.029</dimen>
     <dimen name="spot_shadow_alpha">0.09</dimen>
+    <dimen name="dialog_corner_radius">8dp</dimen>
 </resources>

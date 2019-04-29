@@ -30,8 +30,9 @@ import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
 import me.ikirby.ithomereader.SETTINGS_KEY_WHITE_THEME
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
-import me.ikirby.ithomereader.ui.dialog.LoginDialog
 import me.ikirby.ithomereader.ui.dialog.TimePreferenceDialog
+import me.ikirby.ithomereader.ui.dialog.showLoginDialog
+import me.ikirby.ithomereader.ui.dialog.showLogoutDialog
 import me.ikirby.ithomereader.ui.widget.TimePreference
 import me.ikirby.ithomereader.util.openLink
 
@@ -66,13 +67,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 loginAccount?.title = preferences.getString(SETTINGS_KEY_USERNAME, getString(R.string.login_title))
             }
             loginAccount?.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
-                var loginInfo: String? = null
                 if (preferences.contains(SETTINGS_KEY_USER_HASH)) {
-                    loginInfo = "y"
+                    showLogoutDialog(activity!!, preference.title.toString(), preference)
+                } else {
+                    showLoginDialog(activity!!) { preference.title = it }
                 }
-                val dialog = LoginDialog.newInstance(loginInfo)
-                dialog.setCallbackPreference(preference)
-                dialog.show(activity!!.supportFragmentManager, "loginDialog")
                 true
             }
 
