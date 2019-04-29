@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import androidx.preference.DialogPreference
 
 class TimePreference : DialogPreference {
-    private lateinit var time: String
     var hour = 0
     var minute = 0
 
@@ -23,21 +22,14 @@ class TimePreference : DialogPreference {
 
     constructor(context: Context?) : super(context)
 
-    private fun parseHour(time: String): Int = Integer.parseInt(time.split(":")[0])
-
-    private fun parseMinute(time: String): Int = Integer.parseInt(time.split(":")[1])
-
     override fun onSetInitialValue(defaultValue: Any?) {
         super.onSetInitialValue(defaultValue)
-        time = if (defaultValue == null) {
+        val value = if (defaultValue == null) {
             getPersistedString("00:00")
         } else {
             getPersistedString(defaultValue.toString())
         }
-
-        summary = time
-        hour = parseHour(time)
-        minute = parseMinute(time)
+        setSummaryTime(value)
     }
 
     override fun onGetDefaultValue(a: TypedArray, index: Int): Any {
@@ -46,8 +38,18 @@ class TimePreference : DialogPreference {
 
     fun persistStringValue(value: String) {
         persistString(value)
-        summary = value
+        setSummaryTime(value)
     }
+
+    private fun setSummaryTime(value: String) {
+        summary = value
+        hour = parseHour(value)
+        minute = parseMinute(value)
+    }
+
+    private fun parseHour(time: String): Int = Integer.parseInt(time.split(":")[0])
+
+    private fun parseMinute(time: String): Int = Integer.parseInt(time.split(":")[1])
 
     companion object {
         fun timeToString(hour: Int, minute: Int) = String.format("%02d:%02d", hour, minute)

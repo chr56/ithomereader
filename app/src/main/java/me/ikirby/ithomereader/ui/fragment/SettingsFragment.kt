@@ -3,7 +3,6 @@ package me.ikirby.ithomereader.ui.fragment
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -30,9 +29,10 @@ import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
 import me.ikirby.ithomereader.SETTINGS_KEY_WHITE_THEME
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
-import me.ikirby.ithomereader.ui.dialog.TimePreferenceDialog
+import me.ikirby.ithomereader.ui.dialog.showListPreferenceDialog
 import me.ikirby.ithomereader.ui.dialog.showLoginDialog
 import me.ikirby.ithomereader.ui.dialog.showLogoutDialog
+import me.ikirby.ithomereader.ui.dialog.showTimePreferenceDialog
 import me.ikirby.ithomereader.ui.widget.TimePreference
 import me.ikirby.ithomereader.util.openLink
 
@@ -47,20 +47,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
             val showThumbPreference = findPreference<ListPreference>(SETTINGS_KEY_SHOW_THUMB_COND)
-            showThumbPreference?.summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
-                preference.entries[preference.findIndexOfValue(preference.value)]
-            }
-
             val loadImagePreference = findPreference<ListPreference>(SETTINGS_KEY_LOAD_IMAGE_COND)
-            loadImagePreference?.summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
-                preference.entries[preference.findIndexOfValue(preference.value)]
-            }
-
             val fontSizePreference = findPreference<ListPreference>(SETTINGS_KEY_FONT_SIZE)
-            fontSizePreference?.summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
-                preference.entries[preference.findIndexOfValue(preference.value)]
-            }
 
+            val summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            showThumbPreference?.summaryProvider = summaryProvider
+            loadImagePreference?.summaryProvider = summaryProvider
+            fontSizePreference?.summaryProvider = summaryProvider
 
             val loginAccount = findPreference<Preference>(SETTINGS_KEY_LOGIN_ACCOUNT)
             if (preferences.contains(SETTINGS_KEY_USERNAME)) {
@@ -153,19 +146,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference?) {
-        var dialogFragment: DialogFragment? = null
-        if (preference is TimePreference) {
-            dialogFragment = TimePreferenceDialog()
-            val bundle = Bundle(1)
-            bundle.putString("key", preference.getKey())
-            dialogFragment.setArguments(bundle)
-        }
-
-        if (dialogFragment != null) {
-            dialogFragment.setTargetFragment(this, 0)
-            dialogFragment.show(this.fragmentManager!!, "androidx.preference.PreferenceFragment.DIALOG")
-        } else {
-            super.onDisplayPreferenceDialog(preference)
+        when (preference) {
+            is ListPreference -> showListPreferenceDialog(context!!, preference)
+            is TimePreference -> showTimePreferenceDialog(context!!, preference)
+            else -> super.onDisplayPreferenceDialog(preference)
         }
     }
 
