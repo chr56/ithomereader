@@ -165,7 +165,7 @@ class ArticleListFragment : BaseFragment() {
             launch {
                 val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
                 val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
-                    .split(", ").dropLastWhile { it.isEmpty() }.toTypedArray()
+                    .split(",").dropLastWhile { it.isEmpty() }.toTypedArray()
                 val customFilter = keywords.isNotEmpty()
                 val articles = withContext(Dispatchers.IO) {
                     if (isRefresh) {

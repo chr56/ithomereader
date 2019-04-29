@@ -32,7 +32,7 @@
     <string name="search">搜索…</string>
     <string name="keyword_s_results">“%s” 的搜索结果</string>
     <string name="pref_custom_filter">自定义关键词过滤</string>
-    <string name="pref_custom_filter_summary">将对标题进行过滤。多个关键词用英文逗号和一个半角空格隔开</string>
+    <string name="pref_custom_filter_summary">从文章列表过滤掉标题包含指定关键词的内容。多个关键词用英文逗隔开</string>
     <string name="comment_content">评论内容</string>
     <string name="comment_write_done">写好了</string>
     <string name="post_comment">发表评论</string>
