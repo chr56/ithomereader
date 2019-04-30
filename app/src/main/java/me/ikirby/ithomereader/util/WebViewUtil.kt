@@ -27,7 +27,7 @@ private fun getFontSize(): String {
 fun getJs() = "<script src='file:///android_asset/js/base.js'></script>"
 
 
-fun getHead() = "<html><head>${getCss()}${getFontSize()}</head><body>"
+fun getHead() = "<html lang='zh-CN'><head>${getCss()}${getFontSize()}</head><body>"
 
 fun getFooter() = "${getJs()}</body></html>"
 
