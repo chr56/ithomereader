@@ -13,12 +13,13 @@ class CleanUpTask : AsyncTask<Void, Void, Void>() {
         if (BaseApplication.preferences.getInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE) <= 146) {
             val customFilter = BaseApplication.preferences
                 .getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
-                .split(", ").toList()
+                .split(", ").filter { it.isNotEmpty() }
             BaseApplication.preferences.edit()
                 .putString(SETTINGS_KEY_CUSTOM_FILTER, customFilter.joinToString(","))
                 .apply()
         }
         clearCache()
+        BaseApplication.preferences.edit().putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE).apply()
         return null
     }
 }

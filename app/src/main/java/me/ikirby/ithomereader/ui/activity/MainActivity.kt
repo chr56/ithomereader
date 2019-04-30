@@ -77,7 +77,6 @@ class MainActivity : BaseActivity() {
                 )
             ) {
                 CleanUpTask().execute()
-                BaseApplication.preferences.edit().putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE).apply()
             }
 
             val cookieManager = CookieManager.getInstance()
