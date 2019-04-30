@@ -20,7 +20,7 @@ import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
-import java.util.*
+import java.util.ArrayList
 
 class SearchActivity : BaseActivity() {
 

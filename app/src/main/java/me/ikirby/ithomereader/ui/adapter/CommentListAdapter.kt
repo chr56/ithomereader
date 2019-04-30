@@ -18,7 +18,7 @@ import me.ikirby.ithomereader.entity.Comment
 import me.ikirby.ithomereader.ui.activity.CommentsActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.widget.CustomLinkTransformationMethod
-import java.util.*
+import java.util.ArrayList
 
 class CommentListAdapter(
     private val list: ArrayList<Comment>,

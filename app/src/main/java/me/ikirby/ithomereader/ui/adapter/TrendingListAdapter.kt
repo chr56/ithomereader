@@ -25,7 +25,7 @@ import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.copyToClipboard
 import me.ikirby.ithomereader.util.openLinkInBrowser
-import java.util.*
+import java.util.ArrayList
 
 class TrendingListAdapter(
     private val list: ArrayList<Trending>,

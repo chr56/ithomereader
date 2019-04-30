@@ -14,7 +14,7 @@ import me.ikirby.ithomereader.LIVE_MSG_TYPE_IMAGE
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.ui.activity.ImageViewerActivity
-import java.util.*
+import java.util.ArrayList
 
 
 class LivePostListAdapter(
