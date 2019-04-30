@@ -33,13 +33,19 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 
 class BottomSheetMenu(
     context: Context,
     private val bottomSheetMenuListener: BottomSheetMenuListener,
-    private val iconSize: Int = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_menu_item_icon_size)
-) : BottomSheetDialog(context) {
+    private val iconSize: Int = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_menu_item_icon_size),
+    style: Int = when {
+        BaseApplication.isNightMode -> R.style.BottomSheetDialog
+        BaseApplication.isWhiteTheme -> R.style.BottomSheetDialog_White
+        else -> R.style.BottomSheetDialog_Light
+    }
+) : BottomSheetDialog(context, style) {
 
     init {
         setOnShowListener { dialog ->

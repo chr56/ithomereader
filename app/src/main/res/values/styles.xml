@@ -39,6 +39,7 @@
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="menuItemColor">@color/menuTextDark</item>
         <item name="actionMenuIconTint">@android:color/white</item>
+        <item name="dialogBackground">@color/background_dark</item>
     </style>
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents">
@@ -156,10 +157,14 @@
         <item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>
     </style>
 
+    <style name="AppTheme.BottomSheetDialog" parent="BottomSheetDialog">
+
+    </style>
+
     <style name="BottomSheetMenu">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:background">?android:colorBackground</item>
+        <item name="android:background">?dialogBackground</item>
     </style>
 
     <style name="BottomSheetItem">
@@ -178,14 +183,17 @@
 
     <style name="BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="colorAccent">@color/colorSecondary_night</item>
+        <item name="android:backgroundDimAmount">0.32</item>
     </style>
 
     <style name="BottomSheetDialog.Light" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="colorAccent">@color/colorSecondary</item>
+        <item name="android:backgroundDimAmount">0.32</item>
     </style>
 
     <style name="BottomSheetDialog.White" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:backgroundDimAmount">0.32</item>
     </style>
 
     <style name="Widget.MaterialRefresh.TabLayout" parent="Widget.MaterialComponents.TabLayout">
