@@ -76,6 +76,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.LiveActivity" />
+        <activity android:name=".ui.activity.CustomFilterActivity" />
         <activity android:name=".ui.activity.UnknownExceptionHandlerActivity">
             <intent-filter>
                 <action android:name="me.ikirby.ithomereader.UNKNOWN_EXCEPTION" />

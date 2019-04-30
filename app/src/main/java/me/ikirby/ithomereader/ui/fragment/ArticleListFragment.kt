@@ -31,6 +31,7 @@ import me.ikirby.ithomereader.ui.base.BaseFragment
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
+import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.shouldShowThumb
 
 
@@ -165,13 +166,13 @@ class ArticleListFragment : BaseFragment() {
             launch {
                 val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
                 val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
-                    .split(",").dropLastWhile { it.isEmpty() }.toTypedArray()
-                val customFilter = keywords.isNotEmpty()
+                    .split(",").filter { it.isNotBlank() }
+                Logger.d("keywords", keywords.toString())
                 val articles = withContext(Dispatchers.IO) {
                     if (isRefresh) {
-                        ArticleApiImpl.getArticleList(page, filterLapin, customFilter, keywords, null)
+                        ArticleApiImpl.getArticleList(page, filterLapin, keywords, null)
                     } else {
-                        ArticleApiImpl.getArticleList(page, filterLapin, customFilter, keywords, articleList)
+                        ArticleApiImpl.getArticleList(page, filterLapin, keywords, articleList)
                     }
                 }
 

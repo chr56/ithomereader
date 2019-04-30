@@ -20,8 +20,7 @@ object ArticleApiImpl : ArticleApi {
     override fun getArticleList(
         page: Int,
         filterLapin: Boolean,
-        customFilter: Boolean,
-        keywords: Array<String>?,
+        keywordsList: List<String>,
         oldList: ArrayList<Article>?
     ): List<Article>? {
         try {
@@ -31,8 +30,8 @@ object ArticleApiImpl : ArticleApi {
             if (!posts.isEmpty()) {
                 for (post in posts) {
                     val item = getArticleObj(post, false)
-                    if (customFilter && keywords != null) {
-                        if (shouldAddItem(item, keywords, filterLapin)) {
+                    if (keywordsList.isNotEmpty()) {
+                        if (shouldAddItem(item, keywordsList, filterLapin)) {
                             list.add(item)
                         }
                     } else if (filterLapin) {
@@ -162,12 +161,12 @@ object ArticleApiImpl : ArticleApi {
         return url
     }
 
-    private fun shouldAddItem(item: Article, keywords: Array<String>, filterLapin: Boolean): Boolean {
+    private fun shouldAddItem(item: Article, keywords: List<String>, filterLapin: Boolean): Boolean {
         if (filterLapin && item.isAd) {
             return false
         }
-        for (keyword in keywords) {
-            if (item.title.contains(keyword)) {
+        keywords.forEach {
+            if (item.title.contains(it)) {
                 return false
             }
         }

@@ -23,7 +23,7 @@
             app:summary="@string/pref_filter_lapin_summary"
             app:title="@string/pref_filter_lapin" />
 
-        <EditTextPreference
+        <Preference
             app:key="custom_filter"
             app:summary="@string/pref_custom_filter_summary"
             app:title="@string/pref_custom_filter" />

@@ -1,6 +1,7 @@
 package me.ikirby.ithomereader.ui.fragment
 
 import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.ListPreference
@@ -11,6 +12,7 @@ import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.BuildConfig
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_CHECK_UPDATE
+import me.ikirby.ithomereader.SETTINGS_KEY_CUSTOM_FILTER
 import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
 import me.ikirby.ithomereader.SETTINGS_KEY_GO_FULL_SITE
 import me.ikirby.ithomereader.SETTINGS_KEY_LIB_ANDROIDX
@@ -29,6 +31,7 @@ import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
 import me.ikirby.ithomereader.SETTINGS_KEY_WHITE_THEME
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
+import me.ikirby.ithomereader.ui.activity.CustomFilterActivity
 import me.ikirby.ithomereader.ui.dialog.showListPreferenceDialog
 import me.ikirby.ithomereader.ui.dialog.showLoginDialog
 import me.ikirby.ithomereader.ui.dialog.showLogoutDialog
@@ -45,6 +48,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         preferences = BaseApplication.preferences
         if (savedInstanceState == null) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
+
+            val customFilterPreference = findPreference<Preference>(SETTINGS_KEY_CUSTOM_FILTER)
+            customFilterPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(Intent(context!!, CustomFilterActivity::class.java))
+                true
+            }
 
             val showThumbPreference = findPreference<ListPreference>(SETTINGS_KEY_SHOW_THUMB_COND)
             val loadImagePreference = findPreference<ListPreference>(SETTINGS_KEY_LOAD_IMAGE_COND)

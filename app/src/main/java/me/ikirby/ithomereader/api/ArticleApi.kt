@@ -9,8 +9,7 @@ interface ArticleApi {
     fun getArticleList(
         page: Int,
         filterLapin: Boolean,
-        customFilter: Boolean,
-        keywords: Array<String>?,
+        keywordsList: List<String>,
         oldList: ArrayList<Article>?
     ): List<Article>?
 
