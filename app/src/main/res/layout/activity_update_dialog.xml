@@ -11,21 +11,21 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/update_found"
         android:textColor="?android:textColorPrimary"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/update_info_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_update"
+        style="@style/AppTheme.MaterialButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,7 +35,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_ignore"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        style="@style/AppTheme.DialogButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -44,7 +44,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_cancel"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        style="@style/AppTheme.DialogButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
