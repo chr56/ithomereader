@@ -4,4 +4,5 @@
     <attr name="menuItemColor" format="reference|color" />
     <attr name="tabForegroundColor" format="reference|color" />
     <attr name="actionBarColor" format="reference|color" />
+    <attr name="actionMenuIconTint" format="reference|color" />
 </resources>

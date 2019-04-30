@@ -5,9 +5,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.view.Menu
 import android.view.View
-import androidx.annotation.ColorRes
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
@@ -69,17 +67,6 @@ object UiUtil {
             }
         } else {
             dialogActivity.setTheme(R.style.AppTheme_CommonDialog)
-        }
-    }
-
-    fun tintMenuIcon(menu: Menu, @ColorRes color: Int) {
-        for (i in 0 until menu.size()) {
-            val item = menu.getItem(i)
-            val icon = item.icon
-            if (icon != null) {
-                icon.setTint(BaseApplication.instance.getColor(color))
-                item.icon = icon
-            }
         }
     }
 

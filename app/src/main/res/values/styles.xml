@@ -17,6 +17,7 @@
         <item name="actionBarColor">@color/colorActionBarBackground</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="actionMenuIconTint">@android:color/white</item>
     </style>
 
     <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
@@ -35,6 +36,7 @@
         <item name="menuItemColor">@color/menuTextDark</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="actionMenuIconTint">@android:color/white</item>
     </style>
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents">
@@ -54,6 +56,7 @@
         <item name="actionBarColor">@color/colorActionBarBackground_night</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="actionMenuIconTint">@android:color/white</item>
     </style>
 
     <style name="AppBaseTheme.White" parent="Theme.MaterialComponents.Light">
@@ -76,6 +79,7 @@
         <item name="actionBarColor">@color/colorActionBarBackground_white</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="actionMenuIconTint">@color/colorPrimary_white</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme" />
