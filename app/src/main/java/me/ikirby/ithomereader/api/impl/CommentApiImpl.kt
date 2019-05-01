@@ -29,7 +29,9 @@ object CommentApiImpl : CommentApi {
                     val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
                     val content = comment.select(".comm p").html().replace("<br>", "\n")
                         .replace("<span>", "").replace("</span>", "")
-                    val device = comment.select(".info .mobile a").text()
+
+                    // ithome doesn't provide device info now
+                    val device = "" //comment.select(".info .mobile a").text()
 
                     val commentVoteArea = comment.select(".comm_reply")[0]
                     val parentId = getCommentId(commentVoteArea.select("a.s").attr("id"))
@@ -58,7 +60,9 @@ object CommentApiImpl : CommentApi {
                             val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
                             val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
                                 .replace("<span>", "").replace("</span>", "")
-                            val reDevice = reply.select(".mobile a").text()
+
+                            // ithome doesn't provide device info for now
+                            val reDevice = "" //reply.select(".mobile a").text()
 
                             val replyVoteArea = reply.select(".comm_reply")[0]
                             val reSelfId = getCommentId(replyVoteArea.select("a.s").attr("id"))
@@ -113,7 +117,9 @@ object CommentApiImpl : CommentApi {
                     val posAndTime = trimPosAndTime(comment.select(".posandtime").text())
                     val content = comment.getElementsByTag("p").html().replace("<br>", "\n")
                         .replace("<span>", "").replace("</span>", "")
-                    val device = comment.select(".mobile a").text()
+
+                    // ithome doesn't provide device info now
+                    val device = "" //comment.select(".mobile a").text()
 
                     val commentVoteArea = comment.select(".r .comm_reply")[0]
                     val selfId = getCommentId(commentVoteArea.select("a.s").attr("id"))
@@ -154,7 +160,9 @@ object CommentApiImpl : CommentApi {
                     val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
                     val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
                         .replace("<span>", "").replace("</span>", "")
-                    val reDevice = reply.select(".mobile a").text()
+
+                    // ithome doesn't provide device info now
+                    val reDevice = "" //reply.select(".mobile a").text()
 
                     val replyVoteArea = reply.select(".comm_reply")[0]
                     val reSelfId = getCommentId(replyVoteArea.select("a.s").attr("id"))
