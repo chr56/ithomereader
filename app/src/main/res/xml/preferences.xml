@@ -53,6 +53,12 @@
             app:key="load_image_condition"
             app:title="@string/pref_image_loading" />
 
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="auto_add_whitespace"
+            app:summary="@string/pref_auto_add_whitespace_summary"
+            app:title="@string/pref_auto_add_whitespace" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/pref_cat_interface">
@@ -149,6 +155,10 @@
         <Preference
             app:key="lib_kotlinx_coroutines"
             app:title="kotlinx-coroutines-android" />
+
+        <Preference
+            app:key="lib_pangu_js"
+            app:title="pangu.js" />
 
     </PreferenceCategory>
 

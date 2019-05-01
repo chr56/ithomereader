@@ -2,6 +2,7 @@ package me.ikirby.ithomereader.util
 
 import android.webkit.WebView
 import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.SETTINGS_KEY_AUTO_ADD_WHITESPACE
 import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
 import java.util.regex.Pattern
 
@@ -24,7 +25,14 @@ private fun getFontSize(): String {
     return "<style>p,table{font-size:${fontSize}px}</style>"
 }
 
-fun getJs() = "<script src='file:///android_asset/js/base.js'></script>"
+fun getJs(): String {
+    var script = "<script src='file:///android_asset/js/base.js'></script>"
+    if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_AUTO_ADD_WHITESPACE, false)) {
+        script += "<script src='file:///android_asset/js/pangu.min.js'></script>" +
+                "<script>pangu.spacingElementById('header');pangu.spacingElementById('paragraph')</script>"
+    }
+    return script
+}
 
 
 fun getHead() = "<html lang='zh-CN'><head>${getCss()}${getFontSize()}</head><body>"

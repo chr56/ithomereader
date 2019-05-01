@@ -110,4 +110,6 @@
     <string name="enter_keyword">输入关键词</string>
     <string name="delete_keyword">删除关键词</string>
     <string name="confirm_delete_keyword">要删除关键词 “%s” 吗？</string>
+    <string name="pref_auto_add_whitespace">在中英文字符间添加空格</string>
+    <string name="pref_auto_add_whitespace_summary">拯救强迫症，可能影响性能</string>
 </resources>

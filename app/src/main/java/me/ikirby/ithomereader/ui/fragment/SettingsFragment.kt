@@ -21,6 +21,7 @@ import me.ikirby.ithomereader.SETTINGS_KEY_LIB_GLIDE
 import me.ikirby.ithomereader.SETTINGS_KEY_LIB_JSOUP
 import me.ikirby.ithomereader.SETTINGS_KEY_LIB_KOTLINCOROUTINES
 import me.ikirby.ithomereader.SETTINGS_KEY_LIB_MDC
+import me.ikirby.ithomereader.SETTINGS_KEY_LIB_PANGU_JS
 import me.ikirby.ithomereader.SETTINGS_KEY_LIB_PHOTOVIEW
 import me.ikirby.ithomereader.SETTINGS_KEY_LOAD_IMAGE_COND
 import me.ikirby.ithomereader.SETTINGS_KEY_LOGIN_ACCOUNT
@@ -104,6 +105,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val libGlide = findPreference<Preference>(SETTINGS_KEY_LIB_GLIDE)
             val libBottomSheet = findPreference<Preference>(SETTINGS_KEY_LIB_BOTTOMSHEET)
             val libKotlinxCoroutines = findPreference<Preference>(SETTINGS_KEY_LIB_KOTLINCOROUTINES)
+            val libPanguJs = findPreference<Preference>(SETTINGS_KEY_LIB_PANGU_JS)
 
             goFullSite?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://www.ithome.com")
@@ -142,6 +144,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             libKotlinxCoroutines?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 openInCustomTabs("https://github.com/Kotlin/kotlinx.coroutines/tree/master/ui/kotlinx-coroutines-android")
+                true
+            }
+
+            libPanguJs?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                openInCustomTabs("https://github.com/vinta/pangu.js")
                 true
             }
 
