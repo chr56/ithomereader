@@ -34,8 +34,8 @@ fun getJs(): String {
     return script
 }
 
-
-fun getHead() = "<html lang='zh-CN'><head>${getCss()}${getFontSize()}</head><body>"
+fun getHead() =
+    "<html lang='zh-CN'><head><meta name='referrer' content='no-referrer'>${getCss()}${getFontSize()}</head><body>"
 
 fun getFooter() = "${getJs()}</body></html>"
 
