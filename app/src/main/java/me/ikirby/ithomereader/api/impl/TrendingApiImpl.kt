@@ -45,7 +45,7 @@ object TrendingApiImpl : TrendingApi {
             elements = document.select(".hot-list *")
             for (element in elements) {
                 if (element.tagName() == "h4") {
-                    list.add(Trending(null, element.text(), null))
+                    list.add(Trending(null, addWhiteSpace(element.text()), null))
                 } else if (element.tagName() == "li") {
                     val rank = element.getElementsByTag("span")[0].text()
                     val link = element.getElementsByTag("a")[0]
