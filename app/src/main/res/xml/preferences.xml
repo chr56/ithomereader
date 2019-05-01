@@ -53,12 +53,6 @@
             app:key="load_image_condition"
             app:title="@string/pref_image_loading" />
 
-        <SwitchPreference
-            app:defaultValue="false"
-            app:key="auto_add_whitespace"
-            app:summary="@string/pref_auto_add_whitespace_summary"
-            app:title="@string/pref_auto_add_whitespace" />
-
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/pref_cat_interface">
@@ -97,6 +91,16 @@
             app:dependency="auto_switch_night_mode"
             app:key="night_mode_end_time"
             app:title="@string/pref_night_end_time" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_cat_ocd">
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="auto_add_whitespace"
+            app:summary="@string/pref_auto_add_whitespace_summary"
+            app:title="@string/pref_auto_add_whitespace" />
 
     </PreferenceCategory>
 
