@@ -162,7 +162,7 @@
 
         <Preference
             app:key="lib_pangu_js"
-            app:title="pangu.js" />
+            app:title="pangu.js / pangu.java" />
 
     </PreferenceCategory>
 
