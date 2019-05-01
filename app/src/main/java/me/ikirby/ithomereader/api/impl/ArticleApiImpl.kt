@@ -6,6 +6,7 @@ import me.ikirby.ithomereader.entity.ArticleGrade
 import me.ikirby.ithomereader.entity.FullArticle
 import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
+import me.ikirby.ithomereader.util.addWhiteSpace
 import me.ikirby.ithomereader.util.getMatchInt
 import me.ikirby.ithomereader.util.isUrlImgSrc
 import org.jsoup.Jsoup
@@ -76,7 +77,8 @@ object ArticleApiImpl : ArticleApi {
             if (matcher.find()) {
                 gradeHtml = matcher.group(1)!!.replace(");", "")
                 val gradeDoc = Jsoup.parse(gradeHtml)
-                val score = gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text").text()
+                val score =
+                    addWhiteSpace(gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text").text())
 
                 val bt = gradeDoc.select(".bt span div")
                 val trash = bt[0].text()
@@ -122,7 +124,7 @@ object ArticleApiImpl : ArticleApi {
     }
 
     private fun getArticleObj(post: Element, isSearch: Boolean): Article {
-        val title = post.select("h2 a").text()
+        val title = addWhiteSpace(post.select("h2 a").text())
         val date = post.select("h2 .state").text()
         var url = post.select("h2 a").attr("abs:href")
         var thumb: String = if (isSearch) {
@@ -131,7 +133,10 @@ object ArticleApiImpl : ArticleApi {
             post.select(".list_thumbnail img").attr("abs:src")
         }
         thumb = thumb.replace("http://", "https://")
-        val desc = post.select(".memo p").text()
+
+        // desc is not used for now
+        val desc = "" // addWhiteSpace(post.select(".memo p").text())
+
         if (url.contains("umeng.com")) {
             url = parseSpecialUrl(url)
         }

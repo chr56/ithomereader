@@ -5,6 +5,7 @@ import me.ikirby.ithomereader.api.LiveApi
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
+import me.ikirby.ithomereader.util.addWhiteSpace
 import org.json.JSONException
 import org.json.JSONObject
 import org.jsoup.Jsoup
@@ -22,7 +23,7 @@ object LiveApiImpl : LiveApi {
                 val msg = msgs.getJSONObject(i)
                 val postTime = msg.getString("PostTime")
                 val html = Jsoup.parse(msg.getString("NewsHtml"))
-                val txt = html.getElementsByClass("txt").text()
+                val txt = addWhiteSpace(html.getElementsByClass("txt").text())
                 list.add(LiveMsg(postTime, txt, 0))
                 for (img in html.getElementsByTag("img")) {
                     list.add(LiveMsg(null, img.attr("data-original"), LIVE_MSG_TYPE_IMAGE))

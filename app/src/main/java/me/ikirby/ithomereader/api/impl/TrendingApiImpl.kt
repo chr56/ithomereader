@@ -5,6 +5,7 @@ import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.entity.Trending
 import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
+import me.ikirby.ithomereader.util.addWhiteSpace
 
 object TrendingApiImpl : TrendingApi {
     private val tag = javaClass.simpleName
@@ -16,7 +17,7 @@ object TrendingApiImpl : TrendingApi {
             for (element in elements) {
                 val url = element.attr("data")
                 if (!url.contains("www.ithome.com")) continue
-                val title = element.getElementsByTag("span")[0].text()
+                val title = addWhiteSpace(element.getElementsByTag("span")[0].text())
                 val thumb = element.getElementsByTag("img")[0].attr("abs:src")
                 list.add(Article(title, null, url, thumb, null))
             }
@@ -35,10 +36,10 @@ object TrendingApiImpl : TrendingApi {
             list.add(Trending(null, "焦点关注", null))
             for (element in elements) {
                 val link = element.select("h2 a")[0]
-                val title = link.text()
+                val title = addWhiteSpace(link.text())
                 val url = link.attr("abs:href").replace("http://", "https://")
                 val thumb = element.getElementsByTag("img")[0].attr("abs:src")
-                val desc = element.getElementsByTag("p").text()
+                val desc = addWhiteSpace(element.getElementsByTag("p").text())
                 list.add(Trending(title = title, url = url, desc = desc, thumb = thumb))
             }
             elements = document.select(".hot-list *")
@@ -48,7 +49,7 @@ object TrendingApiImpl : TrendingApi {
                 } else if (element.tagName() == "li") {
                     val rank = element.getElementsByTag("span")[0].text()
                     val link = element.getElementsByTag("a")[0]
-                    val title = link.text()
+                    val title = addWhiteSpace(link.text())
                     val url = link.attr("abs:href").replace("http://", "https://")
                     list.add(Trending(rank, title, url))
                 }
