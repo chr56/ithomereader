@@ -241,7 +241,7 @@ object ArticleApiImpl : ArticleApi {
             } else {
                 ""
             }
-            return FullArticle(newsId, newsIdHash, title, time, content)
+            return FullArticle(newsId, newsIdHash, addWhiteSpace(title), time, content)
         } catch (e: Exception) {
             Logger.e(tag, "getFullArticle", e)
             return null

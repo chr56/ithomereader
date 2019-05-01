@@ -33,13 +33,13 @@ object Pangu {
         Pattern.CASE_INSENSITIVE
     )
 
-    private val CJK_QUOTE = Pattern.compile(
-        "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])" + "([\"'])"
-    )
-    private val QUOTE_CJK = Pattern.compile(
-        "([\"'])" + "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])"
-    )
-    private val FIX_QUOTE = Pattern.compile("([\"'])(\\s*)(.+?)(\\s*)([\"'])")
+//    private val CJK_QUOTE = Pattern.compile(
+//        "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])" + "([\"'])"
+//    )
+//    private val QUOTE_CJK = Pattern.compile(
+//        "([\"'])" + "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])"
+//    )
+//    private val FIX_QUOTE = Pattern.compile("([\"'])(\\s*)(.+?)(\\s*)([\"'])")
 
     private val CJK_BRACKET_CJK = Pattern.compile(
         "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])" +
@@ -54,12 +54,12 @@ object Pangu {
     )
     private val FIX_BRACKET = Pattern.compile("([({\\[)]+)(\\s*)(.+?)(\\s*)([)}\\]]+)")
 
-    private val CJK_HASH = Pattern.compile(
-        "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])" + "(#(\\S+))"
-    )
-    private val HASH_CJK = Pattern.compile(
-        "((\\S+)#)" + "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])"
-    )
+//    private val CJK_HASH = Pattern.compile(
+//        "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])" + "(#(\\S+))"
+//    )
+//    private val HASH_CJK = Pattern.compile(
+//        "((\\S+)#)" + "([\\p{InHiragana}\\p{InKatakana}\\p{InBopomofo}\\p{InCJKCompatibilityIdeographs}\\p{InCJKUnifiedIdeographs}])"
+//    )
 
     /**
      * Performs a paranoid str spacing on `str`.
@@ -69,15 +69,15 @@ object Pangu {
      */
     fun spacingText(str: String): String {
         var text = str
-        // CJK and quotes
-        val cqMatcher = CJK_QUOTE.matcher(text)
-        text = cqMatcher.replaceAll("$1 $2")
-
-        val qcMatcher = QUOTE_CJK.matcher(text)
-        text = qcMatcher.replaceAll("$1 $2")
-
-        val fixQuoteMatcher = FIX_QUOTE.matcher(text)
-        text = fixQuoteMatcher.replaceAll("$1$3$5")
+//        // CJK and quotes
+//        val cqMatcher = CJK_QUOTE.matcher(text)
+//        text = cqMatcher.replaceAll("$1 $2")
+//
+//        val qcMatcher = QUOTE_CJK.matcher(text)
+//        text = qcMatcher.replaceAll("$1 $2")
+//
+//        val fixQuoteMatcher = FIX_QUOTE.matcher(text)
+//        text = fixQuoteMatcher.replaceAll("$1$3$5")
 
         // CJK and brackets
         val oldText = text
@@ -96,12 +96,12 @@ object Pangu {
         val fixBracketMatcher = FIX_BRACKET.matcher(text)
         text = fixBracketMatcher.replaceAll("$1$3$5")
 
-        // CJK and hash
-        val chMatcher = CJK_HASH.matcher(text)
-        text = chMatcher.replaceAll("$1 $2")
-
-        val hcMatcher = HASH_CJK.matcher(text)
-        text = hcMatcher.replaceAll("$1 $3")
+//        // CJK and hash
+//        val chMatcher = CJK_HASH.matcher(text)
+//        text = chMatcher.replaceAll("$1 $2")
+//
+//        val hcMatcher = HASH_CJK.matcher(text)
+//        text = hcMatcher.replaceAll("$1 $3")
 
         // CJK and ANS
         val caMatcher = CJK_ANS.matcher(text)
