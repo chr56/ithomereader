@@ -194,18 +194,9 @@
     <style name="Widget.MaterialRefresh.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:elevation">4dp</item>
         <item name="android:background">?actionBarColor</item>
-        <item name="tabIndicator">@drawable/material_refresh_tab_indicator</item>
         <item name="tabIndicatorColor">?tabForegroundColor</item>
-        <item name="tabIndicatorFullWidth">false</item>
-        <item name="tabTextAppearance">@style/TextAppearance.MaterialRefresh.TabLayout</item>
         <item name="tabTextColor">?tabForegroundColor</item>
         <item name="tabIconTint">?tabForegroundColor</item>
-        <item name="enforceTextAppearance">false</item>
-    </style>
-
-    <style name="TextAppearance.MaterialRefresh.TabLayout" parent="TextAppearance.Design.Tab">
-        <item name="android:textColor">?tabForegroundColor</item>
-        <item name="textAllCaps">false</item>
     </style>
 
     <style name="AppTheme.MaterialDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
