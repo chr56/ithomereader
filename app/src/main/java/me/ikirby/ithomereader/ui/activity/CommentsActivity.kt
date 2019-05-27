@@ -138,7 +138,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             CommentListFragment.newInstance(id, hash, cookie, url, lapinId)
         )
 
-        val adapter = object : FragmentPagerAdapter(supportFragmentManager, RESUME_ONLY_CURRENT_FRAGMENT) {
+        val adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getItem(position: Int): Fragment {
                 return fragments[position]
             }
