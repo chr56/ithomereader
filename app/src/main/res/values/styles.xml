@@ -19,7 +19,6 @@
         <item name="tabForegroundColor">@android:color/white</item>
         <item name="actionBarColor">@color/colorActionBarBackground</item>
         <item name="actionMenuIconTint">@android:color/white</item>
-        <item name="dialogBackground">@color/background_light</item>
     </style>
 
     <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
@@ -39,7 +38,6 @@
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="menuItemColor">@color/menuTextDark</item>
         <item name="actionMenuIconTint">@android:color/white</item>
-        <item name="dialogBackground">@color/background_dark</item>
     </style>
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents">
@@ -61,7 +59,6 @@
         <item name="tabForegroundColor">@android:color/white</item>
         <item name="actionBarColor">@color/colorActionBarBackground_night</item>
         <item name="actionMenuIconTint">@android:color/white</item>
-        <item name="dialogBackground">@color/background_dark</item>
     </style>
 
     <style name="AppBaseTheme.White" parent="Theme.MaterialComponents.Light">
@@ -86,7 +83,6 @@
         <item name="tabForegroundColor">@color/colorPrimary_white</item>
         <item name="actionBarColor">@color/colorActionBarBackground_white</item>
         <item name="actionMenuIconTint">@color/colorPrimary_white</item>
-        <item name="dialogBackground">@color/background_light</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme" />
@@ -164,7 +160,6 @@
     <style name="BottomSheetMenu">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:background">?dialogBackground</item>
     </style>
 
     <style name="BottomSheetItem">
@@ -217,7 +212,6 @@
         <item name="buttonBarPositiveButtonStyle">@style/AppTheme.DialogButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/AppTheme.DialogButton</item>
         <item name="buttonBarNeutralButtonStyle">@style/AppTheme.DialogButton</item>
-        <item name="android:background">?dialogBackground</item>
     </style>
 
     <style name="AppTheme.DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
@@ -231,7 +225,6 @@
     </style>
 
     <style name="AppTheme.TextInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxBackgroundColor">?dialogBackground</item>
         <item name="hintTextColor">?colorSecondary</item>
         <item name="boxStrokeColor">@color/material_filled_stroke_color</item>
     </style>

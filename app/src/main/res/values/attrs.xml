@@ -5,5 +5,4 @@
     <attr name="tabForegroundColor" format="reference|color" />
     <attr name="actionBarColor" format="reference|color" />
     <attr name="actionMenuIconTint" format="reference|color" />
-    <attr name="dialogBackground" format="reference|color" />
 </resources>
