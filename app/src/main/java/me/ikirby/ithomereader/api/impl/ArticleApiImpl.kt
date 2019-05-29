@@ -202,28 +202,28 @@ object ArticleApiImpl : ArticleApi {
             if (post == null) return FullArticle()
 
             val imgs = post.getElementsByTag("img")
-            if (loadImageAutomatically && !isLiveInfo) {
-                for (img in imgs) {
-                    val origUrl = img.attr("data-original")
-                    img.attr("src", origUrl)
-                    img.addClass("loaded")
+            if (loadImageAutomatically) {
+                imgs.forEach {
+                    val origUrl = it.attr("data-original")
+                    if (origUrl.isNotBlank()) {
+                        it.attr("src", origUrl)
+                    }
+                    it.addClass("loaded")
                 }
-            } else if (!loadImageAutomatically && isLiveInfo) {
-                for (img in imgs) {
-                    val origUrl = img.attr("abs:src")
-                    img.attr("data-original", origUrl)
-                    img.removeAttr("src")
-                }
-            } else if (loadImageAutomatically) {
-                for (img in imgs) {
-                    img.addClass("loaded")
+            } else {
+                imgs.forEach {
+                    if (it.attr("data-original").isBlank()) {
+                        it.attr("data-original", it.attr("abs:src"))
+                    }
+                    it.removeAttr("src")
+                    it.attr("title", "点按加载图片")
                 }
             }
+
             val links = post.getElementsByTag("a")
-            for (i in links.indices) {
-                val link = links[i]
-                if (isUrlImgSrc(link.attr("href"))) {
-                    link.removeAttr("href")
+            links.forEach {
+                if (isUrlImgSrc(it.attr("href"))) {
+                    it.removeAttr("href")
                 }
             }
 //            post.select("iframe").remove()
