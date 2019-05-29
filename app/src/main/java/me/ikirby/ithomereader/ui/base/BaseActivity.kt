@@ -150,6 +150,8 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
             }
+        } else {
+            BaseApplication.instance.applyNightMode()
         }
     }
 }
