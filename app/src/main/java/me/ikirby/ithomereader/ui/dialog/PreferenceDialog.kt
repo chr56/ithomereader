@@ -13,7 +13,9 @@ fun showListPreferenceDialog(context: Context, preference: ListPreference) {
     MaterialAlertDialogBuilder(context)
         .setTitle(preference.title)
         .setItems(preference.entries) { _, which ->
-            preference.value = preference.entryValues[which].toString()
+            val newValue = preference.entryValues[which].toString()
+            preference.value = newValue
+            preference.onPreferenceChangeListener?.onPreferenceChange(preference, newValue)
         }
         .setNegativeButton(R.string.cancel, null)
         .show()

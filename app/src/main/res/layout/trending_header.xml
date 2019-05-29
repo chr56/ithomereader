@@ -7,7 +7,7 @@
     <View
         android:layout_width="4dp"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary" />
+        android:background="?colorPrimary" />
 
     <TextView
         android:id="@+id/title"
@@ -19,7 +19,7 @@
         android:paddingTop="4dp"
         android:paddingEnd="12dp"
         android:paddingBottom="4dp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-condensed" />

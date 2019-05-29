@@ -49,8 +49,6 @@ class SearchActivity : BaseActivity() {
         layoutManager = LinearLayoutManager(this)
         list_view.layoutManager = layoutManager
 
-        swipe_refresh.setColorSchemeResources(UiUtil.getAccentColorRes())
-        swipe_refresh.setProgressBackgroundColorSchemeResource(UiUtil.getWindowBackgroundColorRes())
         swipe_refresh.isEnabled = false
 
         error_placeholder.setOnClickListener { loadList() }

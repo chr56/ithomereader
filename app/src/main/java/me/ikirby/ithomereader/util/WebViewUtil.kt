@@ -6,11 +6,11 @@ import me.ikirby.ithomereader.SETTINGS_KEY_AUTO_ADD_WHITESPACE
 import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
 import java.util.regex.Pattern
 
-fun getCss(): String {
-    return when {
-        BaseApplication.isNightMode -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_night.css'>"
-        BaseApplication.isWhiteTheme -> "<link rel='stylesheet' href='file:///android_asset/css/base_style_white.css'>"
-        else -> "<link rel='stylesheet' href='file:///android_asset/css/base_style.css'>"
+fun getCss(isNightMode: Boolean): String {
+    return if (isNightMode) {
+        "<link rel='stylesheet' href='file:///android_asset/css/base_style_night.css'>"
+    } else {
+        "<link rel='stylesheet' href='file:///android_asset/css/base_style_white.css'>"
     }
 }
 
@@ -35,7 +35,7 @@ fun getJs(): String {
 }
 
 
-fun getHead() = "<html lang='zh-CN'><head>${getCss()}${getFontSize()}</head><body>"
+fun getHead(isNightMode: Boolean) = "<html lang='zh-CN'><head>${getCss(isNightMode)}${getFontSize()}</head><body>"
 
 fun getFooter() = "${getJs()}</body></html>"
 

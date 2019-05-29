@@ -10,24 +10,15 @@
     <color name="comment_reply_bg_dark">#3e3c34</color>
     <color name="menuTextLight">#757575</color>
     <color name="menuTextDark">#c1c1c1</color>
-
-    <!-- New material color system -->
-    <!-- light theme -->
-    <color name="colorPrimary">#d22222</color>
-    <color name="colorPrimaryVariant">#d22222</color>
-    <color name="colorSecondary">#1976d2</color>
-    <color name="colorSecondaryVariant">#004ba0</color>
-    <color name="colorOnPrimary">#ffffff</color>
-    <color name="colorOnSecondary">#ffffff</color>
-    <color name="colorActionBarBackground">#d22222</color>
     <!-- night theme -->
-    <color name="colorPrimary_night">#990000</color>
-    <color name="colorPrimaryVariant_night">#990000</color>
-    <color name="colorSecondary_night">#42a5f5</color>
-    <color name="colorSecondaryVariant_night">#0077c2</color>
-    <color name="colorOnPrimary_night">#ffffff</color>
-    <color name="colorOnSecondary_night">#ffffff</color>
-    <color name="colorActionBarBackground_night">#990000</color>
+    <color name="colorPrimary_night">#ff5d4c</color>
+    <color name="colorPrimaryVariant_night">#191919</color>
+    <color name="colorSecondary_night">#ff5d4c</color>
+    <color name="colorSecondaryVariant_night">#d22222</color>
+    <color name="colorOnPrimary_night">#141414</color>
+    <color name="colorOnSecondary_night">#141414</color>
+    <color name="colorActionBarBackground_night">#191919</color>
+    <color name="dialogBackgroundColor_night">#353535</color>
     <!-- white theme -->
     <color name="colorPrimary_white">#d22222</color>
     <color name="colorPrimaryVariant_white">#f5f5f5</color>
@@ -36,4 +27,5 @@
     <color name="colorOnPrimary_white">#ffffff</color>
     <color name="colorOnSecondary_white">#ffffff</color>
     <color name="colorActionBarBackground_white">#f5f5f5</color>
+    <color name="dialogBackgroundColor_white">#ffffff</color>
 </resources>

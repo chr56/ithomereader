@@ -9,7 +9,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.ui.activity.ArticleActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
-import me.ikirby.ithomereader.ui.util.UiUtil
 
 
 fun openLink(context: Context, url: String) {
@@ -21,7 +20,6 @@ fun openLink(context: Context, url: String) {
     } else {
         try {
             CustomTabsIntent.Builder()
-                .setToolbarColor(UiUtil.getToolBarColor())
                 .setShowTitle(true)
                 .build()
                 .launchUrl(context, Uri.parse(url))
@@ -37,16 +35,15 @@ fun openLinkInBrowser(context: Context, url: String) {
         val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"))
         val browseResolution = context.packageManager.resolveActivity(browseIntent, PackageManager.MATCH_DEFAULT_ONLY)
 
-        val builder = CustomTabsIntent.Builder()
-            .setToolbarColor(UiUtil.getToolBarColor())
-            .setShowTitle(true)
-
+        val builder = CustomTabsIntent.Builder().setShowTitle(true)
         val customTabsIntent = builder.build()
 
-        customTabsIntent.intent.component = ComponentName(
-            browseResolution.activityInfo.applicationInfo.packageName,
-            browseResolution.activityInfo.name
-        )
+        if (browseResolution != null) {
+            customTabsIntent.intent.component = ComponentName(
+                browseResolution.activityInfo.applicationInfo.packageName,
+                browseResolution.activityInfo.name
+            )
+        }
 
         customTabsIntent.launchUrl(context, Uri.parse(url))
     } catch (e: Exception) {

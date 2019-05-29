@@ -41,10 +41,7 @@ class TrendingListFragment : BaseFragment() {
         layoutManager = LinearLayoutManager(activity)
         view.list_view.layoutManager = layoutManager
 
-        view.swipe_refresh.setColorSchemeResources(UiUtil.getAccentColorRes())
-        view.swipe_refresh.setProgressBackgroundColorSchemeResource(UiUtil.getWindowBackgroundColorRes())
         view.swipe_refresh.setOnRefreshListener { loadList() }
-
         view.error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {

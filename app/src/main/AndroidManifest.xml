@@ -83,10 +83,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.ThemeSwitchTransitionActivity"
-            android:screenOrientation="locked"
-            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
     </application>
 
 </manifest>

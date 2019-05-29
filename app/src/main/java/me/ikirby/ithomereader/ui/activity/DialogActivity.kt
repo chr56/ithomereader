@@ -10,7 +10,6 @@ import me.ikirby.ithomereader.KEY_UPDATE_INFO
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_IGNORE_VERSION_CODE
 import me.ikirby.ithomereader.entity.UpdateInfo
-import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.openLink
 
 class DialogActivity : AppCompatActivity(), View.OnClickListener {
@@ -19,7 +18,6 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
-        UiUtil.setNightModeForDialogActivity(this, BaseApplication.isNightMode, BaseApplication.isWhiteTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_dialog)
 

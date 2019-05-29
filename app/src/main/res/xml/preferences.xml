@@ -11,6 +11,18 @@
 
     <PreferenceCategory app:title="@string/pref_cat_list">
 
+        <ListPreference
+            app:defaultValue="0"
+            app:entries="@array/load_thumb_condition_text"
+            app:entryValues="@array/load_image_condition_value"
+            app:key="show_thumb_condition"
+            app:title="@string/pref_show_thumb" />
+
+        <Preference
+            app:key="custom_filter"
+            app:summary="@string/pref_custom_filter_summary"
+            app:title="@string/pref_custom_filter" />
+
         <SwitchPreference
             app:defaultValue="true"
             app:key="show_banner"
@@ -22,18 +34,6 @@
             app:key="filter_lapin"
             app:summary="@string/pref_filter_lapin_summary"
             app:title="@string/pref_filter_lapin" />
-
-        <Preference
-            app:key="custom_filter"
-            app:summary="@string/pref_custom_filter_summary"
-            app:title="@string/pref_custom_filter" />
-
-        <ListPreference
-            app:defaultValue="0"
-            app:entries="@array/load_thumb_condition_text"
-            app:entryValues="@array/load_image_condition_value"
-            app:key="show_thumb_condition"
-            app:title="@string/pref_show_thumb" />
 
     </PreferenceCategory>
 
@@ -59,9 +59,8 @@
 
         <SwitchPreference
             app:defaultValue="false"
-            app:key="o_style_light"
-            app:summary="@string/pref_white_theme_summary"
-            app:title="@string/pref_white_theme" />
+            app:key="use_bottom_nav"
+            app:title="@string/pref_use_bottom_nav" />
 
         <SwitchPreference
             app:defaultValue="true"
@@ -69,26 +68,22 @@
             app:summary="@string/pref_gesture_summary"
             app:title="@string/pref_gesture" />
 
-        <SwitchPreference
-            app:defaultValue="false"
-            app:key="use_bottom_nav"
-            app:title="@string/pref_use_bottom_nav" />
-
-        <SwitchPreference
-            app:defaultValue="false"
-            app:key="auto_switch_night_mode"
-            app:summary="@string/pref_auto_switch_night_mode_summary"
-            app:title="@string/pref_auto_switch_night_mode" />
+        <ListPreference
+            app:defaultValue="MODE_NIGHT_FOLLOW_SYSTEM"
+            app:entries="@array/appcompat_night_mode_text"
+            app:entryValues="@array/appcompat_night_mode_value"
+            app:key="appcompat_night_mode"
+            app:title="@string/pref_night_mode" />
 
         <me.ikirby.ithomereader.ui.widget.TimePreference
             app:defaultValue="22:00"
-            app:dependency="auto_switch_night_mode"
+            app:enabled="false"
             app:key="night_mode_start_time"
             app:title="@string/pref_night_start_time" />
 
         <me.ikirby.ithomereader.ui.widget.TimePreference
             app:defaultValue="07:00"
-            app:dependency="auto_switch_night_mode"
+            app:enabled="false"
             app:key="night_mode_end_time"
             app:title="@string/pref_night_end_time" />
 

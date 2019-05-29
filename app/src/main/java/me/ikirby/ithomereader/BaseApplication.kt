@@ -2,8 +2,8 @@ package me.ikirby.ithomereader
 
 import android.app.Application
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import me.ikirby.ithomereader.util.shouldEnableNightMode
 
 class BaseApplication : Application() {
 
@@ -11,13 +11,9 @@ class BaseApplication : Application() {
         lateinit var instance: BaseApplication
         lateinit var preferences: SharedPreferences
             private set
-        var isNightMode: Boolean = false
-            private set
-        var isWhiteTheme: Boolean = false
-            private set
         var isGestureEnabled: Boolean = false
             private set
-        var hasCheckedAutoNightMode: Boolean = false
+        var hasSetNightModeManually = false
     }
 
     override fun onCreate() {
@@ -26,34 +22,29 @@ class BaseApplication : Application() {
 //            return
 //        }
 //        LeakCanary.install(this)
-
         UnknownExceptionHandler.init(this)
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         loadPreferences()
+
+        applyNightMode()
+
         instance = this
     }
 
     fun loadPreferences() {
-        isNightMode = preferences.getBoolean(SETTINGS_KEY_NIGHT_MODE, false)
-        isWhiteTheme = preferences.getBoolean(SETTINGS_KEY_WHITE_THEME, false)
         isGestureEnabled = preferences.getBoolean(SETTINGS_KEY_SWIPE_GESTURE, true)
     }
 
-    fun setNightMode() {
-        if (hasCheckedAutoNightMode) return
-        if (preferences.getBoolean(SETTINGS_KEY_AUTO_NIGHT_MODE, false)) {
-            val startTime = preferences.getString(SETTINGS_KEY_NIGHT_MODE_START_TIME, "22:00")
-            val endTime = preferences.getString(SETTINGS_KEY_NIGHT_MODE_END_TIME, "07:00")
-            isNightMode = shouldEnableNightMode(startTime, endTime)
-            preferences.edit().putBoolean(SETTINGS_KEY_NIGHT_MODE, isNightMode).apply()
+    fun applyNightMode() {
+        val defaultNightMode = when (preferences.getString(SETTINGS_KEY_APPCOMPAT_NIGHT_MODE, "MODE_NIGHT_FOLLOW_SYSTEM")) {
+            "MODE_NIGHT_FOLLOW_SYSTEM" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            "MODE_NIGHT_NO" -> AppCompatDelegate.MODE_NIGHT_NO
+            "MODE_NIGHT_YES" -> AppCompatDelegate.MODE_NIGHT_YES
+            "MODE_NIGHT_AUTO_BATTERY" -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+            else -> AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
         }
-        hasCheckedAutoNightMode = true
-    }
-
-    fun switchNightMode() {
-        isNightMode = !isNightMode
-        preferences.edit().putBoolean(SETTINGS_KEY_NIGHT_MODE, isNightMode).apply()
+        AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }
 }

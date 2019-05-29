@@ -57,8 +57,6 @@
     <string name="update_found">发现更新</string>
     <string name="update_download">下载</string>
     <string name="post_thumb_description">文章缩略图</string>
-    <string name="pref_white_theme">使用白色日间主题</string>
-    <string name="pref_white_theme_summary">启用后，日间模式将使用全白主题。更改选项后返回主界面生效</string>
     <string name="comment_basic_load_failed">评论基本信息未加载，无法查看评论</string>
     <string name="share_ones_comment">分享 %s 的评论</string>
     <string name="share_comment_content">[%s 评论了 %s]\n%s\n\n分享自IT之家: %s</string>
@@ -99,8 +97,6 @@
     <string name="already_voted">每篇文章只能评分一次</string>
     <string name="pref_use_bottom_nav">主界面使用底部导航</string>
     <string name="menu_button">菜单按钮</string>
-    <string name="pref_auto_switch_night_mode">自动切换夜间模式</string>
-    <string name="pref_auto_switch_night_mode_summary">在应用启动时自动切换到暗色主题</string>
     <string name="pref_night_start_time">夜间模式开始时间</string>
     <string name="pref_night_end_time">夜间模式结束时间</string>
     <string name="ignore_version">忽略此版本</string>

@@ -1,27 +1,40 @@
 <resources>
 
-    <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="AppBaseTheme"/>
+    <style name="AppTheme.Fullscreen" parent="AppBaseTheme.Fullscreen"/>
+
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.Light">
         <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
         <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="actionBarTheme">@style/AppBaseTheme.ActionBar.Theme</item>
+        <item name="colorPrimary">@color/colorPrimary_white</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorSecondary">@color/colorSecondary_white</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_white</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_white</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_white</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="textInputStyle">@style/AppTheme.TextInput</item>
         <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
-        <item name="tabForegroundColor">@android:color/white</item>
-        <item name="actionBarColor">@color/colorActionBarBackground</item>
-        <item name="actionMenuIconTint">@android:color/white</item>
+        <item name="tabForegroundColor">@color/colorPrimary_white</item>
+        <item name="actionBarColor">@color/colorActionBarBackground_white</item>
+        <item name="actionMenuIconTint">@color/colorPrimary_white</item>
     </style>
 
-    <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppBaseTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="background">?actionBarColor</item>
+    </style>
+
+    <style name="AppBaseTheme.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="colorControlNormal">@color/colorPrimary_white</item>
+    </style>
+
+
+    <style name="AppBaseTheme.Fullscreen" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
         <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="android:windowBackground">@android:color/black</item>
@@ -35,107 +48,11 @@
         <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
         <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="menuItemColor">@color/menuTextDark</item>
-        <item name="actionMenuIconTint">@android:color/white</item>
-    </style>
-
-    <style name="AppBaseTheme" parent="Theme.MaterialComponents">
-        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
-        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
-        <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
-        <item name="colorPrimary">@color/colorPrimary_night</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
-        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary_night</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
-        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="textInputStyle">@style/AppTheme.TextInput</item>
-        <item name="commentReplyBg">@color/comment_reply_bg_dark</item>
-        <item name="menuItemColor">@color/menuTextDark</item>
-        <item name="tabForegroundColor">@android:color/white</item>
-        <item name="actionBarColor">@color/colorActionBarBackground_night</item>
-        <item name="actionMenuIconTint">@android:color/white</item>
-    </style>
-
-    <style name="AppBaseTheme.White" parent="Theme.MaterialComponents.Light">
-        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
-        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
-        <item name="android:colorEdgeEffect">@android:color/black</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="actionBarStyle">@style/AppBaseTheme.ActionBar</item>
-        <item name="actionBarTheme">@style/AppBaseTheme.White.ActionBar.Theme</item>
-        <item name="colorPrimary">@color/colorPrimary_white</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_white</item>
-        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary_white</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_white</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary_white</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary_white</item>
-        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialDialogTheme</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="textInputStyle">@style/AppTheme.TextInput</item>
-        <item name="commentReplyBg">@color/comment_reply_bg_light</item>
         <item name="menuItemColor">@color/menuTextLight</item>
-        <item name="tabForegroundColor">@color/colorPrimary_white</item>
-        <item name="actionBarColor">@color/colorActionBarBackground_white</item>
         <item name="actionMenuIconTint">@color/colorPrimary_white</item>
     </style>
 
-    <style name="AppTheme" parent="AppBaseTheme" />
-
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light" />
-
-    <style name="AppTheme.White" parent="AppBaseTheme.White" />
-
-    <style name="AppBaseTheme.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="background">?actionBarColor</item>
-    </style>
-
-    <style name="AppBaseTheme.White.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar">
-        <item name="colorControlNormal">@color/colorPrimary_white</item>
-    </style>
-
-    <style name="AppTheme.CommonDialog" parent="Theme.MaterialComponents.Dialog">
-        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
-        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
-        <item name="android:backgroundDimAmount">0.32</item>
-        <item name="colorPrimary">@color/colorPrimary_night</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
-        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary_night</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="windowNoTitle">true</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="android:windowMinWidthMajor">@dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>
-    </style>
-
-    <style name="AppTheme.CommonDialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
-        <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
-        <item name="android:backgroundDimAmount">0.32</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="windowNoTitle">true</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="android:windowMinWidthMajor">@dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>
-    </style>
-
-    <style name="AppTheme.CommonDialog.White" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="AppTheme.CommonDialog" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="android:ambientShadowAlpha">@dimen/ambient_shadow_alpha</item>
         <item name="android:spotShadowAlpha">@dimen/spot_shadow_alpha</item>
         <item name="android:backgroundDimAmount">0.32</item>
@@ -149,12 +66,9 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="android:background">@color/dialogBackgroundColor_white</item>
         <item name="android:windowMinWidthMajor">@dimen/dialog_min_width_major</item>
         <item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>
-    </style>
-
-    <style name="AppTheme.BottomSheetDialog" parent="BottomSheetDialog">
-
     </style>
 
     <style name="BottomSheetMenu">
@@ -176,27 +90,14 @@
         <item name="android:drawableTint">?menuItemColor</item>
     </style>
 
-    <style name="BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="colorAccent">@color/colorSecondary_night</item>
+    <style name="BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:backgroundDimAmount">0.32</item>
-    </style>
-
-    <style name="BottomSheetDialog.Light" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="colorAccent">@color/colorSecondary</item>
-        <item name="android:backgroundDimAmount">0.32</item>
-    </style>
-
-    <style name="BottomSheetDialog.White" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:backgroundDimAmount">0.32</item>
+        <item name="android:colorBackground">@color/dialogBackgroundColor_white</item>
     </style>
 
     <style name="Widget.MaterialRefresh.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:elevation">4dp</item>
         <item name="android:background">?actionBarColor</item>
-        <item name="tabIndicatorColor">?tabForegroundColor</item>
-        <item name="tabTextColor">?tabForegroundColor</item>
-        <item name="tabIconTint">?tabForegroundColor</item>
     </style>
 
     <style name="AppTheme.MaterialDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -216,6 +117,7 @@
     </style>
 
     <style name="AppTheme.TextInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/dialogBackgroundColor_white</item>
         <item name="hintTextColor">?colorSecondary</item>
         <item name="boxStrokeColor">@color/material_filled_stroke_color</item>
     </style>

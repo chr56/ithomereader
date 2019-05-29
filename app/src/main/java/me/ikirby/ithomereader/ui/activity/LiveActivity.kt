@@ -46,10 +46,7 @@ class LiveActivity : BaseActivity() {
         layoutManager = LinearLayoutManager(this)
         list_view.layoutManager = layoutManager
 
-        swipe_refresh.setColorSchemeResources(UiUtil.getAccentColorRes())
-        swipe_refresh.setProgressBackgroundColorSchemeResource(UiUtil.getWindowBackgroundColorRes())
         swipe_refresh.setOnRefreshListener { loadList() }
-
         error_placeholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {

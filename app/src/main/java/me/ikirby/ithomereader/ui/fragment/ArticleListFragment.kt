@@ -63,10 +63,7 @@ class ArticleListFragment : BaseFragment() {
         layoutManager = LinearLayoutManager(activity)
         view.list_view.layoutManager = layoutManager
 
-        view.swipe_refresh.setColorSchemeResources(UiUtil.getAccentColorRes())
-        view.swipe_refresh.setProgressBackgroundColorSchemeResource(UiUtil.getWindowBackgroundColorRes())
         view.swipe_refresh.setOnRefreshListener { reloadList() }
-
         view.error_placeholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {

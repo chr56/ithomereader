@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
 import me.ikirby.ithomereader.KEY_FULL_ARTICLE
 import me.ikirby.ithomereader.KEY_LIVE_INFO
@@ -67,9 +66,10 @@ class ArticleActivity : BaseActivity() {
             isLiveInfo = true
         }
 
-        if (BaseApplication.isNightMode) {
+        if (isNightMode()) {
             post_content.setBackgroundColor(getColor(R.color.background_dark))
         }
+
         post_content.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 openLink(this@ArticleActivity, request.url.toString())
@@ -188,7 +188,7 @@ class ArticleActivity : BaseActivity() {
     private fun loadArticleContent() {
         post_content.loadDataWithBaseURL(
             url,
-            getHead() + fullArticle.content + getFooter(),
+            getHead(isNightMode()) + fullArticle.content + getFooter(),
             "text/html; charset=utf-8",
             "UTF-8",
             null

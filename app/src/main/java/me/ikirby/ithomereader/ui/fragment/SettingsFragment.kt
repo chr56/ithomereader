@@ -11,6 +11,7 @@ import androidx.preference.SwitchPreference
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.BuildConfig
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SETTINGS_KEY_APPCOMPAT_NIGHT_MODE
 import me.ikirby.ithomereader.SETTINGS_KEY_CHECK_UPDATE
 import me.ikirby.ithomereader.SETTINGS_KEY_CUSTOM_FILTER
 import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
@@ -25,12 +26,13 @@ import me.ikirby.ithomereader.SETTINGS_KEY_LIB_PANGU_JS
 import me.ikirby.ithomereader.SETTINGS_KEY_LIB_PHOTOVIEW
 import me.ikirby.ithomereader.SETTINGS_KEY_LOAD_IMAGE_COND
 import me.ikirby.ithomereader.SETTINGS_KEY_LOGIN_ACCOUNT
+import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_END_TIME
+import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_START_TIME
 import me.ikirby.ithomereader.SETTINGS_KEY_SHOW_THUMB_COND
 import me.ikirby.ithomereader.SETTINGS_KEY_SWIPE_GESTURE
 import me.ikirby.ithomereader.SETTINGS_KEY_USERNAME
 import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
-import me.ikirby.ithomereader.SETTINGS_KEY_WHITE_THEME
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
 import me.ikirby.ithomereader.ui.activity.CustomFilterActivity
 import me.ikirby.ithomereader.ui.dialog.showListPreferenceDialog
@@ -59,11 +61,34 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val showThumbPreference = findPreference<ListPreference>(SETTINGS_KEY_SHOW_THUMB_COND)
             val loadImagePreference = findPreference<ListPreference>(SETTINGS_KEY_LOAD_IMAGE_COND)
             val fontSizePreference = findPreference<ListPreference>(SETTINGS_KEY_FONT_SIZE)
+            val nightModePreference = findPreference<ListPreference>(SETTINGS_KEY_APPCOMPAT_NIGHT_MODE)
+            val nightModeStartTimePreference = findPreference<TimePreference>(SETTINGS_KEY_NIGHT_MODE_START_TIME)
+            val nightModeEndTimePreference = findPreference<TimePreference>(SETTINGS_KEY_NIGHT_MODE_END_TIME)
 
             val summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             showThumbPreference?.summaryProvider = summaryProvider
             loadImagePreference?.summaryProvider = summaryProvider
             fontSizePreference?.summaryProvider = summaryProvider
+            nightModePreference?.summaryProvider = summaryProvider
+
+            if (preferences.getString(SETTINGS_KEY_APPCOMPAT_NIGHT_MODE, "MODE_NIGHT_FOLLOW_SYSTEM") ==
+                    "MODE_NIGHT_BASED_ON_TIME") {
+                nightModeStartTimePreference?.isEnabled = true
+                nightModeEndTimePreference?.isEnabled = true
+            }
+
+            nightModePreference?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                BaseApplication.hasSetNightModeManually = false
+                if (newValue == "MODE_NIGHT_BASED_ON_TIME") {
+                    nightModeStartTimePreference?.isEnabled = true
+                    nightModeEndTimePreference?.isEnabled = true
+                } else {
+                    nightModeStartTimePreference?.isEnabled = false
+                    nightModeEndTimePreference?.isEnabled = false
+                }
+                BaseApplication.instance.applyNightMode()
+                true
+            }
 
             val loginAccount = findPreference<Preference>(SETTINGS_KEY_LOGIN_ACCOUNT)
             if (preferences.contains(SETTINGS_KEY_USERNAME)) {
@@ -78,14 +103,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-            val whiteThemeSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_WHITE_THEME)
             val swipeBackSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_SWIPE_GESTURE)
             val useBottomNavSwitch = findPreference<SwitchPreference>(SETTINGS_KEY_USE_BOTTOM_NAV)
-
-            whiteThemeSwitch?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-                activity?.setResult(Activity.RESULT_OK)
-                true
-            }
 
             swipeBackSwitch?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
                 activity?.setResult(Activity.RESULT_OK)

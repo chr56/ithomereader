@@ -1,16 +1,12 @@
 package me.ikirby.ithomereader.ui.activity
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
-import android.view.PixelCopy
 import android.view.View
 import android.webkit.CookieManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -19,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_viewpager.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.BuildConfig
 import me.ikirby.ithomereader.KEY_KEYWORD
-import me.ikirby.ithomereader.KEY_SYSTEM_UI_VISIBILITY
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH
 import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
@@ -36,7 +31,6 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        BaseApplication.instance.setNightMode()
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.app_name))
         isGestureEnabled = false
@@ -122,9 +116,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_action, menu)
-        if (BaseApplication.isNightMode) {
-            menu.findItem(R.id.action_night_mode).setTitle(R.string.day_mode)
-        }
 
         val searchView = menu.findItem(R.id.search).actionView as SearchView
         searchView.queryHint = getString(R.string.search)
@@ -143,16 +134,15 @@ class MainActivity : BaseActivity() {
             }
         })
 
+        menu.findItem(R.id.action_night_mode)
+            .setTitle(if (isNightMode()) R.string.day_mode else R.string.pref_night_mode)
+
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_refresh -> return false
-            R.id.action_night_mode -> {
-                BaseApplication.instance.switchNightMode()
-                switchThemeWithTransition()
-            }
             R.id.action_clearcache -> {
                 ToastUtil.showToast(R.string.cache_clearing)
                 ClearCacheTask().execute()
@@ -161,6 +151,15 @@ class MainActivity : BaseActivity() {
                 Intent(this, SettingsActivity::class.java),
                 THEME_CHANGE_REQUEST_CODE
             )
+            R.id.action_night_mode -> {
+                BaseApplication.hasSetNightModeManually = true
+                val defaultNightMode = if (isNightMode()) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                }
+                AppCompatDelegate.setDefaultNightMode(defaultNightMode)
+            }
         }
         return true
     }
@@ -174,53 +173,10 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        BaseApplication.hasCheckedAutoNightMode = false
+        BaseApplication.hasSetNightModeManually = false
     }
 
     override fun swipeRight(): Boolean {
         return false
-    }
-
-    @Suppress("DEPRECATION")
-    private fun switchThemeWithTransition() {
-        val rootView = window.decorView.rootView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val bitmap = Bitmap.createBitmap(rootView.width, rootView.height, Bitmap.Config.ARGB_8888)
-            val locationOfRootView = IntArray(2)
-            rootView.getLocationInWindow(locationOfRootView)
-            PixelCopy.request(
-                window,
-                Rect(
-                    locationOfRootView[0],
-                    locationOfRootView[1],
-                    locationOfRootView[0] + rootView.width,
-                    locationOfRootView[1] + rootView.height
-                ),
-                bitmap,
-                { copyResult ->
-                    if (copyResult == PixelCopy.SUCCESS) {
-                        ThemeSwitchTransitionActivity.screenshot = bitmap
-                        startThemeSwitchTransition()
-                    }
-                },
-                Handler()
-            )
-        } else {
-            rootView.isDrawingCacheEnabled = true
-            ThemeSwitchTransitionActivity.screenshot = Bitmap.createBitmap(rootView.drawingCache)
-            rootView.isDrawingCacheEnabled = false
-            startThemeSwitchTransition()
-        }
-    }
-
-    private fun startThemeSwitchTransition() {
-        val intent = Intent(this, ThemeSwitchTransitionActivity::class.java).apply {
-            putExtra(KEY_SYSTEM_UI_VISIBILITY, window.decorView.systemUiVisibility)
-        }
-        startActivity(intent)
-        overridePendingTransition(0, 0)
-        Handler().postDelayed({
-            recreate()
-        }, 50)
     }
 }

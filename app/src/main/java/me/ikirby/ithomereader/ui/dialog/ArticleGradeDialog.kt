@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.article_grade_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -36,11 +35,6 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         if (args != null) {
             this.newsId = args.getString(KEY_NEWS_ID, "")
             this.cookie = BaseApplication.preferences.getString(SETTINGS_KEY_USER_HASH, null)
-        }
-        when {
-            BaseApplication.isNightMode -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog)
-            BaseApplication.isWhiteTheme -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog_White)
-            else -> setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog_Light)
         }
     }
 
