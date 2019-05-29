@@ -33,7 +33,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 154
-        versionName "4.7-beta01"
+        versionName "4.7-beta02"
         resConfigs "zh-rCN"
         versionNameSuffix '-' + getGitHash()
     }
