@@ -83,6 +83,11 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_viewpager)
         if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_USE_BOTTOM_NAV, false)) {
             tabs.visibility = View.GONE
+            if (isNightMode()) {
+                bottom_nav.setBackgroundColor(getColor(R.color.background_dark))
+            } else {
+                bottom_nav.setBackgroundColor(getColor(R.color.background_light))
+            }
             bottom_nav.visibility = View.VISIBLE
             viewPager.setSwipeDisabled(true)
             viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
