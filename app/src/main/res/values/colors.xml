@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_dark">#141414</color>
+    <color name="background_dark">#121212</color>
     <color name="background_light">#ffffff</color>
     <color name="supportText">#28bd98</color>
     <color name="againstText">#ff6f6f</color>
     <color name="navigation_bar_divider_light">#e0e0e0</color>
     <color name="navigation_bar_divider_night">#343434</color>
     <color name="comment_reply_bg_light">#fefcf4</color>
-    <color name="comment_reply_bg_dark">#3e3c34</color>
+    <color name="comment_reply_bg_dark">#22211d</color>
     <color name="menuTextLight">#757575</color>
     <color name="menuTextDark">#c1c1c1</color>
     <!-- night theme -->
     <color name="colorPrimary_night">#ff5d4c</color>
-    <color name="colorPrimaryVariant_night">#191919</color>
+    <color name="colorPrimaryVariant_night">#1c1c1c</color>
     <color name="colorSecondary_night">#ff5d4c</color>
     <color name="colorSecondaryVariant_night">#d22222</color>
-    <color name="colorOnPrimary_night">#141414</color>
-    <color name="colorOnSecondary_night">#141414</color>
-    <color name="colorActionBarBackground_night">#191919</color>
+    <color name="colorOnPrimary_night">#121212</color>
+    <color name="colorOnSecondary_night">#121212</color>
+    <color name="colorActionBarBackground_night">#1c1c1c</color>
     <color name="dialogBackgroundColor_night">#353535</color>
     <!-- white theme -->
     <color name="colorPrimary_white">#d22222</color>
