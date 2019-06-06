@@ -27,11 +27,11 @@ android {
             storePassword signingProperties['storePassword']
         }
     }
-    compileSdkVersion 'android-Q'
+    compileSdkVersion 29
     defaultConfig {
         applicationId "me.ikirby.ithomereader"
         minSdkVersion 23
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 158
         versionName "4.7-beta05"
         resConfigs "zh-rCN"
@@ -79,14 +79,14 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha01'
-    implementation 'androidx.fragment:fragment:1.1.0-alpha09'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
-    implementation 'androidx.preference:preference:1.1.0-alpha05'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+    implementation 'androidx.fragment:fragment:1.1.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
+    implementation 'androidx.preference:preference:1.1.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
