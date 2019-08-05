@@ -26,6 +26,7 @@ import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_START_TIME
 import me.ikirby.ithomereader.SWIPE_GESTURE_DISTANCE
 import me.ikirby.ithomereader.util.shouldEnableNightMode
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.abs
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity(), CoroutineScope {
@@ -42,7 +43,7 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
         isGestureEnabled = BaseApplication.isGestureEnabled
         mGestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onFling(e1: MotionEvent, e2: MotionEvent, v: Float, v1: Float): Boolean {
-                if (Math.abs(e1.rawY - e2.rawY) < 75) {
+                if (abs(e1.rawY - e2.rawY) < 75) {
                     if (e1.rawX - e2.rawX > SWIPE_GESTURE_DISTANCE) {
                         return swipeLeft()
                     } else if (e2.rawX - e1.rawX > SWIPE_GESTURE_DISTANCE) {
