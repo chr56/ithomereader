@@ -4,6 +4,7 @@
     <color name="background_light">#ffffff</color>
     <color name="supportText">#28bd98</color>
     <color name="againstText">#ff6f6f</color>
+    <color name="expandText">#4d93f2</color>
     <color name="navigation_bar_divider_light">#e0e0e0</color>
     <color name="navigation_bar_divider_night">#343434</color>
     <color name="comment_reply_bg_light">#fefcf4</color>

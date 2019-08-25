@@ -141,6 +141,29 @@ object ITHomeApi {
     }
 
     /**
+     * 获取单个评论串，用于展开热评
+     *
+     * @param id 评论 ID，应使用父评论 ID
+     * @param newsId 新闻 ID
+     * @return 单个评论串文档
+     * @throws IOException 网络请求异常
+     */
+    @Throws(IOException::class)
+    fun getSingleComment(id: String, newsId: String): Document {
+        val postData = mapOf(
+            "commentid" to id,
+            "newsId" to newsId,
+            "type" to "getsinglecomment"
+        )
+
+        return NetworkRequest.getDocument(
+            AJAX_DATA_URL,
+            getHeaders("XMLHttpRequest", null, null),
+            postData
+        )
+    }
+
+    /**
      * 提交评论并获取返回信息
      *
      * @param id 新闻 ID

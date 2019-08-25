@@ -31,6 +31,7 @@ class CommentListAdapter(
     private val commentAgainst: String = activity.getString(R.string.comment_against)
     private val commentIsSupport: String = activity.getString(R.string.comment_is_support)
     private val commentIsAgainst: String = activity.getString(R.string.comment_is_against)
+    private val commentExpand: String = activity.getString(R.string.comment_expand)
 
     private lateinit var job: Job
 
@@ -70,8 +71,8 @@ class CommentListAdapter(
             viewHolder.deviceText.text = comment.device
             showVoteStatus(comment, viewHolder.supportText, viewHolder.againstText)
             setVoteClickListener(comment, viewHolder.supportText, viewHolder.againstText)
+            showExpand(comment, viewHolder.expandText, position)
         } else if (viewHolder is CommentReplyViewHolder) {
-
             viewHolder.nickText.text = comment.nick
             viewHolder.floorText.text = comment.floor
             viewHolder.posAndTimeText.text = comment.posAndTime
@@ -130,6 +131,7 @@ class CommentListAdapter(
         var deviceText: TextView = itemView.findViewById(R.id.comment_device)
         var supportText: TextView = itemView.findViewById(R.id.comment_support)
         var againstText: TextView = itemView.findViewById(R.id.comment_against)
+        var expandText: TextView = itemView.findViewById(R.id.comment_expand)
 
         init {
             contentText.transformationMethod = CustomLinkTransformationMethod()
@@ -194,6 +196,18 @@ class CommentListAdapter(
             } else {
                 ToastUtil.showToast(R.string.timeout_no_internet)
             }
+        }
+    }
+
+    private fun showExpand(comment: Comment, expandText: TextView, position: Int) {
+        if (!comment.parentId.isNullOrBlank() && comment.expandCount > 0) {
+            expandText.text = String.format(commentExpand, comment.expandCount)
+            expandText.setOnClickListener {
+                activity.expandComment(comment.parentId, position)
+            }
+            expandText.visibility = View.VISIBLE
+        } else {
+            expandText.visibility = View.GONE
         }
     }
 

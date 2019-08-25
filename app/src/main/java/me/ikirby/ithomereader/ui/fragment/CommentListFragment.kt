@@ -43,7 +43,7 @@ import org.jsoup.safety.Whitelist
 
 class CommentListFragment : BaseFragment() {
 
-    private lateinit var id: String
+    private lateinit var newsId: String
     private lateinit var hash: String
     private var cookie: String? = null
     private lateinit var url: String
@@ -67,7 +67,7 @@ class CommentListFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (arguments != null) {
-            id = arguments!!.getString(KEY_NEWS_ID)!!
+            newsId = arguments!!.getString(KEY_NEWS_ID)!!
             hash = arguments!!.getString(KEY_COMMENT_HASH)!!
             cookie = arguments!!.getString(KEY_COOKIE)
             url = arguments!!.getString(KEY_URL)!!
@@ -75,7 +75,7 @@ class CommentListFragment : BaseFragment() {
             isHotComment = arguments!!.getBoolean(KEY_HOT_COMMENT)
         }
         if (lapinId != null) {
-            id = lapinId!!
+            newsId = lapinId!!
             isLapin = true
         }
     }
@@ -164,15 +164,15 @@ class CommentListFragment : BaseFragment() {
                 val comments = withContext(Dispatchers.IO) {
                     if (isHotComment) {
                         if (isRefresh) {
-                            CommentApiImpl.getHotCommentList(id, hash, page, null, isLapin)
+                            CommentApiImpl.getHotCommentList(newsId, hash, page, null, isLapin)
                         } else {
-                            CommentApiImpl.getHotCommentList(id, hash, page, commentList, isLapin)
+                            CommentApiImpl.getHotCommentList(newsId, hash, page, commentList, isLapin)
                         }
                     } else {
                         if (isRefresh) {
-                            CommentApiImpl.getAllCommentsList(id, hash, page, null, isLapin)
+                            CommentApiImpl.getAllCommentsList(newsId, hash, page, null, isLapin)
                         } else {
-                            CommentApiImpl.getAllCommentsList(id, hash, page, commentList, isLapin)
+                            CommentApiImpl.getAllCommentsList(newsId, hash, page, commentList, isLapin)
                         }
                     }
                 }
@@ -211,6 +211,31 @@ class CommentListFragment : BaseFragment() {
         }
     }
 
+    fun expandComment(id: String, position: Int) {
+        if (!isLoading) {
+            view!!.swipe_refresh.isRefreshing = true
+            isLoading = true
+            launch {
+                val comments = withContext(Dispatchers.IO) {
+                    CommentApiImpl.getSingleComment(id, newsId)
+                }
+                if (comments != null) {
+                    if (comments.isNotEmpty()) {
+                        commentList.removeAt(position)
+                        commentList.addAll(position, comments)
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        ToastUtil.showToast(R.string.no_content_to_display)
+                    }
+                } else {
+                    ToastUtil.showToast(R.string.timeout_no_internet)
+                }
+                isLoading = false
+                view!!.swipe_refresh.isRefreshing = false
+            }
+        }
+    }
+
     private fun showPopupMenu(comment: Comment) {
         val menuRes: Int = if (isHotComment) {
             R.menu.hot_comments_context
@@ -227,7 +252,7 @@ class CommentListFragment : BaseFragment() {
                 when (item.itemId) {
                     R.id.reply_comment -> {
                         val intent = Intent(context, CommentPostActivity::class.java).apply {
-                            putExtra(KEY_NEWS_ID, id)
+                            putExtra(KEY_NEWS_ID, newsId)
                             putExtra(KEY_TITLE, activity!!.intent.getStringExtra(KEY_TITLE))
                             putExtra(KEY_COMMENT_REPLY_TO, comment)
                         }

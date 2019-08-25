@@ -15,5 +15,6 @@ data class Comment(
     var supportCount: Int = 0,
     var againstCount: Int = 0,
     var isVotedSupport: Boolean = false,
-    var isVotedAgainst: Boolean = false
+    var isVotedAgainst: Boolean = false,
+    val expandCount: Int = 0
 ) : Parcelable

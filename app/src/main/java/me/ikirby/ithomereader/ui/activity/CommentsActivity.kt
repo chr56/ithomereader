@@ -180,6 +180,10 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
+    fun expandComment(id: String, position: Int) {
+        fragments[0].expandComment(id, position)
+    }
+
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
     }

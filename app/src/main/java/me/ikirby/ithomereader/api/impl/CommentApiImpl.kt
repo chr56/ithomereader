@@ -121,6 +121,11 @@ object CommentApiImpl : CommentApi {
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".mobile a").text()
 
+                    val cid = comment.attr("cid") // actually parentId
+
+                    val commentExpandArea = comment.select(".l .comm_reply")[0]
+                    val expandCount = getMatchInt(commentExpandArea.select(".comment_co").text())
+
                     val commentVoteArea = comment.select(".r .comm_reply")[0]
                     val selfId = getCommentId(commentVoteArea.select("a.s").attr("id"))
                     val supportCount = getMatchInt(commentVoteArea.select("a.s").text())
@@ -133,10 +138,11 @@ object CommentApiImpl : CommentApi {
                             posAndTime,
                             content,
                             device,
-                            null,
+                            cid,
                             selfId,
                             supportCount,
-                            againstCount
+                            againstCount,
+                            expandCount = expandCount
                         )
                     )
                 }
@@ -229,6 +235,86 @@ object CommentApiImpl : CommentApi {
         return null
     }
 
+    override fun getSingleComment(commentId: String, newsId: String): List<Comment>? {
+        try {
+            val doc = ITHomeApi.getSingleComment(commentId, newsId)
+            val list = mutableListOf<Comment>()
+            val comment = doc.select(".codiv")
+            if (comment != null) {
+                val nick = comment.select(".info .nick").text()
+                val floor = comment.select(".info .p_floor").text()
+                val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
+                val content = comment.select(".comm p").html().replace("<br>", "\n")
+                    .replace("<span>", "").replace("</span>", "")
+
+                // ithome doesn't provide device info now
+                val device = "" //comment.select(".info .mobile a").text()
+
+                val commentVoteArea = comment.select(".r .comm_reply")[0]
+//                val parentId = getCommentId(commentVoteArea.select("a.s").attr("id"))
+                val supportCount = getMatchInt(commentVoteArea.select("a.s").text())
+                val againstCount = getMatchInt(commentVoteArea.select("a.a").text())
+
+                list.add(
+                    Comment(
+                        nick,
+                        floor,
+                        posAndTime,
+                        content,
+                        device,
+                        commentId,
+                        commentId,
+                        supportCount,
+                        againstCount
+                    )
+                )
+
+                val replies = comment.select(".reply li.gh")
+                if (!replies.isEmpty()) {
+                    for (reply in replies) {
+                        val reNick = reply.select(".nick a").text()
+                        val reFloor = reply.select(".p_floor").text()
+                        val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
+                        val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
+                            .replace("<span>", "").replace("</span>", "")
+
+                        // ithome doesn't provide device info for now
+                        val reDevice = "" //reply.select(".mobile a").text()
+
+                        val replyVoteArea = reply.select(".comm_reply")[0]
+                        val reSelfId = getCommentId(replyVoteArea.select("a.s").attr("id"))
+                        val reSupportCount = getMatchInt(replyVoteArea.select("a.s").text())
+                        val reAgainstCount = getMatchInt(replyVoteArea.select("a.a").text())
+
+                        list.add(
+                            Comment(
+                                reNick,
+                                reFloor,
+                                rePosAndTime,
+                                reContent,
+                                reDevice,
+                                commentId,
+                                reSelfId,
+                                reSupportCount,
+                                reAgainstCount
+                            )
+                        )
+                    }
+                    if (replies.size >= 5) {
+                        val moreReplies = getMoreRepliesList(commentId)
+                        if (moreReplies != null && moreReplies.isNotEmpty()) {
+                            list.addAll(moreReplies)
+                        }
+                    }
+                }
+            }
+            return list
+        } catch (e: Exception) {
+            Logger.e(tag, "getSingleComment", e)
+        }
+        return null
+    }
+
     private fun getCommentId(strContainingId: String): String {
         val idMatch = Pattern.compile("\\d+")
         val matcher = idMatch.matcher(strContainingId)
@@ -236,7 +322,6 @@ object CommentApiImpl : CommentApi {
             matcher.group()
         } else "0"
     }
-
 
     private fun removeDuplicate(newList: MutableList<Comment>, oldList: List<Comment>?): List<Comment> {
         if (oldList != null && newList.isNotEmpty()) {

@@ -27,4 +27,6 @@ interface CommentApi {
     fun commentVote(id: String, typeId: Int, isCancel: Boolean, cookie: String): String?
 
     fun getCommentHash(id: String): String?
+
+    fun getSingleComment(commentId: String, newsId: String): List<Comment>?
 }
