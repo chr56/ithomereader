@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Process
 import android.util.Log
+import kotlin.system.exitProcess
 
 object UnknownExceptionHandler {
 
@@ -22,6 +23,6 @@ object UnknownExceptionHandler {
         context.startActivity(intent)
 
         Process.killProcess(Process.myPid())
-        System.exit(1)
+        exitProcess(1)
     }
 }
