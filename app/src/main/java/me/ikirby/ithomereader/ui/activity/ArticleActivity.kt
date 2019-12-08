@@ -40,6 +40,7 @@ import me.ikirby.ithomereader.util.getScrollProgress
 import me.ikirby.ithomereader.util.openLink
 import me.ikirby.ithomereader.util.openLinkInBrowser
 import me.ikirby.ithomereader.util.shouldLoadImageAutomatically
+import kotlin.math.roundToInt
 
 class ArticleActivity : BaseActivity() {
 
@@ -93,7 +94,7 @@ class ArticleActivity : BaseActivity() {
                     view.postDelayed({
                         val webViewSize = post_content.contentHeight - post_content.top
                         val position = webViewSize * readProgress
-                        val scrollY = Math.round(post_content.top + position)
+                        val scrollY = (post_content.top + position).roundToInt()
                         post_content.scrollTo(0, scrollY)
                     }, 300)
                 }
