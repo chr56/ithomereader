@@ -3,11 +3,15 @@ package me.ikirby.ithomereader.ui.fragment
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import androidx.recyclerview.widget.RecyclerView
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.BuildConfig
 import me.ikirby.ithomereader.R
@@ -176,6 +180,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
             checkForUpdate?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 UpdateCheckNotifyTask(true).execute()
                 true
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            (view as ViewGroup).apply {
+                clipChildren = false
+                clipToPadding = false
+                findViewById<ViewGroup>(android.R.id.list_container).apply {
+                    clipChildren = false
+                    clipToPadding = false
+                }
+                findViewById<RecyclerView>(androidx.preference.R.id.recycler_view).apply {
+                    clipToPadding = false
+                }
             }
         }
     }

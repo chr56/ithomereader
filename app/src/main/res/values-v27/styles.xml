@@ -4,7 +4,6 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">@android:color/white</item>
-        <item name="android:navigationBarDividerColor">@color/navigation_bar_divider_light</item>
     </style>
 
 </resources>

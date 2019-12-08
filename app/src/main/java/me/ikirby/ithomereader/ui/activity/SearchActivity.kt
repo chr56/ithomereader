@@ -1,7 +1,12 @@
 package me.ikirby.ithomereader.ui.activity
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +26,7 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
 import java.util.ArrayList
+import kotlin.math.roundToInt
 
 class SearchActivity : BaseActivity() {
 
@@ -74,6 +80,17 @@ class SearchActivity : BaseActivity() {
 
     override fun initView() {
         setContentView(R.layout.list_layout)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.navigationBarColor = Color.TRANSPARENT
+            swipe_refresh.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            ViewCompat.setOnApplyWindowInsetsListener(swipe_refresh) { v, insets ->
+                v.updatePadding(top = insets.systemWindowInsets.top)
+                swipe_refresh.setProgressViewOffset(false, 0, (insets.systemWindowInsets.top * 1.3).roundToInt())
+                list_view.updatePadding(bottom = insets.systemWindowInsets.bottom)
+                insets
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
