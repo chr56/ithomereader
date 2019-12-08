@@ -18,7 +18,6 @@ import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_CUSTOM_FILTER
 import me.ikirby.ithomereader.ui.adapter.CustomFilterListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
-import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class CustomFilterActivity : BaseActivity() {
 
@@ -44,7 +43,6 @@ class CustomFilterActivity : BaseActivity() {
 
     override fun initView() {
         setContentView(R.layout.list_layout)
-        ToastUtil.showToast("123")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             window.navigationBarColor = Color.TRANSPARENT
             swipe_refresh.systemUiVisibility =
