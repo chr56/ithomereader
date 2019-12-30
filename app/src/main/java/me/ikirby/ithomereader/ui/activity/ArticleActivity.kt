@@ -88,7 +88,9 @@ class ArticleActivity : BaseActivity() {
                 load_progress.visibility = View.GONE
                 load_tip.visibility = View.GONE
 
-                post_content.loadUrl("javascript:(function(){ document.body.style.paddingBottom = '${insetsBottom}px'})();")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    post_content.loadUrl("javascript:(function(){ document.body.style.paddingBottom = '${insetsBottom}px'})();")
+                }
 
                 if (readProgress != 0F) {
                     view.postDelayed({
@@ -140,7 +142,6 @@ class ArticleActivity : BaseActivity() {
             ViewCompat.setOnApplyWindowInsetsListener(content) { v, insets ->
                 v.updatePadding(top = insets.systemWindowInsets.top)
                 insetsBottom = insets.systemWindowInsets.bottom / 2
-//                post_content.loadUrl("javascript:(function(){ document.body.style.paddingBottom = '${insetsBottom}px'})();")
                 insets
             }
         }
