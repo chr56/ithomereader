@@ -41,6 +41,13 @@ body {
   line-height: 1.6;
 }
 
+.post_content h2 {
+  background: linear-gradient(to top, #ab6767 26%, transparent 26% 100%);
+  display: inline;
+  font-size: 112.5%;
+  font-weight: bold;
+}
+
 #about_info_show {
   padding-top: 0.5em;
 }
