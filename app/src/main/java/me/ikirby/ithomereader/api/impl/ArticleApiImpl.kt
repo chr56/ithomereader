@@ -81,10 +81,9 @@ object ArticleApiImpl : ArticleApi {
                     addWhiteSpace(gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text").text())
 
                 val bt = gradeDoc.select(".bt span div")
-                val trash = bt[0].text()
-                val soso = bt[1].text()
-                val great = bt[2].text()
-                grade = ArticleGrade(score, trash, soso, great)
+                val trash = bt[1].text()
+                val great = bt[0].text()
+                grade = ArticleGrade(score, trash, great)
             }
         } catch (e: Exception) {
             Logger.e(tag, "getArticleGrade", e)

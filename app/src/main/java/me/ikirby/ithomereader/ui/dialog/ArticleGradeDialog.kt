@@ -6,12 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.article_grade_dialog.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.KEY_NEWS_ID
 import me.ikirby.ithomereader.R
@@ -41,7 +36,6 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.article_grade_dialog, container, false)
         view.trash.setOnClickListener(this)
-        view.soso.setOnClickListener(this)
         view.great.setOnClickListener(this)
         return view
     }
@@ -62,7 +56,6 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
             if (articleGrade != null) {
                 view!!.article_grade.text = articleGrade.score
                 view!!.trash.text = articleGrade.trashCount
-                view!!.soso.text = articleGrade.sosoCount
                 view!!.great.text = articleGrade.greatCount
                 view!!.article_grade_detail.visibility = View.VISIBLE
             } else {
@@ -105,7 +98,6 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
     override fun onClick(view: View) {
         when (view.id) {
             R.id.trash -> vote(0)
-            R.id.soso -> vote(1)
             R.id.great -> vote(2)
         }
     }

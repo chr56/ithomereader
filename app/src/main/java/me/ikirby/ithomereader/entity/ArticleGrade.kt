@@ -7,6 +7,5 @@ import kotlinx.android.parcel.Parcelize
 data class ArticleGrade(
     val score: String,
     val trashCount: String,
-    val sosoCount: String,
     val greatCount: String
 ) : Parcelable
