@@ -22,12 +22,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_image_viewer.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
@@ -35,11 +30,7 @@ import me.ikirby.ithomereader.SAF_CREATE_REQUEST_CODE
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
-import me.ikirby.ithomereader.util.Logger
-import me.ikirby.ithomereader.util.copyToClipboard
-import me.ikirby.ithomereader.util.getFileName
-import me.ikirby.ithomereader.util.getImageMimeType
-import me.ikirby.ithomereader.util.writeFile
+import me.ikirby.ithomereader.util.*
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 

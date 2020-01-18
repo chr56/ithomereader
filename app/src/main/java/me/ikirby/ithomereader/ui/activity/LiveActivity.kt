@@ -12,14 +12,7 @@ import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.KEY_LIST_STATE
-import me.ikirby.ithomereader.KEY_LIVE_INFO
-import me.ikirby.ithomereader.KEY_LIVE_MESSAGES
-import me.ikirby.ithomereader.KEY_NEWS_ID
-import me.ikirby.ithomereader.KEY_NEWS_ID_HASH
-import me.ikirby.ithomereader.KEY_TITLE
-import me.ikirby.ithomereader.KEY_URL
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.LiveApiImpl
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.ui.adapter.LivePostListAdapter

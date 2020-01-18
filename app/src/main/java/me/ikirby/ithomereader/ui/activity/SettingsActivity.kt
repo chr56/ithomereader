@@ -26,7 +26,8 @@ class SettingsActivity : BaseActivity() {
             containerView.clipToPadding = false
 
             window.navigationBarColor = Color.TRANSPARENT
-            containerView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            containerView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
             ViewCompat.setOnApplyWindowInsetsListener(containerView) { v, insets ->
                 v.updatePadding(top = insets.systemWindowInsets.top, bottom = insets.systemWindowInsets.bottom)

@@ -20,12 +20,7 @@ import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -39,7 +34,7 @@ class BottomSheetMenu(
     context: Context,
     private val bottomSheetMenuListener: BottomSheetMenuListener,
     private val iconSize: Int = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_menu_item_icon_size),
-    style: Int =  R.style.BottomSheetDialog
+    style: Int = R.style.BottomSheetDialog
 ) : BottomSheetDialog(context, style) {
 
     init {

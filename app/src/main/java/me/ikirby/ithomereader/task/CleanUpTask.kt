@@ -1,13 +1,7 @@
 package me.ikirby.ithomereader.task
 
 import android.os.AsyncTask
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.BuildConfig
-import me.ikirby.ithomereader.SETTINGS_KEY_AUTO_NIGHT_MODE
-import me.ikirby.ithomereader.SETTINGS_KEY_CUSTOM_FILTER
-import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE
-import me.ikirby.ithomereader.SETTINGS_KEY_VERSION
-import me.ikirby.ithomereader.SETTINGS_KEY_WHITE_THEME
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.util.clearCache
 
 class CleanUpTask : AsyncTask<Void, Void, Void>() {

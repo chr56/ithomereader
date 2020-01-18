@@ -14,14 +14,7 @@ import kotlinx.android.synthetic.main.activity_viewpager.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.COMMENT_POSTED_REQUEST_CODE
-import me.ikirby.ithomereader.KEY_NEWS_ID
-import me.ikirby.ithomereader.KEY_NEWS_ID_HASH
-import me.ikirby.ithomereader.KEY_TITLE
-import me.ikirby.ithomereader.KEY_URL
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.CommentApiImpl
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.fragment.CommentListFragment

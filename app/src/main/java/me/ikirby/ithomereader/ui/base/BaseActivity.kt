@@ -17,13 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
-import me.ikirby.ithomereader.BaseApplication
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.BaseApplication.Companion.preferences
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SETTINGS_KEY_APPCOMPAT_NIGHT_MODE
-import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_END_TIME
-import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_START_TIME
-import me.ikirby.ithomereader.SWIPE_GESTURE_DISTANCE
 import me.ikirby.ithomereader.util.shouldEnableNightMode
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs

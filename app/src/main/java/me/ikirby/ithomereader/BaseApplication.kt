@@ -38,13 +38,14 @@ class BaseApplication : Application() {
     }
 
     fun applyNightMode() {
-        val defaultNightMode = when (preferences.getString(SETTINGS_KEY_APPCOMPAT_NIGHT_MODE, "MODE_NIGHT_FOLLOW_SYSTEM")) {
-            "MODE_NIGHT_FOLLOW_SYSTEM" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            "MODE_NIGHT_NO" -> AppCompatDelegate.MODE_NIGHT_NO
-            "MODE_NIGHT_YES" -> AppCompatDelegate.MODE_NIGHT_YES
-            "MODE_NIGHT_AUTO_BATTERY" -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-            else -> AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
-        }
+        val defaultNightMode =
+            when (preferences.getString(SETTINGS_KEY_APPCOMPAT_NIGHT_MODE, "MODE_NIGHT_FOLLOW_SYSTEM")) {
+                "MODE_NIGHT_FOLLOW_SYSTEM" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                "MODE_NIGHT_NO" -> AppCompatDelegate.MODE_NIGHT_NO
+                "MODE_NIGHT_YES" -> AppCompatDelegate.MODE_NIGHT_YES
+                "MODE_NIGHT_AUTO_BATTERY" -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                else -> AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
+            }
         AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }
 }

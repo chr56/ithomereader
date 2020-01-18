@@ -12,31 +12,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import androidx.recyclerview.widget.RecyclerView
-import me.ikirby.ithomereader.BaseApplication
-import me.ikirby.ithomereader.BuildConfig
-import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SETTINGS_KEY_APPCOMPAT_NIGHT_MODE
-import me.ikirby.ithomereader.SETTINGS_KEY_CHECK_UPDATE
-import me.ikirby.ithomereader.SETTINGS_KEY_CUSTOM_FILTER
-import me.ikirby.ithomereader.SETTINGS_KEY_FONT_SIZE
-import me.ikirby.ithomereader.SETTINGS_KEY_GO_FULL_SITE
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_ANDROIDX
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_BOTTOMSHEET
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_GLIDE
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_JSOUP
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_KOTLINCOROUTINES
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_MDC
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_PANGU_JS
-import me.ikirby.ithomereader.SETTINGS_KEY_LIB_PHOTOVIEW
-import me.ikirby.ithomereader.SETTINGS_KEY_LOAD_IMAGE_COND
-import me.ikirby.ithomereader.SETTINGS_KEY_LOGIN_ACCOUNT
-import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_END_TIME
-import me.ikirby.ithomereader.SETTINGS_KEY_NIGHT_MODE_START_TIME
-import me.ikirby.ithomereader.SETTINGS_KEY_SHOW_THUMB_COND
-import me.ikirby.ithomereader.SETTINGS_KEY_SWIPE_GESTURE
-import me.ikirby.ithomereader.SETTINGS_KEY_USERNAME
-import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
-import me.ikirby.ithomereader.SETTINGS_KEY_USE_BOTTOM_NAV
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
 import me.ikirby.ithomereader.ui.activity.CustomFilterActivity
 import me.ikirby.ithomereader.ui.dialog.showListPreferenceDialog
@@ -76,7 +52,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             nightModePreference?.summaryProvider = summaryProvider
 
             if (preferences.getString(SETTINGS_KEY_APPCOMPAT_NIGHT_MODE, "MODE_NIGHT_FOLLOW_SYSTEM") ==
-                    "MODE_NIGHT_BASED_ON_TIME") {
+                "MODE_NIGHT_BASED_ON_TIME"
+            ) {
                 nightModeStartTimePreference?.isEnabled = true
                 nightModeEndTimePreference?.isEnabled = true
             }

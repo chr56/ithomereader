@@ -2,12 +2,7 @@ package me.ikirby.ithomereader.ui.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +20,7 @@ import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.copyToClipboard
 import me.ikirby.ithomereader.util.openLinkInBrowser
-import java.util.ArrayList
+import java.util.*
 
 class TrendingListAdapter(
     private val list: ArrayList<Trending>,

@@ -10,12 +10,7 @@ import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.KEY_ARTICLE_LIST
-import me.ikirby.ithomereader.KEY_KEYWORD
-import me.ikirby.ithomereader.KEY_LAST_FIRST
-import me.ikirby.ithomereader.KEY_LIST_STATE
-import me.ikirby.ithomereader.KEY_PAGE
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
@@ -23,7 +18,7 @@ import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
-import java.util.ArrayList
+import java.util.*
 
 class SearchActivity : BaseActivity() {
 
