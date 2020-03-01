@@ -127,9 +127,10 @@ object ITHomeApi {
      * @throws IOException 网络请求异常
      */
     @Throws(IOException::class)
-    fun getMoreReplies(parentId: String): Document {
+    fun getMoreReplies(parentId: String, newsId: String): Document {
         val postData = mapOf(
             "commentid" to parentId,
+            "newsid" to newsId,
             "type" to "getmorelou"
         )
 

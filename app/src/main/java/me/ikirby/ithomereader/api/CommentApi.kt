@@ -5,7 +5,7 @@ import me.ikirby.ithomereader.entity.Comment
 interface CommentApi {
 
     fun getAllCommentsList(
-        id: String,
+        newsId: String,
         hash: String,
         page: Int,
         oldList: ArrayList<Comment>?,
@@ -13,14 +13,14 @@ interface CommentApi {
     ): List<Comment>?
 
     fun getHotCommentList(
-        id: String,
+        newsId: String,
         hash: String,
         page: Int,
         oldList: ArrayList<Comment>?,
         isLapin: Boolean
     ): List<Comment>?
 
-    fun getMoreRepliesList(parentId: String): List<Comment>?
+    fun getMoreRepliesList(parentId: String, newsId: String): List<Comment>?
 
     fun postComment(id: String, parentId: String?, selfId: String?, commentContent: String, cookie: String): String?
 

@@ -12,14 +12,14 @@ object CommentApiImpl : CommentApi {
     private val tag = javaClass.simpleName
 
     override fun getAllCommentsList(
-        id: String,
+        newsId: String,
         hash: String,
         page: Int,
         oldList: ArrayList<Comment>?,
         isLapin: Boolean
     ): List<Comment>? {
         try {
-            val doc = ITHomeApi.getCommentsDoc(id, hash, page, isLapin)
+            val doc = ITHomeApi.getCommentsDoc(newsId, hash, page, isLapin)
             val list = mutableListOf<Comment>()
             val comments = doc.select(".entry")
             if (!comments.isEmpty()) {
@@ -84,7 +84,7 @@ object CommentApiImpl : CommentApi {
                             )
                         }
                         if (replies.size >= 5 && parentId != "0") {
-                            val moreReplies = getMoreRepliesList(parentId)
+                            val moreReplies = getMoreRepliesList(parentId, newsId)
                             if (moreReplies != null && moreReplies.isNotEmpty()) {
                                 list.addAll(moreReplies)
                             }
@@ -100,14 +100,14 @@ object CommentApiImpl : CommentApi {
     }
 
     override fun getHotCommentList(
-        id: String,
+        newsId: String,
         hash: String,
         page: Int,
         oldList: ArrayList<Comment>?,
         isLapin: Boolean
     ): List<Comment>? {
         try {
-            val doc = ITHomeApi.getHotCommentsDoc(id, hash, page, isLapin)
+            val doc = ITHomeApi.getHotCommentsDoc(newsId, hash, page, isLapin)
             val list = mutableListOf<Comment>()
             val comments = doc.select(".entry")
             if (!comments.isEmpty()) {
@@ -154,9 +154,9 @@ object CommentApiImpl : CommentApi {
         }
     }
 
-    override fun getMoreRepliesList(parentId: String): List<Comment>? {
+    override fun getMoreRepliesList(parentId: String, newsId: String): List<Comment>? {
         try {
-            val doc = ITHomeApi.getMoreReplies(parentId)
+            val doc = ITHomeApi.getMoreReplies(parentId, newsId)
             val list = mutableListOf<Comment>()
             val moreReplies = doc.select("li.gh")
             if (!moreReplies.isEmpty()) {
@@ -301,7 +301,7 @@ object CommentApiImpl : CommentApi {
                         )
                     }
                     if (replies.size >= 5) {
-                        val moreReplies = getMoreRepliesList(commentId)
+                        val moreReplies = getMoreRepliesList(commentId, newsId)
                         if (moreReplies != null && moreReplies.isNotEmpty()) {
                             list.addAll(moreReplies)
                         }
