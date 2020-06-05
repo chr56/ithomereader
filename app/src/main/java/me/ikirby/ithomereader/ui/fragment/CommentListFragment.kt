@@ -42,7 +42,7 @@ class CommentListFragment : BaseFragment() {
     private var isRefresh = false
 
     private val onLongClickListener = View.OnLongClickListener { v ->
-        showPopupMenu(commentList[view!!.list_view.getChildLayoutPosition(v)])
+        showPopupMenu(commentList[requireView().list_view.getChildLayoutPosition(v)])
         true
     }
 
@@ -50,12 +50,12 @@ class CommentListFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (arguments != null) {
-            newsId = arguments!!.getString(KEY_NEWS_ID)!!
-            hash = arguments!!.getString(KEY_COMMENT_HASH)!!
-            cookie = arguments!!.getString(KEY_COOKIE)
-            url = arguments!!.getString(KEY_URL)!!
-            lapinId = arguments!!.getString(KEY_LAPIN_ID)
-            isHotComment = arguments!!.getBoolean(KEY_HOT_COMMENT)
+            newsId = requireArguments().getString(KEY_NEWS_ID)!!
+            hash = requireArguments().getString(KEY_COMMENT_HASH)!!
+            cookie = requireArguments().getString(KEY_COOKIE)
+            url = requireArguments().getString(KEY_URL)!!
+            lapinId = requireArguments().getString(KEY_LAPIN_ID)
+            isHotComment = requireArguments().getBoolean(KEY_HOT_COMMENT)
         }
         if (lapinId != null) {
             newsId = lapinId!!
@@ -131,7 +131,7 @@ class CommentListFragment : BaseFragment() {
 
     private fun reloadList() {
         if (!isLoading) {
-            view!!.list_view.setAllContentLoaded(false)
+            requireView().list_view.setAllContentLoaded(false)
             page = 0
             isRefresh = true
             loadList()
@@ -140,7 +140,7 @@ class CommentListFragment : BaseFragment() {
 
     private fun loadList() {
         if (!isLoading) {
-            view!!.swipe_refresh.isRefreshing = true
+            requireView().swipe_refresh.isRefreshing = true
             isLoading = true
             page++
             launch {
@@ -167,28 +167,28 @@ class CommentListFragment : BaseFragment() {
                         commentList.addAll(comments)
                         adapter.notifyDataSetChanged()
                         if (isLapin && isHotComment) {
-                            view!!.list_view.setAllContentLoaded(true)
+                            requireView().list_view.setAllContentLoaded(true)
                         }
                     } else {
                         page--
-                        view!!.list_view.setAllContentLoaded(true)
+                        requireView().list_view.setAllContentLoaded(true)
                         ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
                     page--
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, commentList.size)
+                UiUtil.switchVisibility(requireView().list_view, requireView().error_placeholder, commentList.size)
                 isLoading = false
                 isRefresh = false
-                view!!.swipe_refresh.isRefreshing = false
+                requireView().swipe_refresh.isRefreshing = false
             }
         }
     }
 
     fun setCookie(cookie: String?) {
         if (arguments != null) {
-            arguments!!.putString(KEY_COOKIE, cookie)
+            requireArguments().putString(KEY_COOKIE, cookie)
             adapter.setCookie(cookie)
             this.cookie = cookie
         }
@@ -196,7 +196,7 @@ class CommentListFragment : BaseFragment() {
 
     fun expandComment(id: String, position: Int) {
         if (!isLoading) {
-            view!!.swipe_refresh.isRefreshing = true
+            requireView().swipe_refresh.isRefreshing = true
             isLoading = true
             launch {
                 val comments = withContext(Dispatchers.IO) {
@@ -214,7 +214,7 @@ class CommentListFragment : BaseFragment() {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
                 isLoading = false
-                view!!.swipe_refresh.isRefreshing = false
+                requireView().swipe_refresh.isRefreshing = false
             }
         }
     }
@@ -225,13 +225,12 @@ class CommentListFragment : BaseFragment() {
         } else {
             R.menu.comments_context
         }
-        UiUtil.showBottomSheetMenu(context!!, object : BottomSheetMenu.BottomSheetMenuListener {
+        UiUtil.showBottomSheetMenu(requireContext(), object : BottomSheetMenu.BottomSheetMenuListener {
             override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
                 inflater.inflate(menuRes, menu)
             }
 
             override fun onBottomSheetMenuItemSelected(item: MenuItem) {
-                assert(activity != null)
                 when (item.itemId) {
                     R.id.reply_comment -> {
                         val intent = Intent(context, CommentPostActivity::class.java).apply {

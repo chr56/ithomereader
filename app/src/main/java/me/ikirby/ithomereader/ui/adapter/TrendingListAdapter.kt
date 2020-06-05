@@ -36,7 +36,7 @@ class TrendingListAdapter(
                 view = LayoutInflater.from(context).inflate(R.layout.post_list_item, parent, false)
                 holder = TrendingFocusViewHolder(view)
                 view.setOnClickListener {
-                    val (_, title, url) = list[holder.adapterPosition]
+                    val (_, title, url) = list[holder.bindingAdapterPosition]
                     val intent = Intent(context, ArticleActivity::class.java).apply {
                         putExtra(KEY_URL, url)
                         putExtra(KEY_TITLE, title)
@@ -44,7 +44,7 @@ class TrendingListAdapter(
                     context.startActivity(intent)
                 }
                 view.setOnLongClickListener {
-                    showPopupMenu(list[holder.adapterPosition])
+                    showPopupMenu(list[holder.bindingAdapterPosition])
                     true
                 }
             }
@@ -52,7 +52,7 @@ class TrendingListAdapter(
                 view = LayoutInflater.from(context).inflate(R.layout.trending_item, parent, false)
                 holder = TrendingListViewHolder(view)
                 view.setOnClickListener {
-                    val (_, title, url) = list[holder.adapterPosition]
+                    val (_, title, url) = list[holder.bindingAdapterPosition]
                     val intent = Intent(context, ArticleActivity::class.java).apply {
                         putExtra(KEY_URL, url)
                         putExtra(KEY_TITLE, title)
@@ -60,7 +60,7 @@ class TrendingListAdapter(
                     context.startActivity(intent)
                 }
                 view.setOnLongClickListener {
-                    showPopupMenu(list[holder.adapterPosition])
+                    showPopupMenu(list[holder.bindingAdapterPosition])
                     true
                 }
             }

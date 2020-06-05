@@ -46,24 +46,24 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
     }
 
     private fun load() {
-        view!!.load_progress.visibility = View.VISIBLE
-        view!!.article_grade.visibility = View.GONE
-        view!!.article_grade_detail.visibility = View.GONE
+        requireView().load_progress.visibility = View.VISIBLE
+        requireView().article_grade.visibility = View.GONE
+        requireView().article_grade_detail.visibility = View.GONE
         launch {
             val articleGrade = withContext(Dispatchers.IO) {
                 ArticleApiImpl.getArticleGrade(newsId, null)
             }
             if (articleGrade != null) {
-                view!!.article_grade.text = articleGrade.score
-                view!!.trash.text = articleGrade.trashCount
-                view!!.great.text = articleGrade.greatCount
-                view!!.article_grade_detail.visibility = View.VISIBLE
+                requireView().article_grade.text = articleGrade.score
+                requireView().trash.text = articleGrade.trashCount
+                requireView().great.text = articleGrade.greatCount
+                requireView().article_grade_detail.visibility = View.VISIBLE
             } else {
-                view!!.article_grade.setText(R.string.timeout_no_internet)
-                view!!.article_grade_detail.visibility = View.GONE
+                requireView().article_grade.setText(R.string.timeout_no_internet)
+                requireView().article_grade_detail.visibility = View.GONE
             }
-            view!!.article_grade.visibility = View.VISIBLE
-            view!!.load_progress.visibility = View.GONE
+            requireView().article_grade.visibility = View.VISIBLE
+            requireView().load_progress.visibility = View.GONE
         }
     }
 
@@ -71,7 +71,7 @@ class ArticleGradeDialog : BottomSheetDialogFragment(), CoroutineScope, View.OnC
         if (cookie == null) {
             ToastUtil.showToast(R.string.please_login_first)
             if (activity != null) {
-                showLoginDialog(activity!!, null)
+                showLoginDialog(requireActivity(), null)
                 dismiss()
             }
             return

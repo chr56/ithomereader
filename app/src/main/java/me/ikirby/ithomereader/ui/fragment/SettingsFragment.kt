@@ -34,7 +34,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             val customFilterPreference = findPreference<Preference>(SETTINGS_KEY_CUSTOM_FILTER)
             customFilterPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                startActivity(Intent(context!!, CustomFilterActivity::class.java))
+                startActivity(Intent(requireContext(), CustomFilterActivity::class.java))
                 true
             }
 
@@ -77,9 +77,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             loginAccount?.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
                 if (preferences.contains(SETTINGS_KEY_USER_HASH)) {
-                    showLogoutDialog(activity!!, preference.title.toString(), preference)
+                    showLogoutDialog(requireActivity(), preference.title.toString(), preference)
                 } else {
-                    showLoginDialog(activity!!) { preference.title = it }
+                    showLoginDialog(requireActivity()) { preference.title = it }
                 }
                 true
             }
@@ -180,13 +180,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onDisplayPreferenceDialog(preference: Preference?) {
         when (preference) {
-            is ListPreference -> showListPreferenceDialog(context!!, preference)
-            is TimePreference -> showTimePreferenceDialog(context!!, preference)
+            is ListPreference -> showListPreferenceDialog(requireContext(), preference)
+            is TimePreference -> showTimePreferenceDialog(requireContext(), preference)
             else -> super.onDisplayPreferenceDialog(preference)
         }
     }
 
     private fun openInCustomTabs(url: String) {
-        openLink(context!!, url)
+        openLink(requireContext(), url)
     }
 }

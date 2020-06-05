@@ -66,10 +66,10 @@ class ArticleListFragment : BaseFragment() {
             articleList = ArrayList()
             focuses = ArrayList()
             if (showBanner) {
-                focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
-                adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
+                focusSlideAdapter = SlideBannerAdapter(focuses, requireContext())
+                adapter = ArticleListAdapter(articleList, focusSlideAdapter, requireContext(), showThumb)
             } else {
-                adapter = ArticleListAdapter(articleList, null, context!!, showThumb)
+                adapter = ArticleListAdapter(articleList, null, requireContext(), showThumb)
             }
             view.list_view.adapter = adapter
         } else {
@@ -77,10 +77,10 @@ class ArticleListFragment : BaseFragment() {
             showBanner = savedInstanceState.getBoolean(KEY_SHOW_BANNER, true)
             page = savedInstanceState.getInt(KEY_PAGE)
             if (showBanner) {
-                focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
-                adapter = ArticleListAdapter(articleList, focusSlideAdapter, context!!, showThumb)
+                focusSlideAdapter = SlideBannerAdapter(focuses, requireContext())
+                adapter = ArticleListAdapter(articleList, focusSlideAdapter, requireContext(), showThumb)
             } else {
-                adapter = ArticleListAdapter(articleList, null, context!!, showThumb)
+                adapter = ArticleListAdapter(articleList, null, requireContext(), showThumb)
             }
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
@@ -125,7 +125,7 @@ class ArticleListFragment : BaseFragment() {
 
     private fun reloadList() {
         if (!isLoading) {
-            view!!.list_view.setAllContentLoaded(false)
+            requireView().list_view.setAllContentLoaded(false)
             isRefresh = true
             page = 0
             loadList()
@@ -133,7 +133,7 @@ class ArticleListFragment : BaseFragment() {
             if (showBanner) {
                 if (!::focusSlideAdapter.isInitialized) {
                     focuses = ArrayList()
-                    focusSlideAdapter = SlideBannerAdapter(focuses, context!!)
+                    focusSlideAdapter = SlideBannerAdapter(focuses, requireContext())
                     adapter.setFocusSlideAdapter(focusSlideAdapter)
                 }
                 loadBanner()
@@ -146,7 +146,7 @@ class ArticleListFragment : BaseFragment() {
     private fun loadList() {
         if (!isLoading) {
             isLoading = true
-            view!!.swipe_refresh.isRefreshing = true
+            requireView().swipe_refresh.isRefreshing = true
             page++
             launch {
                 val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
@@ -171,7 +171,7 @@ class ArticleListFragment : BaseFragment() {
                         adapter.notifyDataSetChanged()
                     } else {
                         page--
-                        view!!.list_view.setAllContentLoaded(true)
+                        requireView().list_view.setAllContentLoaded(true)
                         ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
@@ -179,10 +179,10 @@ class ArticleListFragment : BaseFragment() {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
 
-                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, articleList.size)
+                UiUtil.switchVisibility(requireView().list_view, requireView().error_placeholder, articleList.size)
                 isLoading = false
                 isRefresh = false
-                view!!.swipe_refresh.isRefreshing = false
+                requireView().swipe_refresh.isRefreshing = false
             }
         }
     }

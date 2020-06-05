@@ -46,7 +46,7 @@ class ArticleListAdapter(
             val view = LayoutInflater.from(context).inflate(R.layout.post_list_item, parent, false)
             val articleListViewHolder = ArticleListViewHolder(view)
             view.setOnClickListener {
-                var position = articleListViewHolder.adapterPosition
+                var position = articleListViewHolder.bindingAdapterPosition
                 if (focusSlideAdapter != null) {
                     position--
                 }
@@ -58,7 +58,7 @@ class ArticleListAdapter(
                 context.startActivity(intent)
             }
             view.setOnLongClickListener {
-                var position = articleListViewHolder.adapterPosition
+                var position = articleListViewHolder.bindingAdapterPosition
                 if (focusSlideAdapter != null) {
                     position--
                 }

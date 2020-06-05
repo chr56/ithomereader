@@ -36,7 +36,7 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
         val view = LayoutInflater.from(context).inflate(R.layout.slide_image_view, parent, false)
         val holder = BannerItemViewHolder(view)
         view.setOnClickListener {
-            val (title, _, url) = list[holder.adapterPosition]
+            val (title, _, url) = list[holder.bindingAdapterPosition]
             val intent = Intent(context, ArticleActivity::class.java).apply {
                 putExtra(KEY_URL, url)
                 putExtra(KEY_TITLE, title)
@@ -44,7 +44,7 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
             context.startActivity(intent)
         }
         view.setOnLongClickListener {
-            showPopupMenu(list[holder.adapterPosition])
+            showPopupMenu(list[holder.bindingAdapterPosition])
             true
         }
         return holder

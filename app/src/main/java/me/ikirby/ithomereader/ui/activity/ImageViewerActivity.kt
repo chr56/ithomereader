@@ -14,6 +14,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -26,7 +27,6 @@ import kotlinx.coroutines.*
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SAF_CREATE_REQUEST_CODE
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
@@ -54,6 +54,14 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     private lateinit var fadeOutAnim: Animation
     private lateinit var fadeInAnim: Animation
 
+    private val saveImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let {
+                saveImage(it.data!!)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
@@ -77,15 +85,6 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     override fun onDestroy() {
         coroutineContext.cancelChildren()
         super.onDestroy()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SAF_CREATE_REQUEST_CODE && data != null) {
-                saveImage(data.data!!)
-            }
-        }
     }
 
     private fun loadImage() {
@@ -129,7 +128,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             type = getImageMimeType(fileName)
             putExtra(Intent.EXTRA_TITLE, fileName)
         }
-        startActivityForResult(intent, SAF_CREATE_REQUEST_CODE)
+        saveImage.launch(intent)
     }
 
     private fun saveImage(uri: Uri) {

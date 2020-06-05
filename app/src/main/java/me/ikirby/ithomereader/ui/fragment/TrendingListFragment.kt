@@ -51,11 +51,11 @@ class TrendingListFragment : BaseFragment() {
         if (savedInstanceState == null || trendingList.isEmpty()) {
             trendingList = ArrayList()
             showThumb = shouldShowThumb()
-            adapter = TrendingListAdapter(trendingList, context!!, showThumb)
+            adapter = TrendingListAdapter(trendingList, requireContext(), showThumb)
             view.list_view.adapter = adapter
         } else {
             showThumb = savedInstanceState.getBoolean(KEY_SHOW_THUMB, true)
-            adapter = TrendingListAdapter(trendingList, context!!, showThumb)
+            adapter = TrendingListAdapter(trendingList, requireContext(), showThumb)
             view.list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
@@ -88,7 +88,7 @@ class TrendingListFragment : BaseFragment() {
     private fun loadList() {
         if (!isLoading) {
             isLoading = true
-            view!!.swipe_refresh.isRefreshing = true
+            requireView().swipe_refresh.isRefreshing = true
             launch {
                 val trendings = withContext(Dispatchers.IO) { TrendingApiImpl.getTrendingList() }
                 if (trendings != null) {
@@ -104,9 +104,9 @@ class TrendingListFragment : BaseFragment() {
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(view!!.list_view, view!!.error_placeholder, trendingList.size)
+                UiUtil.switchVisibility(requireView().list_view, requireView().error_placeholder, trendingList.size)
                 isLoading = false
-                view!!.swipe_refresh.isRefreshing = false
+                requireView().swipe_refresh.isRefreshing = false
             }
         }
     }

@@ -1,5 +1,6 @@
 package me.ikirby.ithomereader.ui.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -8,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.CookieManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -24,6 +26,12 @@ import me.ikirby.ithomereader.ui.fragment.TrendingListFragment
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class MainActivity : BaseActivity() {
+
+    private val startSettings = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            recreate()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,10 +160,7 @@ class MainActivity : BaseActivity() {
                 ToastUtil.showToast(R.string.cache_clearing)
                 ClearCacheTask().execute()
             }
-            R.id.action_settings -> startActivityForResult(
-                Intent(this, SettingsActivity::class.java),
-                THEME_CHANGE_REQUEST_CODE
-            )
+            R.id.action_settings -> startSettings.launch(Intent(this, SettingsActivity::class.java))
             R.id.action_night_mode -> {
                 BaseApplication.hasSetNightModeManually = true
                 val defaultNightMode = if (isNightMode()) {
@@ -167,13 +172,6 @@ class MainActivity : BaseActivity() {
             }
         }
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == THEME_CHANGE_REQUEST_CODE) {
-            recreate()
-        }
     }
 
     override fun onBackPressed() {

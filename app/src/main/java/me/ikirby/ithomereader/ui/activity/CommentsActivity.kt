@@ -1,5 +1,6 @@
 package me.ikirby.ithomereader.ui.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -30,6 +32,14 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private lateinit var fragments: List<CommentListFragment>
     private var cookie: String? = null
+
+    private val postComment = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            goToAllComments()
+            val refreshBtn = findViewById<View>(R.id.action_refresh)
+            refreshBtn?.callOnClick()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,19 +86,10 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     putExtra(KEY_NEWS_ID, id)
                     putExtra(KEY_TITLE, title)
                 }
-                startActivityForResult(intent, COMMENT_POSTED_REQUEST_CODE)
+                postComment.launch(intent)
             }
         }
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == COMMENT_POSTED_REQUEST_CODE) {
-            goToAllComments()
-            val refreshBtn = findViewById<View>(R.id.action_refresh)
-            refreshBtn?.callOnClick()
-        }
     }
 
     override fun onResume() {
