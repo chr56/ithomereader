@@ -21,11 +21,11 @@ import me.ikirby.ithomereader.ui.widget.CustomLinkTransformationMethod
 import java.util.*
 
 class CommentListAdapter(
-    private val list: ArrayList<Comment>,
-    private val inflater: LayoutInflater,
-    private val activity: CommentsActivity,
-    private val onLongClickListener: View.OnLongClickListener,
-    private var cookie: String?
+        private val list: ArrayList<Comment>,
+        private val inflater: LayoutInflater,
+        private val activity: CommentsActivity,
+        private val onLongClickListener: View.OnLongClickListener,
+        private var cookie: String?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val commentSupport: String = activity.getString(R.string.comment_support)
     private val commentAgainst: String = activity.getString(R.string.comment_against)
@@ -58,16 +58,14 @@ class CommentListAdapter(
             viewHolder.nickText.text = comment.nick
             viewHolder.floorText.text = comment.floor
             viewHolder.posAndTimeText.text = comment.posAndTime
-            if (content.contains("</a>")) {
-                viewHolder.contentText.text = if (Build.VERSION.SDK_INT > 23) {
-                    Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
-                } else {
-                    @Suppress("DEPRECATION")
-                    Html.fromHtml(content)
-                }
+
+            viewHolder.contentText.text = if (Build.VERSION.SDK_INT > 23) {
+                Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
             } else {
-                viewHolder.contentText.text = content
+                @Suppress("DEPRECATION")
+                Html.fromHtml(content)
             }
+
             viewHolder.deviceText.text = comment.device
             showVoteStatus(comment, viewHolder.supportText, viewHolder.againstText)
             setVoteClickListener(comment, viewHolder.supportText, viewHolder.againstText)
@@ -76,16 +74,14 @@ class CommentListAdapter(
             viewHolder.nickText.text = comment.nick
             viewHolder.floorText.text = comment.floor
             viewHolder.posAndTimeText.text = comment.posAndTime
-            if (content.contains("</a>")) {
-                viewHolder.contentText.text = if (Build.VERSION.SDK_INT > 23) {
-                    Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
-                } else {
-                    @Suppress("DEPRECATION")
-                    Html.fromHtml(content)
-                }
+
+            viewHolder.contentText.text = if (Build.VERSION.SDK_INT > 23) {
+                Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
             } else {
-                viewHolder.contentText.text = content
+                @Suppress("DEPRECATION")
+                Html.fromHtml(content)
             }
+
             viewHolder.deviceText.text = comment.device
             showVoteStatus(comment, viewHolder.supportText, viewHolder.againstText)
             setVoteClickListener(comment, viewHolder.supportText, viewHolder.againstText)

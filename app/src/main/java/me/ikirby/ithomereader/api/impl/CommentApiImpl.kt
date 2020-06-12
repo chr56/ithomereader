@@ -6,10 +6,12 @@ import me.ikirby.ithomereader.network.ITHomeApi
 import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.getMatchInt
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import java.util.regex.Pattern
 
 object CommentApiImpl : CommentApi {
-    private val tag = javaClass.simpleName
+    private const val TAG = "CommentApiImpl"
 
     override fun getAllCommentsList(
         newsId: String,
@@ -27,8 +29,8 @@ object CommentApiImpl : CommentApi {
                     val nick = comment.select(".info .nick").text()
                     val floor = comment.select(".info .p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
-                    val content = comment.select(".comm p").html().replace("<br>", "\n")
-                        .replace("<span>", "").replace("</span>", "")
+                    val contentElements = comment.select(".comm p")
+                    val content = getTextContent(contentElements)
 
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".info .mobile a").text()
@@ -58,8 +60,8 @@ object CommentApiImpl : CommentApi {
                             val reNick = reply.select(".nick a").text()
                             val reFloor = reply.select(".p_floor").text()
                             val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                            val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
-                                .replace("<span>", "").replace("</span>", "")
+                            val reContentElements = reply.getElementsByTag("p")
+                            val reContent = getTextContent(reContentElements)
 
                             // ithome doesn't provide device info for now
                             val reDevice = "" //reply.select(".mobile a").text()
@@ -94,7 +96,7 @@ object CommentApiImpl : CommentApi {
             }
             return removeDuplicate(removeDiscontinuousFloor(list), oldList)
         } catch (e: Exception) {
-            Logger.e(tag, "getAllCommentsList", e)
+            Logger.e(TAG, "getAllCommentsList", e)
             return null
         }
     }
@@ -115,8 +117,8 @@ object CommentApiImpl : CommentApi {
                     val nick = comment.select(".nick a").text()
                     val floor = comment.select(".p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".posandtime").text())
-                    val content = comment.getElementsByTag("p").html().replace("<br>", "\n")
-                        .replace("<span>", "").replace("</span>", "")
+                    val contentElements = comment.getElementsByTag("p")
+                    val content = getTextContent(contentElements)
 
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".mobile a").text()
@@ -149,7 +151,7 @@ object CommentApiImpl : CommentApi {
             }
             return removeDuplicate(list, oldList)
         } catch (e: Exception) {
-            Logger.e(tag, "getHotCommentsList", e)
+            Logger.e(TAG, "getHotCommentsList", e)
             return null
         }
     }
@@ -164,8 +166,8 @@ object CommentApiImpl : CommentApi {
                     val reNick = reply.select(".nick a").text()
                     val reFloor = reply.select(".p_floor").text()
                     val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                    val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
-                        .replace("<span>", "").replace("</span>", "")
+                    val reContentElements = reply.getElementsByTag("p")
+                    val reContent = getTextContent(reContentElements)
 
                     // ithome doesn't provide device info now
                     val reDevice = "" //reply.select(".mobile a").text()
@@ -192,7 +194,7 @@ object CommentApiImpl : CommentApi {
             }
             return list
         } catch (e: Exception) {
-            Logger.e(tag, "getMoreRepliesList", e)
+            Logger.e(TAG, "getMoreRepliesList", e)
             return null
         }
     }
@@ -207,7 +209,7 @@ object CommentApiImpl : CommentApi {
         return try {
             ITHomeApi.postComment(id, parentId, selfId, commentContent, cookie)
         } catch (e: Exception) {
-            Logger.e(tag, "postComment", e)
+            Logger.e(TAG, "postComment", e)
             null
         }
     }
@@ -216,7 +218,7 @@ object CommentApiImpl : CommentApi {
         return try {
             ITHomeApi.commentVote(id, typeId, isCancel, cookie)
         } catch (e: Exception) {
-            Logger.e(tag, "commentVote", e)
+            Logger.e(TAG, "commentVote", e)
             null
         }
     }
@@ -230,7 +232,7 @@ object CommentApiImpl : CommentApi {
                 return matcher.group(1)
             }
         } catch (e: Exception) {
-            Logger.e(tag, "getCommentHash", e)
+            Logger.e(TAG, "getCommentHash", e)
         }
         return null
     }
@@ -310,7 +312,7 @@ object CommentApiImpl : CommentApi {
             }
             return list
         } catch (e: Exception) {
-            Logger.e(tag, "getSingleComment", e)
+            Logger.e(TAG, "getSingleComment", e)
         }
         return null
     }
@@ -362,5 +364,19 @@ object CommentApiImpl : CommentApi {
 
     private fun trimPosAndTime(original: String): String {
         return original.replace("IT之家", "").replace("网友", "")
+    }
+
+    private fun getTextContent(elements: Elements): String {
+        val result = StringBuilder()
+        elements.forEach {
+            it.childNodes().forEach { child ->
+                if (child is Element && child.tagName() == "img") {
+                    result.append("[${child.attr("title")}]")
+                } else {
+                    result.append(child.outerHtml())
+                }
+            }
+        }
+        return result.toString()
     }
 }
