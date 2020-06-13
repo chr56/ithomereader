@@ -65,7 +65,6 @@ class ArticleActivity : BaseActivity() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 supportActionBar?.elevation = 0F
-                post_content.settings.loadsImagesAutomatically = true
                 load_progress.visibility = View.GONE
                 load_tip.visibility = View.GONE
 
@@ -83,7 +82,6 @@ class ArticleActivity : BaseActivity() {
                 }
             }
         }
-        post_content.settings.loadsImagesAutomatically = false
         post_content.settings.javaScriptEnabled = true
         post_content.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         post_content.addJavascriptInterface(this, "JSInterface")

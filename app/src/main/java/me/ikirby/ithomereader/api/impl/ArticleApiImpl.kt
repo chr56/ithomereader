@@ -16,7 +16,7 @@ import java.net.URLDecoder
 import java.util.regex.Pattern
 
 object ArticleApiImpl : ArticleApi {
-    private val tag = javaClass.simpleName
+    private const val TAG = "ArticleApiImpl"
 
     override fun getArticleList(
         page: Int,
@@ -46,7 +46,7 @@ object ArticleApiImpl : ArticleApi {
             }
             return removeDuplicate(list, oldList)
         } catch (e: Exception) {
-            Logger.e(tag, "getArticleList", e)
+            Logger.e(TAG, "getArticleList", e)
             return null
         }
     }
@@ -63,7 +63,7 @@ object ArticleApiImpl : ArticleApi {
             }
             list
         } catch (e: Exception) {
-            Logger.e(tag, "getSearchResults", e)
+            Logger.e(TAG, "getSearchResults", e)
             null
         }
     }
@@ -86,7 +86,7 @@ object ArticleApiImpl : ArticleApi {
                 grade = ArticleGrade(score, trash, great)
             }
         } catch (e: Exception) {
-            Logger.e(tag, "getArticleGrade", e)
+            Logger.e(TAG, "getArticleGrade", e)
         }
         return grade
     }
@@ -95,7 +95,7 @@ object ArticleApiImpl : ArticleApi {
         return try {
             ITHomeApi.newsVote(id, type, cookie)
         } catch (e: Exception) {
-            Logger.e(tag, "articleVote", e)
+            Logger.e(TAG, "articleVote", e)
             null
         }
     }
@@ -159,7 +159,7 @@ object ArticleApiImpl : ArticleApi {
             try {
                 return "https://" + URLDecoder.decode(matcher.group(0), "utf-8")
             } catch (e: UnsupportedEncodingException) {
-                Logger.e(tag, "parseSpecialUrl", e)
+                Logger.e(TAG, "parseSpecialUrl", e)
             }
         }
         return url
@@ -207,6 +207,8 @@ object ArticleApiImpl : ArticleApi {
                     if (origUrl.isNotBlank()) {
                         it.attr("src", origUrl)
                     }
+                    it.attr("loading", "lazy")
+                    it.removeAttr("srcset")
                     it.addClass("loaded")
                 }
             } else {
@@ -215,6 +217,7 @@ object ArticleApiImpl : ArticleApi {
                         it.attr("data-original", it.attr("abs:src"))
                     }
                     it.removeAttr("src")
+                    it.removeAttr("srcset")
                     it.attr("title", "点按加载图片")
                 }
             }
@@ -242,7 +245,7 @@ object ArticleApiImpl : ArticleApi {
             }
             return FullArticle(newsId, newsIdHash, addWhiteSpace(title), time, content)
         } catch (e: Exception) {
-            Logger.e(tag, "getFullArticle", e)
+            Logger.e(TAG, "getFullArticle", e)
             return null
         }
     }
