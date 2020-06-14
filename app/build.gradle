@@ -28,6 +28,7 @@ android {
         }
     }
     compileSdkVersion 30
+    buildToolsVersion "30.0.0"
     defaultConfig {
         applicationId "me.ikirby.ithomereader"
         minSdkVersion 23
