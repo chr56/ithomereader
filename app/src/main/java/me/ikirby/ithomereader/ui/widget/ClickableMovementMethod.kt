@@ -15,7 +15,7 @@ import android.widget.TextView
  * used to fix TextView with links not passing event to parent if not clicking on a link
  * ref: https://stackoverflow.com/a/34200772
  */
-class ClickableMovementMethod : BaseMovementMethod() {
+object ClickableMovementMethod : BaseMovementMethod() {
     override fun canSelectArbitrarily(): Boolean {
         return false
     }
@@ -50,16 +50,5 @@ class ClickableMovementMethod : BaseMovementMethod() {
 
     override fun initialize(widget: TextView, text: Spannable) {
         Selection.removeSelection(text)
-    }
-
-    companion object {
-        private var sInstance: ClickableMovementMethod? = null
-        val instance: ClickableMovementMethod?
-            get() {
-                if (sInstance == null) {
-                    sInstance = ClickableMovementMethod()
-                }
-                return sInstance
-            }
     }
 }

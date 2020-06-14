@@ -17,7 +17,7 @@ class CustomLinkTransformationMethod : TransformationMethod {
             if (view.text == null || view.text !is Spannable) {
                 return source
             }
-            view.movementMethod = ClickableMovementMethod()
+            view.movementMethod = ClickableMovementMethod
             view.isClickable = false
             view.isFocusable = false
             view.isLongClickable = false
