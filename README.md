@@ -1,6 +1,12 @@
 # ITHomeReader
 
-A 3rd-party [ITHome](https://www.ithome.com) App.
+A 3rd-party [ITHome](https://www.ithome.com) App. This is a project I made when learning Android in my free time. It is not affiliated with ITHome.
+
+## To do
+
+- Replace deprecated `AsyncTask`
+- Replace deprecated `ViewPager` with `ViewPager2`
+- Fix other deprecated things
 
 ## Building
 
