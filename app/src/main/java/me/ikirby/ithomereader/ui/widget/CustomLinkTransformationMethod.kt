@@ -9,7 +9,6 @@ import android.text.util.Linkify
 import android.view.View
 import android.widget.TextView
 
-
 class CustomLinkTransformationMethod : TransformationMethod {
 
     override fun getTransformation(source: CharSequence, view: View): CharSequence {
@@ -18,6 +17,10 @@ class CustomLinkTransformationMethod : TransformationMethod {
             if (view.text == null || view.text !is Spannable) {
                 return source
             }
+            view.movementMethod = ClickableMovementMethod()
+            view.isClickable = false
+            view.isFocusable = false
+            view.isLongClickable = false
             val text = view.text as Spannable
             val urlSpans = text.getSpans(0, view.length(), URLSpan::class.java)
             for (span in urlSpans) {
