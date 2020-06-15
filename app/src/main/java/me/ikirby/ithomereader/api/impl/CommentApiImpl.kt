@@ -246,8 +246,8 @@ object CommentApiImpl : CommentApi {
                 val nick = comment.select(".info .nick").text()
                 val floor = comment.select(".info .p_floor").text()
                 val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
-                val content = comment.select(".comm p").html().replace("<br>", "\n")
-                    .replace("<span>", "").replace("</span>", "")
+                val contentElement = comment.select(".comm p")
+                val content = getTextContent(contentElement)
 
                 // ithome doesn't provide device info now
                 val device = "" //comment.select(".info .mobile a").text()
@@ -277,8 +277,8 @@ object CommentApiImpl : CommentApi {
                         val reNick = reply.select(".nick a").text()
                         val reFloor = reply.select(".p_floor").text()
                         val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                        val reContent = reply.getElementsByTag("p").html().replace("<br>", "\n")
-                            .replace("<span>", "").replace("</span>", "")
+                        val reContentElement = reply.getElementsByTag("p")
+                        val reContent = getTextContent(reContentElement)
 
                         // ithome doesn't provide device info for now
                         val reDevice = "" //reply.select(".mobile a").text()
