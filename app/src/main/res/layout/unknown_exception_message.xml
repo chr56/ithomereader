@@ -13,13 +13,6 @@
         android:layout_height="wrap_content"
         android:text="@string/fatal_exception_message" />
 
-    <Button
-        android:id="@+id/btn_check_for_update"
-        style="?borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pref_check_for_update" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
