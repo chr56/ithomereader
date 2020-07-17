@@ -5,9 +5,7 @@ import android.content.pm.PackageManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.ikirby.ithomereader.BuildConfig
-import me.ikirby.ithomereader.KEY_UPDATE_INFO
-import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.entity.UpdateInfo
 import me.ikirby.ithomereader.ui.activity.DialogActivity
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -59,4 +57,22 @@ fun clearCache(activity: BaseActivity) {
             me.ikirby.ithomereader.util.clearCache()
         }
     }
+}
+
+fun cleanUp(activity: BaseActivity) {
+    clearCache(activity)
+    if (BaseApplication.preferences.getInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE) <= 146) {
+        val customFilter = BaseApplication.preferences
+            .getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
+            .split(", ").filter { it.isNotEmpty() }
+        BaseApplication.preferences.edit()
+            .putString(SETTINGS_KEY_CUSTOM_FILTER, customFilter.joinToString(","))
+            .apply()
+    }
+    BaseApplication.preferences.edit()
+        .putInt(SETTINGS_KEY_VERSION, BuildConfig.VERSION_CODE)
+        .remove(SETTINGS_KEY_NIGHT_MODE)
+        .remove(SETTINGS_KEY_AUTO_NIGHT_MODE)
+        .remove(SETTINGS_KEY_WHITE_THEME)
+        .apply()
 }

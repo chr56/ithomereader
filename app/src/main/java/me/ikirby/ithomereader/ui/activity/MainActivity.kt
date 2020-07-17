@@ -17,11 +17,11 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_viewpager.*
 import me.ikirby.ithomereader.*
-import me.ikirby.ithomereader.task.CleanUpTask
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.fragment.ArticleListFragment
 import me.ikirby.ithomereader.ui.fragment.TrendingListFragment
 import me.ikirby.ithomereader.ui.task.checkForUpdate
+import me.ikirby.ithomereader.ui.task.cleanUp
 import me.ikirby.ithomereader.ui.task.clearCache
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
@@ -73,7 +73,7 @@ class MainActivity : BaseActivity() {
                     BuildConfig.VERSION_CODE
                 )
             ) {
-                CleanUpTask().execute()
+                cleanUp(this)
             }
 
             val cookieManager = CookieManager.getInstance()
