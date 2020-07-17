@@ -18,11 +18,11 @@ import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_viewpager.*
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.task.CleanUpTask
-import me.ikirby.ithomereader.task.ClearCacheTask
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.fragment.ArticleListFragment
 import me.ikirby.ithomereader.ui.fragment.TrendingListFragment
 import me.ikirby.ithomereader.ui.task.checkForUpdate
+import me.ikirby.ithomereader.ui.task.clearCache
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class MainActivity : BaseActivity() {
@@ -158,7 +158,7 @@ class MainActivity : BaseActivity() {
             R.id.action_refresh -> return false
             R.id.action_clearcache -> {
                 ToastUtil.showToast(R.string.cache_clearing)
-                ClearCacheTask().execute()
+                clearCache(this)
             }
             R.id.action_settings -> startSettings.launch(Intent(this, SettingsActivity::class.java))
             R.id.action_night_mode -> {

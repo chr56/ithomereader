@@ -52,3 +52,11 @@ fun checkForUpdate(activity: BaseActivity, showToast: Boolean = false) {
         }
     }
 }
+
+fun clearCache(activity: BaseActivity) {
+    activity.launch {
+        withContext(Dispatchers.IO) {
+            me.ikirby.ithomereader.util.clearCache()
+        }
+    }
+}
