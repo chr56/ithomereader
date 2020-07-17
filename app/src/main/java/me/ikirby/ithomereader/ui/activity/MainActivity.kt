@@ -19,10 +19,10 @@ import kotlinx.android.synthetic.main.activity_viewpager.*
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.task.CleanUpTask
 import me.ikirby.ithomereader.task.ClearCacheTask
-import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.fragment.ArticleListFragment
 import me.ikirby.ithomereader.ui.fragment.TrendingListFragment
+import me.ikirby.ithomereader.ui.task.checkForUpdate
 import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class MainActivity : BaseActivity() {
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH, true)) {
-                UpdateCheckNotifyTask(false).execute()
+                checkForUpdate(this)
             }
             if (!BaseApplication.preferences.contains(SETTINGS_KEY_VERSION)
                 || BuildConfig.VERSION_CODE > BaseApplication.preferences.getInt(

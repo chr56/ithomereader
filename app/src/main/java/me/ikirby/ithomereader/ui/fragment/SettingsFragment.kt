@@ -13,12 +13,13 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import androidx.recyclerview.widget.RecyclerView
 import me.ikirby.ithomereader.*
-import me.ikirby.ithomereader.task.UpdateCheckNotifyTask
 import me.ikirby.ithomereader.ui.activity.CustomFilterActivity
+import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.showListPreferenceDialog
 import me.ikirby.ithomereader.ui.dialog.showLoginDialog
 import me.ikirby.ithomereader.ui.dialog.showLogoutDialog
 import me.ikirby.ithomereader.ui.dialog.showTimePreferenceDialog
+import me.ikirby.ithomereader.ui.task.checkForUpdate
 import me.ikirby.ithomereader.ui.widget.TimePreference
 import me.ikirby.ithomereader.util.openLink
 
@@ -152,10 +153,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-            val checkForUpdate = findPreference<Preference>(SETTINGS_KEY_CHECK_UPDATE)
-            checkForUpdate?.summary = getString(R.string.current_ver, BuildConfig.VERSION_NAME)
-            checkForUpdate?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                UpdateCheckNotifyTask(true).execute()
+            val checkForUpdatePreference = findPreference<Preference>(SETTINGS_KEY_CHECK_UPDATE)
+            checkForUpdatePreference?.summary = getString(R.string.current_ver, BuildConfig.VERSION_NAME)
+            checkForUpdatePreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                checkForUpdate(requireActivity() as BaseActivity, true)
                 true
             }
         }
