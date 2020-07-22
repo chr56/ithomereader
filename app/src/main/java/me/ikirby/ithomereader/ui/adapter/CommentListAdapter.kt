@@ -58,6 +58,14 @@ class CommentListAdapter(
             viewHolder.nickText.text = comment.nick
             viewHolder.floorText.text = comment.floor
             viewHolder.posAndTimeText.text = comment.posAndTime
+            viewHolder.modifyTimeText.apply {
+                if (comment.modifyTime.isNullOrBlank()) {
+                    visibility = View.GONE
+                } else {
+                    text = comment.modifyTime
+                    visibility = View.VISIBLE
+                }
+            }
 
             viewHolder.contentText.text = if (Build.VERSION.SDK_INT > 23) {
                 Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
@@ -74,6 +82,14 @@ class CommentListAdapter(
             viewHolder.nickText.text = comment.nick
             viewHolder.floorText.text = comment.floor
             viewHolder.posAndTimeText.text = comment.posAndTime
+            viewHolder.modifyTimeText.apply {
+                if (comment.modifyTime.isNullOrBlank()) {
+                    visibility = View.GONE
+                } else {
+                    text = comment.modifyTime
+                    visibility = View.VISIBLE
+                }
+            }
 
             viewHolder.contentText.text = if (Build.VERSION.SDK_INT > 23) {
                 Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
@@ -128,6 +144,7 @@ class CommentListAdapter(
         var supportText: TextView = itemView.findViewById(R.id.comment_support)
         var againstText: TextView = itemView.findViewById(R.id.comment_against)
         var expandText: TextView = itemView.findViewById(R.id.comment_expand)
+        val modifyTimeText: TextView = itemView.findViewById(R.id.comment_modify_time)
 
         init {
             contentText.transformationMethod = CustomLinkTransformationMethod()
@@ -142,6 +159,7 @@ class CommentListAdapter(
         var deviceText: TextView = itemView.findViewById(R.id.comment_device)
         var supportText: TextView = itemView.findViewById(R.id.comment_support)
         var againstText: TextView = itemView.findViewById(R.id.comment_against)
+        val modifyTimeText: TextView = itemView.findViewById(R.id.comment_modify_time)
 
         init {
             contentText.transformationMethod = CustomLinkTransformationMethod()

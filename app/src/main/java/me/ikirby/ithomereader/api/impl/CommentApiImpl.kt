@@ -7,7 +7,6 @@ import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.getMatchInt
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
 import java.util.regex.Pattern
 
 object CommentApiImpl : CommentApi {
@@ -29,8 +28,9 @@ object CommentApiImpl : CommentApi {
                     val nick = comment.select(".info .nick").text()
                     val floor = comment.select(".info .p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
-                    val contentElements = comment.select(".comm p")
+                    val contentElements = comment.select(".comm p")[0]
                     val content = getTextContent(contentElements)
+                    val modifyTime = comment.select(".comm p.modifytime").text()
 
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".info .mobile a").text()
@@ -50,7 +50,8 @@ object CommentApiImpl : CommentApi {
                             parentId,
                             parentId,
                             supportCount,
-                            againstCount
+                            againstCount,
+                            modifyTime = modifyTime
                         )
                     )
 
@@ -60,8 +61,9 @@ object CommentApiImpl : CommentApi {
                             val reNick = reply.select(".nick a").text()
                             val reFloor = reply.select(".p_floor").text()
                             val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                            val reContentElements = reply.getElementsByTag("p")
+                            val reContentElements = reply.getElementsByTag("p")[0]
                             val reContent = getTextContent(reContentElements)
+                            val reModifyTime = reply.select(".modifytime").text()
 
                             // ithome doesn't provide device info for now
                             val reDevice = "" //reply.select(".mobile a").text()
@@ -81,7 +83,8 @@ object CommentApiImpl : CommentApi {
                                     parentId,
                                     reSelfId,
                                     reSupportCount,
-                                    reAgainstCount
+                                    reAgainstCount,
+                                    modifyTime = reModifyTime
                                 )
                             )
                         }
@@ -117,8 +120,9 @@ object CommentApiImpl : CommentApi {
                     val nick = comment.select(".nick a").text()
                     val floor = comment.select(".p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".posandtime").text())
-                    val contentElements = comment.getElementsByTag("p")
+                    val contentElements = comment.getElementsByTag("p")[0]
                     val content = getTextContent(contentElements)
+                    val modifyTime = comment.select(".modifytime").text()
 
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".mobile a").text()
@@ -144,7 +148,8 @@ object CommentApiImpl : CommentApi {
                             selfId,
                             supportCount,
                             againstCount,
-                            expandCount = expandCount
+                            expandCount = expandCount,
+                            modifyTime = modifyTime
                         )
                     )
                 }
@@ -166,8 +171,9 @@ object CommentApiImpl : CommentApi {
                     val reNick = reply.select(".nick a").text()
                     val reFloor = reply.select(".p_floor").text()
                     val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                    val reContentElements = reply.getElementsByTag("p")
+                    val reContentElements = reply.getElementsByTag("p")[0]
                     val reContent = getTextContent(reContentElements)
+                    val modifyTime = reply.select(".modifytime").text()
 
                     // ithome doesn't provide device info now
                     val reDevice = "" //reply.select(".mobile a").text()
@@ -187,7 +193,8 @@ object CommentApiImpl : CommentApi {
                             parentId,
                             reSelfId,
                             reSupportCount,
-                            reAgainstCount
+                            reAgainstCount,
+                            modifyTime = modifyTime
                         )
                     )
                 }
@@ -246,8 +253,9 @@ object CommentApiImpl : CommentApi {
                 val nick = comment.select(".info .nick").text()
                 val floor = comment.select(".info .p_floor").text()
                 val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
-                val contentElement = comment.select(".comm p")
+                val contentElement = comment.select(".comm p")[0]
                 val content = getTextContent(contentElement)
+                val modifyTime = comment.select(".comm p.modifytime").text()
 
                 // ithome doesn't provide device info now
                 val device = "" //comment.select(".info .mobile a").text()
@@ -267,7 +275,8 @@ object CommentApiImpl : CommentApi {
                         commentId,
                         commentId,
                         supportCount,
-                        againstCount
+                        againstCount,
+                        modifyTime = modifyTime
                     )
                 )
 
@@ -277,8 +286,9 @@ object CommentApiImpl : CommentApi {
                         val reNick = reply.select(".nick a").text()
                         val reFloor = reply.select(".p_floor").text()
                         val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                        val reContentElement = reply.getElementsByTag("p")
+                        val reContentElement = reply.getElementsByTag("p")[0]
                         val reContent = getTextContent(reContentElement)
+                        val reModifyTime = reply.select(".modifytime").text()
 
                         // ithome doesn't provide device info for now
                         val reDevice = "" //reply.select(".mobile a").text()
@@ -298,7 +308,8 @@ object CommentApiImpl : CommentApi {
                                 commentId,
                                 reSelfId,
                                 reSupportCount,
-                                reAgainstCount
+                                reAgainstCount,
+                                modifyTime = reModifyTime
                             )
                         )
                     }
@@ -366,15 +377,13 @@ object CommentApiImpl : CommentApi {
         return original.replace("IT之家", "").replace("网友", "")
     }
 
-    private fun getTextContent(elements: Elements): String {
+    private fun getTextContent(element: Element): String {
         val result = StringBuilder()
-        elements.forEach {
-            it.childNodes().forEach { child ->
-                if (child is Element && child.tagName() == "img") {
-                    result.append("[${child.attr("title")}]")
-                } else {
-                    result.append(child.outerHtml())
-                }
+        element.childNodes().forEach { child ->
+            if (child is Element && child.tagName() == "img") {
+                result.append("[${child.attr("title")}]")
+            } else {
+                result.append(child.outerHtml())
             }
         }
         return result.toString()
