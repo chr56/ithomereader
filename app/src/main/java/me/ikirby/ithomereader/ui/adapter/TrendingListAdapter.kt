@@ -105,7 +105,7 @@ class TrendingListAdapter(
     override fun getItemViewType(position: Int): Int {
         return when {
             list[position].rank != null -> 2
-            list[position].desc != null -> 1
+            list[position].url != null -> 1
             else -> 0
         }
     }

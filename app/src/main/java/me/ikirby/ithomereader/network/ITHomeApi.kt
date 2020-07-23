@@ -23,6 +23,7 @@ object ITHomeApi {
     private const val LAPIN_AJAX_DATA_URL = "https://www.lapin365.com/comment/getajaxdata"
     private const val NEWS_GRADE_URL = "https://dyn.ithome.com/grade/"
     private const val NEWS_GRADE_VOTE_URL = "https://m.ithome.com/api/news/newsgradeset"
+    private const val NEWS_RANK_BLOCK_URL = "https://www.ithome.com/block/rank.html"
 
     /**
      * 获取主页内容
@@ -38,6 +39,17 @@ object ITHomeApi {
         )
     }
 
+    /**
+     * 获取热门文章排行
+     *
+     * @return 热门文章排行 document
+     * @throws IOException 网络请求异常
+     */
+    @Throws(IOException::class)
+    fun getRankBlock(): Document {
+        return NetworkRequest.getDocument(
+            NEWS_RANK_BLOCK_URL, getHeaders(null, null, null))
+    }
 
     /**
      * 获取新闻列表文档

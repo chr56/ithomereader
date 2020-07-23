@@ -31,28 +31,27 @@ object TrendingApiImpl : TrendingApi {
 
     override fun getTrendingList(): List<Trending>? {
         try {
-            val document = ITHomeApi.getHomePage()
+            val homeDocument = ITHomeApi.getHomePage()
             val list = mutableListOf<Trending>()
-            var elements = document.select("div.focus")[0].getElementsByTag("li")
-            list.add(Trending(null, "焦点关注", null))
-            for (element in elements) {
-                val link = element.select("h2 a")[0]
-                val title = addWhiteSpace(link.text())
-                val url = link.attr("abs:href").replace("http://", "https://")
+            val focusElements = homeDocument.select("#p-b .fr a")
+//            list.add(Trending(null, "焦点关注", null))
+            for (element in focusElements) {
+                val title = addWhiteSpace(element.text())
+                val url = element.attr("abs:href")
                 val thumb = element.getElementsByTag("img")[0].attr("abs:src")
-                val desc = addWhiteSpace(element.getElementsByTag("p").text())
-                list.add(Trending(title = title, url = url, desc = desc, thumb = thumb))
+//                val desc = addWhiteSpace(element.getElementsByTag("p").text())
+                list.add(Trending(title = title, url = url, thumb = thumb))
             }
-            elements = document.select(".hot-list *")
-            for (element in elements) {
-                if (element.tagName() == "h4") {
-                    list.add(Trending(null, addWhiteSpace(element.text()), null))
-                } else if (element.tagName() == "li") {
-                    val rank = element.getElementsByTag("span")[0].text()
-                    val link = element.getElementsByTag("a")[0]
-                    val title = addWhiteSpace(link.text())
-                    val url = link.attr("abs:href").replace("http://", "https://")
-                    list.add(Trending(rank, title, url))
+            val rankDocument = ITHomeApi.getRankBlock()
+            val titles = rankDocument.select("ul.bar li")
+            titles.forEachIndexed { index, element ->
+                list.add(Trending(null, addWhiteSpace(element.text()), null))
+                val rankList = rankDocument.select("#d-${index + 1} li a")
+                rankList.forEachIndexed { i, e ->
+                    val rank = (i + 1).toString()
+                    val title = e.attr("title")
+                    val link = e.attr("abs:href")
+                    list.add(Trending(rank, title, link))
                 }
             }
             return list
