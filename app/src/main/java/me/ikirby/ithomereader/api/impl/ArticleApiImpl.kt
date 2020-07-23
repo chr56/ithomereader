@@ -191,8 +191,11 @@ object ArticleApiImpl : ArticleApi {
                 time = ""
             } else {
                 post = doc.getElementById("paragraph")
-                val meta = doc.getElementsByClass("post_title")
-                title = meta.select("h1")?.text() ?: ""
+                title = doc.select("h1")?.text() ?: ""
+                var meta = doc.select(".info .l")
+                if (meta.isEmpty()) { // for old version of article page
+                    meta = doc.select(".pt_info")
+                }
                 time = (meta.select("#pubtime_baidu")?.text() ?: "") +
                         " " + (meta.select("#source_baidu a")?.text() ?: "") +
                         "(" + (meta.select("#author_baidu strong")?.text() ?: "") + ")"
