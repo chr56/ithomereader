@@ -3,19 +3,10 @@ package me.ikirby.ithomereader.ui.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.slide_image_view.view.*
 import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
 import me.ikirby.ithomereader.KEY_TITLE
@@ -52,44 +43,9 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: BannerItemViewHolder, position: Int) {
-        val (title, _, _, thumb) = list[position]
-        Glide.with(context).asBitmap().load(thumb).listener(object : RequestListener<Bitmap> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any,
-                target: Target<Bitmap>,
-                isFirstResource: Boolean
-            ): Boolean {
-                return false
-            }
-
-            override fun onResourceReady(
-                resource: Bitmap,
-                model: Any,
-                target: Target<Bitmap>,
-                dataSource: DataSource,
-                isFirstResource: Boolean
-            ): Boolean {
-                Palette.Builder(resource).maximumColorCount(8).generate { palette ->
-                    val bgColor: Int
-                    val textColor: Int
-                    if (palette != null) {
-                        bgColor = palette.getDominantColor(Color.BLACK)
-                        textColor = palette.dominantSwatch?.titleTextColor ?: Color.WHITE
-                    } else {
-                        bgColor = Color.BLACK
-                        textColor = Color.WHITE
-                    }
-                    val colors = intArrayOf(bgColor, Color.TRANSPARENT)
-                    val gradient = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors)
-                    holder.bg.setBackgroundColor(bgColor)
-                    holder.gradient.background = gradient
-                    holder.title.setTextColor(textColor)
-                }
-                return false
-            }
-        }).into(holder.imageView)
-        holder.title.text = title
+        val (_, _, _, thumb) = list[position]
+        Glide.with(context).asBitmap().load(thumb).into(holder.imageView)
+//        holder.title.text = title
     }
 
     override fun getItemCount(): Int {
@@ -98,9 +54,9 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
 
     inner class BannerItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageView: ImageView = itemView.slide_image
-        var title: TextView = itemView.slide_title
-        var bg: View = itemView.slide_bg
-        var gradient: View = itemView.slide_gradient
+//        var title: TextView = itemView.slide_title
+//        var bg: View = itemView.slide_bg
+//        var gradient: View = itemView.slide_gradient
 
     }
 
