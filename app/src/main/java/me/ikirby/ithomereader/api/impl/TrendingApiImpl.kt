@@ -33,15 +33,30 @@ object TrendingApiImpl : TrendingApi {
         try {
             val homeDocument = ITHomeApi.getHomePage()
             val list = mutableListOf<Trending>()
-            val focusElements = homeDocument.select("#p-b .fr a")
-//            list.add(Trending(null, "焦点关注", null))
-            for (element in focusElements) {
-                val title = addWhiteSpace(element.text())
-                val url = element.attr("abs:href")
-                val thumb = element.getElementsByTag("img")[0].attr("abs:src")
-//                val desc = addWhiteSpace(element.getElementsByTag("p").text())
-                list.add(Trending(title = title, url = url, thumb = thumb))
+
+            val headlineElements = homeDocument.select("#tt a")
+            if (headlineElements.isNotEmpty()) {
+                list.add(Trending(null, "头条", null))
+                headlineElements.forEachIndexed { index, element ->
+                    val rank = (index + 1).toString()
+                    val url = element.attr("abs:href")
+                    val title = element.text()
+                    list.add(Trending(rank, title, url))
+                }
             }
+
+            val focusElements = homeDocument.select("#p-b .fr a")
+            if (focusElements.isNotEmpty()) {
+                list.add(Trending(null, "焦点关注", null))
+                for (element in focusElements) {
+                    val title = addWhiteSpace(element.text())
+                    val url = element.attr("abs:href")
+                    val thumb = element.getElementsByTag("img")[0].attr("abs:src")
+//                val desc = addWhiteSpace(element.getElementsByTag("p").text())
+                    list.add(Trending(title = title, url = url, thumb = thumb))
+                }
+            }
+
             val rankDocument = ITHomeApi.getRankBlock()
             val titles = rankDocument.select("ul.bar li")
             titles.forEachIndexed { index, element ->
@@ -50,8 +65,8 @@ object TrendingApiImpl : TrendingApi {
                 rankList.forEachIndexed { i, e ->
                     val rank = (i + 1).toString()
                     val title = e.attr("title")
-                    val link = e.attr("abs:href")
-                    list.add(Trending(rank, title, link))
+                    val url = e.attr("abs:href")
+                    list.add(Trending(rank, title, url))
                 }
             }
             return list
