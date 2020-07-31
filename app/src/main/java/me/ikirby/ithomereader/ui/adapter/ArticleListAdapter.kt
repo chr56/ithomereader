@@ -19,10 +19,8 @@ import me.ikirby.ithomereader.ui.activity.ArticleActivity
 import me.ikirby.ithomereader.ui.activity.ImageViewerActivity
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.UiUtil
-import me.ikirby.ithomereader.util.convertDpToPixel
 import me.ikirby.ithomereader.util.copyToClipboard
 import me.ikirby.ithomereader.util.openLinkInBrowser
-import kotlin.math.roundToInt
 
 class ArticleListAdapter(
     private val list: ArrayList<Article>,
@@ -30,9 +28,8 @@ class ArticleListAdapter(
     private val context: Context,
     private var showThumb: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     val bannerLayoutManager: LinearLayoutManager = LinearLayoutManager(context)
-    private var cachedMinimumHeight = 0
-    private var wasShowThumb = true
 
     init {
         bannerLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -90,12 +87,10 @@ class ArticleListAdapter(
             }
 
             if (showThumb) {
-                articleListViewHolder.postInfoWrapper.minimumHeight = getMinimumHeight(showThumb, 96F)
                 articleListViewHolder.titleText.maxLines = 3
                 articleListViewHolder.thumbImage.visibility = View.VISIBLE
                 Glide.with(context).load(thumb).into(articleListViewHolder.thumbImage)
             } else {
-                articleListViewHolder.postInfoWrapper.minimumHeight = getMinimumHeight(showThumb, 72F)
                 articleListViewHolder.titleText.maxLines = 2
                 articleListViewHolder.thumbImage.visibility = View.GONE
             }
@@ -213,17 +208,5 @@ class ArticleListAdapter(
                 }
             }
         })
-    }
-
-    private fun getMinimumHeight(showThumb: Boolean, dp: Float): Int {
-        val minimumHeight: Int
-        if (wasShowThumb == showThumb) {
-            minimumHeight = cachedMinimumHeight
-        } else {
-            minimumHeight = convertDpToPixel(dp).roundToInt()
-            cachedMinimumHeight = minimumHeight
-            wasShowThumb = showThumb
-        }
-        return minimumHeight
     }
 }
