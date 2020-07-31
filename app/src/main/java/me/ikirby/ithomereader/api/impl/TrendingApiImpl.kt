@@ -13,9 +13,9 @@ object TrendingApiImpl : TrendingApi {
     override fun getFocusBannerArticles(): List<Article>? {
         val list = mutableListOf<Article>()
         return try {
-            val elements = ITHomeApi.getHomePage().getElementById("focus-owl-wrap").getElementsByTag("li")
+            val elements = ITHomeApi.getHomePage().getElementById("focus-owl-wrap").getElementsByTag("a")
             for (element in elements) {
-                val url = element.getElementsByTag("a")[0].attr("abs:href")
+                val url = element.attr("abs:href")
                 if (!url.contains("www.ithome.com")) continue
                 val image = element.getElementsByTag("img")[0]
                 val title = addWhiteSpace(image.attr("alt"))
