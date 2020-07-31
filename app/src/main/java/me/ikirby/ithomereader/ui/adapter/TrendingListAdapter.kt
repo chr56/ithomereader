@@ -33,7 +33,7 @@ class TrendingListAdapter(
         val holder: RecyclerView.ViewHolder
         when (viewType) {
             1 -> {
-                view = LayoutInflater.from(context).inflate(R.layout.post_list_item, parent, false)
+                view = LayoutInflater.from(context).inflate(R.layout.trending_focus_item, parent, false)
                 holder = TrendingFocusViewHolder(view)
                 view.setOnClickListener {
                     val (_, title, url) = list[holder.bindingAdapterPosition]
@@ -74,7 +74,7 @@ class TrendingListAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val (rank, title, _, desc, thumb) = list[position]
+        val (rank, title, _, _, thumb) = list[position]
 
         if (holder is TrendingHeaderViewHolder) {
             holder.titleText.text = title
@@ -83,11 +83,12 @@ class TrendingListAdapter(
             holder.titleText.text = title
         } else if (holder is TrendingFocusViewHolder) {
             holder.titleText.text = title
-            holder.descText.text = desc
             if (showThumb) {
+                holder.titleText.maxLines = 3
                 holder.thumbImage.visibility = View.VISIBLE
                 Glide.with(context).load(thumb).into(holder.thumbImage)
             } else {
+                holder.titleText.maxLines = 2
                 holder.thumbImage.visibility = View.GONE
             }
         }
@@ -127,12 +128,8 @@ class TrendingListAdapter(
     internal inner class TrendingFocusViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var thumbImage: ImageView = itemView.post_thumb
         var titleText: TextView = itemView.post_title
-        var descText: TextView = itemView.post_desc
 
         init {
-            descText.visibility = View.VISIBLE
-            itemView.post_date.visibility = View.GONE
-            itemView.post_date_today.visibility = View.GONE
             thumbImage.clipToOutline = true
         }
     }
