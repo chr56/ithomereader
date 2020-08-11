@@ -45,13 +45,14 @@ object TrendingApiImpl : TrendingApi {
                 }
             }
 
-            val focusElements = homeDocument.select("#p-b .fr a")
+            val focusElements = homeDocument.select("#news .fr .gb .p a.img")
             if (focusElements.isNotEmpty()) {
                 list.add(Trending(null, "焦点关注", null))
                 for (element in focusElements) {
-                    val title = addWhiteSpace(element.text())
                     val url = element.attr("abs:href")
-                    val thumb = element.getElementsByTag("img")[0].attr("abs:src")
+                    val imgElement = element.getElementsByTag("img")[0]
+                    val title = addWhiteSpace(imgElement.attr("alt"))
+                    val thumb = imgElement.attr("abs:src")
 //                val desc = addWhiteSpace(element.getElementsByTag("p").text())
                     list.add(Trending(title = title, url = url, thumb = thumb))
                 }
@@ -60,13 +61,15 @@ object TrendingApiImpl : TrendingApi {
             val rankDocument = ITHomeApi.getRankBlock()
             val titles = rankDocument.select("ul.bar li")
             titles.forEachIndexed { index, element ->
-                list.add(Trending(null, addWhiteSpace(element.text()), null))
-                val rankList = rankDocument.select("#d-${index + 1} li a")
-                rankList.forEachIndexed { i, e ->
-                    val rank = (i + 1).toString()
-                    val title = e.attr("title")
-                    val url = e.attr("abs:href")
-                    list.add(Trending(rank, title, url))
+                val rankList = rankDocument.select(".bd#d-${index + 1} li a")
+                if (rankList.isNotEmpty()) {
+                    list.add(Trending(null, addWhiteSpace(element.text()), null))
+                    rankList.forEachIndexed { i, e ->
+                        val rank = (i + 1).toString()
+                        val title = e.attr("title")
+                        val url = e.attr("abs:href")
+                        list.add(Trending(rank, title, url))
+                    }
                 }
             }
             return list
