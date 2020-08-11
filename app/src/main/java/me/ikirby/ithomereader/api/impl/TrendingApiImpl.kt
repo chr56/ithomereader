@@ -40,7 +40,7 @@ object TrendingApiImpl : TrendingApi {
                 headlineElements.forEachIndexed { index, element ->
                     val rank = (index + 1).toString()
                     val url = element.attr("abs:href")
-                    val title = element.text()
+                    val title = addWhiteSpace(element.text())
                     list.add(Trending(rank, title, url))
                 }
             }
