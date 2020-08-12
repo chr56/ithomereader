@@ -61,7 +61,7 @@ object TrendingApiImpl : TrendingApi {
             val rankDocument = ITHomeApi.getRankBlock()
             val titles = rankDocument.select("ul.bar li")
             titles.forEachIndexed { index, element ->
-                val rankList = rankDocument.select(".bd#d-${index + 1} li a")
+                val rankList = rankDocument.select(".bd.order#d-${index + 1} li a")
                 if (rankList.isNotEmpty()) {
                     list.add(Trending(null, addWhiteSpace(element.text()), null))
                     rankList.forEachIndexed { i, e ->
