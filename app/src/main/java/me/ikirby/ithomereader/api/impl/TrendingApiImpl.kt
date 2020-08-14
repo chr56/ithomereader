@@ -66,7 +66,7 @@ object TrendingApiImpl : TrendingApi {
                     list.add(Trending(null, addWhiteSpace(element.text()), null))
                     rankList.forEachIndexed { i, e ->
                         val rank = (i + 1).toString()
-                        val title = e.attr("title")
+                        val title = addWhiteSpace(e.attr("title"))
                         val url = e.attr("abs:href")
                         list.add(Trending(rank, title, url))
                     }
