@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 
 object CommentApiImpl : CommentApi {
     private const val TAG = "CommentApiImpl"
+    private const val BLOCKED_CONTENT = "***无法获取评论内容，可能因举报被屏蔽***"
 
     override fun getAllCommentsList(
         newsId: String,
@@ -28,9 +29,17 @@ object CommentApiImpl : CommentApi {
                     val nick = comment.select(".info .nick").text()
                     val floor = comment.select(".info .p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".info .posandtime").text())
-                    val contentElements = comment.select(".comm p")[0]
-                    val content = getTextContent(contentElements)
-                    val modifyTime = comment.select(".comm p.modifytime").text()
+
+                    val contentElements = comment.select(".comm p")
+                    val content: String
+                    val modifyTime: String
+                    if (contentElements.size > 0) {
+                        content = getTextContent(contentElements[0])
+                        modifyTime = comment.select(".comm p.modifytime").text()
+                    } else {
+                        content = BLOCKED_CONTENT
+                        modifyTime = ""
+                    }
 
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".info .mobile a").text()
@@ -61,9 +70,17 @@ object CommentApiImpl : CommentApi {
                             val reNick = reply.select(".nick a").text()
                             val reFloor = reply.select(".p_floor").text()
                             val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                            val reContentElements = reply.getElementsByTag("p")[0]
-                            val reContent = getTextContent(reContentElements)
-                            val reModifyTime = reply.select(".modifytime").text()
+
+                            val reContentElements = reply.getElementsByTag("p")
+                            val reContent: String
+                            val reModifyTime: String
+                            if (reContentElements.size > 0) {
+                                reContent = getTextContent(reContentElements[0])
+                                reModifyTime = reply.select(".modifytime").text()
+                            } else {
+                                reContent = BLOCKED_CONTENT
+                                reModifyTime = ""
+                            }
 
                             // ithome doesn't provide device info for now
                             val reDevice = "" //reply.select(".mobile a").text()
@@ -120,9 +137,17 @@ object CommentApiImpl : CommentApi {
                     val nick = comment.select(".nick a").text()
                     val floor = comment.select(".p_floor").text()
                     val posAndTime = trimPosAndTime(comment.select(".posandtime").text())
-                    val contentElements = comment.getElementsByTag("p")[0]
-                    val content = getTextContent(contentElements)
-                    val modifyTime = comment.select(".modifytime").text()
+
+                    val contentElements = comment.select("p")
+                    val content: String
+                    val modifyTime: String
+                    if (contentElements.size > 0) {
+                        content = getTextContent(contentElements[0])
+                        modifyTime = comment.select(".modifytime").text()
+                    } else {
+                        content = BLOCKED_CONTENT
+                        modifyTime = ""
+                    }
 
                     // ithome doesn't provide device info now
                     val device = "" //comment.select(".mobile a").text()
@@ -171,9 +196,17 @@ object CommentApiImpl : CommentApi {
                     val reNick = reply.select(".nick a").text()
                     val reFloor = reply.select(".p_floor").text()
                     val rePosAndTime = trimPosAndTime(reply.select(".posandtime").text())
-                    val reContentElements = reply.getElementsByTag("p")[0]
-                    val reContent = getTextContent(reContentElements)
-                    val modifyTime = reply.select(".modifytime").text()
+
+                    val reContentElements = reply.getElementsByTag("p")
+                    val reContent: String
+                    val reModifyTime: String
+                    if (reContentElements.size > 0) {
+                        reContent = getTextContent(reContentElements[0])
+                        reModifyTime = reply.select(".modifytime").text()
+                    } else {
+                        reContent = BLOCKED_CONTENT
+                        reModifyTime = ""
+                    }
 
                     // ithome doesn't provide device info now
                     val reDevice = "" //reply.select(".mobile a").text()
@@ -194,7 +227,7 @@ object CommentApiImpl : CommentApi {
                             reSelfId,
                             reSupportCount,
                             reAgainstCount,
-                            modifyTime = modifyTime
+                            modifyTime = reModifyTime
                         )
                     )
                 }
