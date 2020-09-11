@@ -30,7 +30,7 @@ object ArticleApiImpl : ArticleApi {
             val posts = doc.select(".ulcl li")
             if (!posts.isEmpty()) {
                 for (post in posts) {
-                    val item = getArticleObj(post, false)
+                    val item = getArticleObj(post)
                     if (keywordsList.isNotEmpty()) {
                         if (shouldAddItem(item, keywordsList, filterLapin)) {
                             list.add(item)
@@ -51,14 +51,14 @@ object ArticleApiImpl : ArticleApi {
         }
     }
 
-    override fun getSearchResults(keyword: String, page: Int): List<Article>? {
+    override fun getSearchResults(keyword: String): List<Article>? {
         return try {
-            val doc = ITHomeApi.getSearchDoc(keyword, page)
+            val doc = ITHomeApi.getSearchDoc(keyword)
             val list = mutableListOf<Article>()
-            val posts = doc.select(".ulcl li")
+            val posts = doc.select("ul.bl li")
             if (!posts.isEmpty()) {
                 for (post in posts) {
-                    list.add(getArticleObj(post, true))
+                    list.add(getSearchArticleObj(post))
                 }
             }
             list
@@ -122,15 +122,11 @@ object ArticleApiImpl : ArticleApi {
         return newList
     }
 
-    private fun getArticleObj(post: Element, isSearch: Boolean): Article {
+    private fun getArticleObj(post: Element): Article {
         val title = addWhiteSpace(post.select("h2 a").text())
         val date = post.select("h2 .state").text()
         var url = post.select("h2 a").attr("abs:href")
-        var thumb: String = if (isSearch) {
-            post.select(".list_thumbnail img").attr("abs:data-original")
-        } else {
-            post.select(".list_thumbnail img").attr("abs:src")
-        }
+        var thumb = post.select(".list_thumbnail img").attr("abs:src")
         thumb = thumb.replace("http://", "https://")
 
         // desc is not used for now
@@ -150,6 +146,14 @@ object ArticleApiImpl : ArticleApi {
         }
 
         return Article(title, date, url, thumb, desc, isAd)
+    }
+
+    private fun getSearchArticleObj(post: Element): Article {
+        val title = addWhiteSpace(post.select("h2 a").text())
+        val date = post.select("span.state").text()
+        val url = post.select("h2 a").attr("abs:href")
+        val thumb = post.getElementsByTag("img")[0].attr("abs:src")
+        return Article(title, date, url, thumb, "")
     }
 
     private fun parseSpecialUrl(url: String): String {

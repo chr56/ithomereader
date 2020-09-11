@@ -16,7 +16,7 @@ object ITHomeApi {
     private const val AJAX_DATA_URL = "https://dyn.ithome.com/ithome/getajaxdata.aspx"
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
-    private const val SEARCH_URL = "https://dyn.ithome.com/search/adt_all_%s_0_%d.html"
+    private const val SEARCH_URL = "https://www.ithome.com/search/adt_all_%s_0.html"
     private const val USER_AGENT =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.18 Safari/537.36"
     private const val LIVE_URL = "https://live.ithome.com/newsinfo/getnewsph?newsid="
@@ -246,9 +246,9 @@ object ITHomeApi {
      */
     @SuppressLint("DefaultLocale")
     @Throws(IOException::class)
-    fun getSearchDoc(keyword: String, page: Int): Document {
+    fun getSearchDoc(keyword: String): Document {
         return NetworkRequest.getDocument(
-            String.format(SEARCH_URL, keyword, page),
+            String.format(SEARCH_URL, keyword),
             getHeaders(null, null, null)
         )
     }
