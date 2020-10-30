@@ -200,9 +200,15 @@ object ArticleApiImpl : ArticleApi {
                 if (meta.isEmpty()) { // for old version of article page
                     meta = doc.select(".pt_info")
                 }
-                time = (meta.select("#pubtime_baidu")?.text() ?: "") +
-                        " " + (meta.select("#source_baidu a")?.text() ?: "") +
-                        "(" + (meta.select("#author_baidu strong")?.text() ?: "") + ")"
+
+                val avatar = meta.select("a.avatar")
+                val pubtime = meta.select("#pubtime_baidu")?.text() ?: ""
+                time = pubtime + if (avatar.isNotEmpty()) {
+                    " " + avatar.text() + "(IT号)"
+                } else {
+                    " " + (meta.select("#author_baidu strong")?.text() ?: "") +
+                            "(" + (meta.select("#source_baidu a")?.text() ?: "") + ")"
+                }
             }
 
             if (post == null) return FullArticle()
