@@ -249,7 +249,6 @@ object ITHomeApi {
     /**
      * 获取搜索结果文档
      * @param keyword 搜索关键词
-     * @param page 搜索页码
      * @return 搜索结果文档
      * @throws IOException 网络请求异常
      */
