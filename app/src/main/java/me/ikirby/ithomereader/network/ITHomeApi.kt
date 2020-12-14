@@ -12,7 +12,7 @@ object ITHomeApi {
     // const val LAPIN_IFCOMMENT_URL = "https://www.lapin365.com/comment/index?id="
 
     private const val HOME_URL = "https://www.ithome.com"
-    private const val NEWS_URL = "https://www.ithome.com/ithome/getajaxdata.aspx?type=indexpage&page="
+    private const val NEWS_URL = "https://www.ithome.com/category/blogpage"
     private const val AJAX_DATA_URL = "https://dyn.ithome.com/ithome/getajaxdata.aspx"
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
@@ -60,10 +60,19 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun getNewsListDoc(page: Int): Document {
-        return NetworkRequest.getDocument(
-            NEWS_URL + page,
-            getHeaders("XMLHttpRequest", null, null)
+        val postData = mapOf(
+            "page" to page.toString()
         )
+        val headers = mapOf(
+            "origin" to "https://www.ithome.com",
+            "referer" to "https://www.ithome.com/blog/",
+            "x-requested-with" to "XMLHttpRequest",
+            "user-agent" to USER_AGENT
+        )
+        val response = NetworkRequest.getResponse(NEWS_URL, headers, postData)
+        val json = JSONObject(response.body())
+        val content = json.getJSONObject("content").getString("html")
+        return Jsoup.parse(content)
     }
 
     /**

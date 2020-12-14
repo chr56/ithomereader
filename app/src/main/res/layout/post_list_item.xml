@@ -52,15 +52,6 @@
             android:fontFamily="sans-serif-condensed"
             android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/post_date_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/againstText"
-            android:textSize="13sp" />
-
     </RelativeLayout>
 
 </LinearLayout>

@@ -77,14 +77,7 @@ class ArticleListAdapter(
             val (title, date, _, thumb) = list[pos]
 
             articleListViewHolder.titleText.text = title
-
-            if (date!!.contains("今")) {
-                articleListViewHolder.dateTextToday.text = date
-                articleListViewHolder.dateText.text = ""
-            } else {
-                articleListViewHolder.dateText.text = date
-                articleListViewHolder.dateTextToday.text = ""
-            }
+            articleListViewHolder.dateText.text = date
 
             if (showThumb) {
                 articleListViewHolder.titleText.maxLines = 3
@@ -119,7 +112,6 @@ class ArticleListAdapter(
         val thumbImage: ImageView = itemView.post_thumb
         val titleText: TextView = itemView.post_title
         val dateText: TextView = itemView.post_date
-        val dateTextToday: TextView = itemView.post_date_today
         val postInfoWrapper: View = itemView.post_info_wrapper
 
         init {

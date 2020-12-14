@@ -27,7 +27,7 @@ object ArticleApiImpl : ArticleApi {
         try {
             val doc = ITHomeApi.getNewsListDoc(page)
             val list = mutableListOf<Article>()
-            val posts = doc.select(".ulcl li")
+            val posts = doc.select("li")
             if (!posts.isEmpty()) {
                 for (post in posts) {
                     val item = getArticleObj(post)
@@ -123,11 +123,15 @@ object ArticleApiImpl : ArticleApi {
     }
 
     private fun getArticleObj(post: Element): Article {
-        val title = addWhiteSpace(post.select("h2 a").text())
-        val date = post.select("h2 .state").text()
-        var url = post.select("h2 a").attr("abs:href")
-        var thumb = post.select(".list_thumbnail img").attr("abs:src")
-        thumb = thumb.replace("http://", "https://")
+        val title = addWhiteSpace(post.select("a.title").text())
+        val date = post.select(".c").attr("data-ot")
+        var url = post.select("a.title").attr("abs:href")
+        var thumb = post.select("a.img > img").attr("src")
+        if (thumb.startsWith("//")) {
+            thumb = thumb.replace("//", "https://")
+        } else if (thumb.startsWith("http://")) {
+            thumb = thumb.replace("http://", "https://")
+        }
 
         // desc is not used for now
         val desc = "" // addWhiteSpace(post.select(".memo p").text())
@@ -135,15 +139,11 @@ object ArticleApiImpl : ArticleApi {
         if (url.contains("umeng.com")) {
             url = parseSpecialUrl(url)
         }
-        url = url.replace("http://", "https://")
-
-        val tagImages = post.select(".block img")
-
-        val isAd = if (tagImages.isNotEmpty()) {
-            tagImages.attr("src").contains("/42.png")
-        } else {
-            false
+        if (url.startsWith("http://")) {
+            url = url.replace("http://", "https://")
         }
+
+        val isAd = url.contains("/lapin.")
 
         return Article(title, date, url, thumb, desc, isAd)
     }

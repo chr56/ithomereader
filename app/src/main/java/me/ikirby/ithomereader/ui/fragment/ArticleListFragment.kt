@@ -147,7 +147,6 @@ class ArticleListFragment : BaseFragment() {
         if (!isLoading) {
             isLoading = true
             requireView().swipe_refresh.isRefreshing = true
-            page++
             launch {
                 val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
                 val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
@@ -169,13 +168,12 @@ class ArticleListFragment : BaseFragment() {
                         }
                         articleList.addAll(articles)
                         adapter.notifyDataSetChanged()
+                        page++
                     } else {
-                        page--
                         requireView().list_view.setAllContentLoaded(true)
                         ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
-                    page--
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
 
