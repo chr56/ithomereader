@@ -208,10 +208,8 @@ class ArticleActivity : BaseActivity() {
         if (::fullArticle.isInitialized) {
             val intent = Intent(this, CommentsActivity::class.java).apply {
                 putExtra(KEY_NEWS_ID, fullArticle.newsId)
-                putExtra(KEY_NEWS_ID_HASH, fullArticle.newsIdHash)
                 putExtra(KEY_TITLE, title)
                 putExtra(KEY_URL, url)
-                // putExtra("lapinId", lapinId)
             }
             startActivity(intent)
         }

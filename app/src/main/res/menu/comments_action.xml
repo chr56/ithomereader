@@ -12,6 +12,7 @@
         android:id="@+id/action_post_comment"
         android:icon="@drawable/ic_add_comment"
         android:title="@string/post_comment"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>
