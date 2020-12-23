@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import me.ikirby.ithomereader.APP_VER
 import me.ikirby.ithomereader.clientapi.Api
 import me.ikirby.ithomereader.entity.app.comment.Comment
 import me.ikirby.ithomereader.util.Logger
@@ -20,30 +21,37 @@ class CommentsActivityViewModel : ViewModel() {
     val hotList = MutableLiveData(listOf<Comment>())
     val allList = MutableLiveData(listOf<Comment>())
 
+    val allCommentsLoaded = MutableLiveData(false)
+
     fun loadComment(hot: Boolean, all: Boolean, refresh: Boolean) {
         var cid: Long? = null
-        if (all && !refresh) {
-            cid = allList.value!!.last().cid
-        }
-        if (hot) {
+        if (hot && hotLoading.value == false) {
             hotLoading.value = true
         }
-        if (all) {
+        if (all && allLoading.value == false) {
             allLoading.value = true
+            if (!refresh && !allList.value.isNullOrEmpty()) {
+                cid = allList.value?.last()?.cid
+            }
         }
         viewModelScope.launch {
             runCatching {
-                Api.api.commentApi.getNewsComment(newsIdEncrypted.value!!, cid, "760")
+                Api.api.commentApi.getNewsComment(newsIdEncrypted.value!!, cid, APP_VER)
             }.onSuccess {
                 if (hot) {
                     hotList.value = it.content.getHotList()
                 }
                 if (all) {
+                    val newList = it.content.getAllList()
+                    if (newList.isEmpty()) {
+                        allCommentsLoaded.value = true
+                    }
                     if (refresh) {
-                        allList.value = it.content.getAllList()
+                        allCommentsLoaded.value = false
+                        allList.value = newList
                     } else {
                         val list = allList.value!!.toMutableList()
-                        list.addAll(it.content.getAllList())
+                        list.addAll(newList)
                         allList.value = list
                     }
                 }

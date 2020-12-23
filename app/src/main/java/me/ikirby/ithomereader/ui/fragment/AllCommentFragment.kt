@@ -33,6 +33,9 @@ class AllCommentFragment : Fragment() {
         binding.listView.layoutManager = LinearLayoutManager(requireContext())
         binding.listView.setOnBottomReachedListener(object : OnBottomReachedListener {
             override fun onBottomReached() {
+                if (viewModel.allLoading.value == true) {
+                    return
+                }
                 if (viewModel.allList.value!!.isNotEmpty()) {
                     viewModel.loadComment(hot = false, all = true, refresh = false)
                 }
@@ -48,6 +51,9 @@ class AllCommentFragment : Fragment() {
         viewModel.allList.observe(viewLifecycleOwner) {
             adapter.list = it
             UiUtil.switchVisibility(binding.listView, binding.errorPlaceholder, it.size)
+        }
+        viewModel.allCommentsLoaded.observe(viewLifecycleOwner) {
+            binding.listView.setAllContentLoaded(it)
         }
 
         return binding.root
