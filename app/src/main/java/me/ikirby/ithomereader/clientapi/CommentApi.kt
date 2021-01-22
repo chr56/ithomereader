@@ -1,7 +1,6 @@
 package me.ikirby.ithomereader.clientapi
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import me.ikirby.ithomereader.clientapi.moshi.DateAdapter
 import me.ikirby.ithomereader.entity.app.comment.CommentContentResponse
