@@ -10,10 +10,10 @@ class ExampleUnitTest {
     @Test
     fun testCommentResponse() {
         val commentResponse = runBlocking {
-            Api.api.commentApi.getNewsComment("7838f76dd3849873", null, "760")
+            Api.api.commentApi.getNewsComment("bc8bd1b872f5ce80", null, "760")
         }
 
-        println(commentResponse)
+        println(commentResponse.content.getAllList())
     }
 
     @Test

@@ -14,4 +14,6 @@ data class Comment(
     @Json(name = "A") val against: Int,
     @Json(name = "Ta") val device: String,
     @Json(name = "SF") val floor: String
-)
+) {
+    var isReply = false
+}

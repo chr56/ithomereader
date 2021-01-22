@@ -18,6 +18,10 @@ data class CommentResponseContent(
         val list = mutableListOf<Comment>()
         clist.forEach {
             list.add(it.comment)
+            it.replies?.forEach { reply ->
+                reply.isReply = true
+                list.add(reply)
+            }
         }
         return list
     }
