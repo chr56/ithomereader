@@ -16,4 +16,5 @@ data class Comment(
     @Json(name = "SF") val floor: String
 ) {
     var isReply = false
+    var replyCount = 0
 }

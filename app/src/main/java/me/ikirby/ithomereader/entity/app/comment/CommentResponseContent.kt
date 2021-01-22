@@ -9,7 +9,9 @@ data class CommentResponseContent(
     fun getHotList(): List<Comment> {
         val list = mutableListOf<Comment>()
         hlist.forEach {
-            list.add(it.comment)
+            val comment = it.comment
+            comment.replyCount = it.replyCount
+            list.add(comment)
         }
         return list
     }
