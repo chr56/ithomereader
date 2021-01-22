@@ -20,7 +20,7 @@ import me.ikirby.ithomereader.ui.databinding.viewmodel.CommentsActivityViewModel
 import me.ikirby.ithomereader.ui.fragment.AllCommentFragment
 import me.ikirby.ithomereader.ui.fragment.HotCommentFragment
 import me.ikirby.ithomereader.util.Logger
-import me.ikirby.ithomereader.util.encryptNewsId
+import me.ikirby.ithomereader.util.encryptString
 
 class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
@@ -46,7 +46,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         Logger.d("CommentsActivity", "newsId = $newsId")
         if (newsId != null) {
             viewModel.newsId.value = newsId
-            viewModel.newsIdEncrypted.value = encryptNewsId(newsId)
+            viewModel.newsIdEncrypted.value = encryptString(newsId)
             Logger.d("CommentsActivity", "encryptedNewsId = ${viewModel.newsIdEncrypted.value}")
             viewModel.newsTitle.value = intent.getStringExtra(KEY_TITLE)
             viewModel.newsUrl.value = intent.getStringExtra(KEY_URL)

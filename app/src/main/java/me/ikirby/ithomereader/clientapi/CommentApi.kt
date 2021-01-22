@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import me.ikirby.ithomereader.clientapi.moshi.DateAdapter
+import me.ikirby.ithomereader.entity.app.comment.CommentContentResponse
 import me.ikirby.ithomereader.entity.app.comment.CommentResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -20,6 +21,9 @@ interface CommentApi {
         @Query("cid") cid: Long?,
         @Query("appver") appver: String
     ): CommentResponse
+
+    @GET("comment/getcommentcontent")
+    suspend fun getCommentContent(@Query("commentid") commentid: String): CommentContentResponse
 
     companion object {
         fun create(okHttpClient: OkHttpClient): CommentApi {

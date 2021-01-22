@@ -2,6 +2,7 @@ package me.ikirby.ithomereader
 
 import kotlinx.coroutines.runBlocking
 import me.ikirby.ithomereader.clientapi.Api
+import me.ikirby.ithomereader.util.encryptInt
 import me.ikirby.ithomereader.util.encryptString
 import org.junit.Assert
 import org.junit.Test
@@ -22,5 +23,14 @@ class ExampleUnitTest {
         val expected = "7838f76dd3849873"
 
         Assert.assertEquals(expected, encryptString(newsId))
+    }
+
+    @Test
+    fun testCommentContentResponse() {
+        val commentContentResponse = runBlocking {
+            Api.api.commentApi.getCommentContent(encryptInt(53801814)!!)
+        }
+
+        println(commentContentResponse.content.commentContentList)
     }
 }

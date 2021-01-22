@@ -44,8 +44,14 @@ private fun build(arr: ByteArray): String {
     return sb.toString()
 }
 
-fun encryptNewsId(newsId: String): String? {
+fun encryptString(str: String): String? {
     return runCatching {
-        encrypt(newsId, ENCRYPTION_KEY, false)
+        encrypt(str, ENCRYPTION_KEY, false)
+    }.getOrNull()
+}
+
+fun encryptInt(int: Int): String? {
+    return runCatching {
+        encryptString(int.toString())
     }.getOrNull()
 }
