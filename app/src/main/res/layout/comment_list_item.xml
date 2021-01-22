@@ -93,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
                 android:textColor="@color/expandText"
-                android:visibility="gone" />
+                android:text="@{@string/comment_expand(comment.replyCount)}"
+                app:show="@{comment.replyCount > 0}" />
 
             <View
                 android:layout_width="0dp"
