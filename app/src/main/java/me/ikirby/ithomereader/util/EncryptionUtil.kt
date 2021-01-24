@@ -49,9 +49,3 @@ fun encryptString(str: String): String? {
         encrypt(str, ENCRYPTION_KEY, false)
     }.getOrNull()
 }
-
-fun encryptInt(int: Int): String? {
-    return runCatching {
-        encryptString(int.toString())
-    }.getOrNull()
-}

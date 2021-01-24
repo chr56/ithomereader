@@ -7,15 +7,11 @@ object Logger {
     private var isLoggingEnabled = BuildConfig.DEBUG
 
     fun e(tag: String, msg: String) {
-        if (isLoggingEnabled) {
-            Log.e(tag, msg)
-        }
+        Log.e(tag, msg)
     }
 
     fun e(tag: String, msg: String, e: Throwable) {
-        if (isLoggingEnabled) {
-            Log.e(tag, msg, e)
-        }
+        Log.e(tag, msg, e)
     }
 
     fun d(tag: String, msg: String) {

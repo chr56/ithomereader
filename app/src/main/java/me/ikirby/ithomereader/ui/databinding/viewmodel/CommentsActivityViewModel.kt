@@ -8,6 +8,7 @@ import me.ikirby.ithomereader.APP_VER
 import me.ikirby.ithomereader.clientapi.Api
 import me.ikirby.ithomereader.entity.app.comment.Comment
 import me.ikirby.ithomereader.util.Logger
+import me.ikirby.ithomereader.util.encryptString
 
 class CommentsActivityViewModel : ViewModel() {
     val newsId: MutableLiveData<String> = MutableLiveData(null)
@@ -69,6 +70,34 @@ class CommentsActivityViewModel : ViewModel() {
                 allLoading.value = false
             }
         }
+    }
 
+    fun expandComment(position: Int) {
+        val commentId = encryptString(hotList.value!![position].cid.toString()) ?: return
+        hotLoading.value = true
+        viewModelScope.launch {
+            runCatching {
+                Api.api.commentApi.getCommentContent(commentId)
+            }.onSuccess {
+                val list = hotList.value!!.toMutableList()
+                val commentContent = it.content.commentContentList[0]
+
+                list.removeAt(position)
+                list.add(position, commentContent.comment)
+
+                val replyPosition = position + 1
+                commentContent.replies?.forEachIndexed { index, comment  ->
+                    comment.isReply = true
+                    list.add(replyPosition + index, comment)
+                }
+                hotList.value = list
+            }.onFailure {
+                Logger.e(
+                    "CommentsActivityViewModel",
+                    "error getting expand comment content", it
+                )
+            }
+            hotLoading.value = false
+        }
     }
 }

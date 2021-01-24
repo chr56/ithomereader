@@ -27,7 +27,7 @@ class HotCommentFragment: Fragment() {
         setHasOptionsMenu(true)
         binding = ListLayoutBinding.inflate(inflater, container, false)
 
-        val adapter = CommentListAdapter()
+        val adapter = CommentListAdapter(viewModel)
         binding.listView.adapter = adapter
         binding.listView.layoutManager = LinearLayoutManager(requireContext())
         binding.swipeRefresh.setOnRefreshListener {

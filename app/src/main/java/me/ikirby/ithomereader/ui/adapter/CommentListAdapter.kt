@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import me.ikirby.ithomereader.databinding.CommentListItemBinding
 import me.ikirby.ithomereader.databinding.CommentReplyItemBinding
 import me.ikirby.ithomereader.entity.app.comment.Comment
+import me.ikirby.ithomereader.ui.databinding.viewmodel.CommentsActivityViewModel
 import me.ikirby.ithomereader.ui.widget.CustomLinkTransformationMethod
 
-class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentListAdapter(
+    private val viewModel: CommentsActivityViewModel? = null
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_COMMENT = 1
@@ -39,6 +42,11 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val comment = list[position]
         if (viewHolder is CommentItemViewHolder) {
             viewHolder.bind(comment)
+            if (viewModel != null) {
+                viewHolder.binding.commentExpand.setOnClickListener {
+                    viewModel.expandComment(position)
+                }
+            }
         } else if (viewHolder is CommentReplyItemViewHolder) {
             viewHolder.bind(comment)
         }
@@ -60,7 +68,7 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class CommentItemViewHolder(private val binding: CommentListItemBinding) :
+    class CommentItemViewHolder(val binding: CommentListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: Comment) {

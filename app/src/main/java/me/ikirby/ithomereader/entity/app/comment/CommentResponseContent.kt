@@ -10,7 +10,7 @@ data class CommentResponseContent(
         val list = mutableListOf<Comment>()
         hlist.forEach {
             val comment = it.comment
-            comment.replyCount = it.replyCount
+            comment.replyCount = it.replyCount ?: 0
             list.add(comment)
         }
         return list

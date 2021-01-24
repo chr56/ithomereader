@@ -2,7 +2,6 @@ package me.ikirby.ithomereader
 
 import kotlinx.coroutines.runBlocking
 import me.ikirby.ithomereader.clientapi.Api
-import me.ikirby.ithomereader.util.encryptInt
 import me.ikirby.ithomereader.util.encryptString
 import org.junit.Assert
 import org.junit.Test
@@ -28,7 +27,7 @@ class ExampleUnitTest {
     @Test
     fun testCommentContentResponse() {
         val commentContentResponse = runBlocking {
-            Api.api.commentApi.getCommentContent(encryptInt(53801814)!!)
+            Api.api.commentApi.getCommentContent(encryptString("53815721")!!)
         }
 
         println(commentContentResponse.content.commentContentList)
