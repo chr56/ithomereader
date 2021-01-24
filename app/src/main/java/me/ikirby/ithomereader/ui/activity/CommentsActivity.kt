@@ -45,13 +45,13 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         val newsId = intent.getStringExtra(KEY_NEWS_ID)
         Logger.d("CommentsActivity", "newsId = $newsId")
         if (newsId != null) {
-            viewModel.newsId.value = newsId
-            viewModel.newsIdEncrypted.value = encryptString(newsId)
-            Logger.d("CommentsActivity", "encryptedNewsId = ${viewModel.newsIdEncrypted.value}")
-            viewModel.newsTitle.value = intent.getStringExtra(KEY_TITLE)
-            viewModel.newsUrl.value = intent.getStringExtra(KEY_URL)
-
-            viewModel.loadComment(hot = true, all = true, refresh = true)
+            if (savedInstanceState != null) {
+                viewModel.newsId.value = newsId
+                viewModel.newsIdEncrypted.value = encryptString(newsId)
+                viewModel.newsTitle.value = intent.getStringExtra(KEY_TITLE)
+                viewModel.newsUrl.value = intent.getStringExtra(KEY_URL)
+                viewModel.loadComment(hot = true, all = true, refresh = true)
+            }
         } else {
             finish()
         }
@@ -72,7 +72,8 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             AllCommentFragment()
         )
 
-        val adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        val adapter = object :
+            FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getItem(position: Int): Fragment {
                 return fragments[position]
             }
