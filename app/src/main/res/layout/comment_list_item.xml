@@ -91,6 +91,7 @@
                 android:id="@+id/comment_expand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
                 android:paddingTop="4dp"
                 android:textColor="@color/expandText"
                 android:text="@{@string/comment_expand(comment.replyCount)}"
