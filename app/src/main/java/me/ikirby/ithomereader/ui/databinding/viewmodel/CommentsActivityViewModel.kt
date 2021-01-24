@@ -31,7 +31,8 @@ class CommentsActivityViewModel : ViewModel() {
         if (all && allLoading.value == false) {
             allLoading.value = true
             if (!refresh && !allList.value.isNullOrEmpty()) {
-                cid = allList.value?.last()?.cid
+                val last = allList.value!!.findLast { !it.isReply }
+                cid = last?.cid
             }
         }
         viewModelScope.launch {
