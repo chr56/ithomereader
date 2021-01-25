@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import me.ikirby.ithomereader.databinding.CommentListItemBinding
 import me.ikirby.ithomereader.databinding.CommentReplyItemBinding
 import me.ikirby.ithomereader.entity.app.comment.Comment
-import me.ikirby.ithomereader.ui.databinding.viewmodel.CommentsActivityViewModel
 import me.ikirby.ithomereader.ui.widget.CustomLinkTransformationMethod
 
-class CommentListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_COMMENT = 1
