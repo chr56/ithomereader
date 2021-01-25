@@ -45,7 +45,7 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         val newsId = intent.getStringExtra(KEY_NEWS_ID)
         Logger.d("CommentsActivity", "newsId = $newsId")
         if (newsId != null) {
-            if (savedInstanceState != null) {
+            if (savedInstanceState == null) {
                 viewModel.newsId.value = newsId
                 viewModel.newsIdEncrypted.value = encryptString(newsId)
                 viewModel.newsTitle.value = intent.getStringExtra(KEY_TITLE)
