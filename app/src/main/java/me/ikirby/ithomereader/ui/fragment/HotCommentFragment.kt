@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.databinding.ListLayoutBinding
 import me.ikirby.ithomereader.ui.adapter.CommentListAdapter
+import me.ikirby.ithomereader.ui.adapter.ItemClickListener
 import me.ikirby.ithomereader.ui.databinding.viewmodel.CommentsActivityViewModel
 import me.ikirby.ithomereader.ui.util.UiUtil
 
@@ -27,7 +28,12 @@ class HotCommentFragment: Fragment() {
         setHasOptionsMenu(true)
         binding = ListLayoutBinding.inflate(inflater, container, false)
 
-        val adapter = CommentListAdapter(viewModel)
+        val adapter = CommentListAdapter()
+        adapter.expandClickListener = object : ItemClickListener {
+            override fun onClick(v: View, position: Int) {
+                viewModel.expandComment(position)
+            }
+        }
         binding.listView.adapter = adapter
         binding.listView.layoutManager = LinearLayoutManager(requireContext())
         binding.swipeRefresh.setOnRefreshListener {
