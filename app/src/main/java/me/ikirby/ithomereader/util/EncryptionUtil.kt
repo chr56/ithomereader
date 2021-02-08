@@ -1,6 +1,5 @@
 package me.ikirby.ithomereader.util
 
-import okhttp3.internal.and
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
@@ -35,7 +34,7 @@ private fun encrypt(str: String, key: String, bool: Boolean): String {
 private fun build(arr: ByteArray): String {
     val sb = StringBuilder()
     arr.forEach {
-        val hexString = Integer.toHexString(it and 255)
+        val hexString = Integer.toHexString(it.toInt() and 255)
         if (hexString.length == 1) {
             sb.append("0")
         }
