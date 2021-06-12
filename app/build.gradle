@@ -48,6 +48,14 @@ android {
         debug {
             applicationIdSuffix ".debug"
         }
+        RC{
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            applicationIdSuffix ".rc"
+            versionNameSuffix "-rc"
+        }
     }
     flavorDimensions 'update'
     productFlavors {
