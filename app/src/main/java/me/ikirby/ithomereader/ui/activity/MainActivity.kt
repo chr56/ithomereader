@@ -107,7 +107,7 @@ class MainActivity : BaseActivity() {
                 }
 
             })
-            bottom_nav.setOnNavigationItemSelectedListener {
+            bottom_nav.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.bottom_nav_news -> viewPager.setCurrentItem(0, false)
                     R.id.bottom_nav_hot -> viewPager.setCurrentItem(1, false)
