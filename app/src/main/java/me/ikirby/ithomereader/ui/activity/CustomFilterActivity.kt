@@ -1,14 +1,10 @@
 package me.ikirby.ithomereader.ui.activity
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
-import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_edittext.*
@@ -43,16 +39,6 @@ class CustomFilterActivity : BaseActivity() {
 
     override fun initView() {
         setContentView(R.layout.list_layout)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.navigationBarColor = Color.TRANSPARENT
-            swipe_refresh.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            ViewCompat.setOnApplyWindowInsetsListener(swipe_refresh) { v, insets ->
-                v.updatePadding(top = insets.systemWindowInsets.top)
-                list_view.updatePadding(bottom = insets.systemWindowInsets.bottom)
-                insets
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

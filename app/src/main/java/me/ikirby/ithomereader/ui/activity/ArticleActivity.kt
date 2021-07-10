@@ -1,15 +1,11 @@
 package me.ikirby.ithomereader.ui.activity
 
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.*
-import androidx.core.view.ViewCompat
-import androidx.core.view.updatePadding
 import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +28,6 @@ class ArticleActivity : BaseActivity() {
     private var readProgress = 0F
 
     private val actionBarElevation = convertDpToPixel(4F)
-    private var insetsBottom = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +62,6 @@ class ArticleActivity : BaseActivity() {
                 supportActionBar?.elevation = 0F
                 load_progress.visibility = View.GONE
                 load_tip.visibility = View.GONE
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    post_content.loadUrl("javascript:(function(){ document.body.style.paddingBottom = '${insetsBottom}px'})();")
-                }
 
                 if (readProgress != 0F) {
                     view.postDelayed({
@@ -114,16 +105,6 @@ class ArticleActivity : BaseActivity() {
 
     override fun initView() {
         setContentView(R.layout.activity_article)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.navigationBarColor = Color.TRANSPARENT
-            content.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            ViewCompat.setOnApplyWindowInsetsListener(content) { v, insets ->
-                v.updatePadding(top = insets.systemWindowInsets.top)
-                insetsBottom = insets.systemWindowInsets.bottom / 2
-                insets
-            }
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

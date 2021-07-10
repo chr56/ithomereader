@@ -2,8 +2,6 @@ package me.ikirby.ithomereader.ui.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
-import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.KEY_NEWS_ID
+import me.ikirby.ithomereader.KEY_TITLE
+import me.ikirby.ithomereader.KEY_URL
+import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.databinding.ActivityViewpagerBinding
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.databinding.viewmodel.CommentsActivityViewModel
@@ -60,12 +61,6 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     override fun initView() {
         binding = ActivityViewpagerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.navigationBarColor = Color.TRANSPARENT
-            binding.container.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        }
 
         val fragments = listOf(
             HotCommentFragment(),
