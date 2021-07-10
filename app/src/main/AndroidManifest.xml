@@ -43,7 +43,6 @@
             android:name=".ui.activity.ImageViewerActivity"
             android:theme="@style/AppTheme.Fullscreen" />
         <activity android:name=".ui.activity.SearchActivity" />
-        <activity android:name=".ui.activity.CommentPostActivity" />
         <activity
             android:name=".ui.activity.CommentsActivity"
             android:theme="@style/AppTheme" />

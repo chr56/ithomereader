@@ -100,13 +100,6 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         when (item.itemId) {
             android.R.id.home -> finish()
             R.id.action_refresh -> return false
-            R.id.action_post_comment -> {
-                val intent = Intent(this, CommentPostActivity::class.java).apply {
-                    putExtra(KEY_NEWS_ID, viewModel.newsId.value!!)
-                    putExtra(KEY_TITLE, viewModel.newsTitle.value!!)
-                }
-                postComment.launch(intent)
-            }
         }
         return true
     }
