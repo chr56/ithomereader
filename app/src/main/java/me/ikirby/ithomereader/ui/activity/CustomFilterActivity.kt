@@ -29,7 +29,7 @@ class CustomFilterActivity : BaseActivity() {
         val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
         keywordsList.addAll(keywords.split(",").filter { it.isNotBlank() })
 
-        adapter = CustomFilterListAdapter(keywordsList, layoutInflater, View.OnClickListener {
+        adapter = CustomFilterListAdapter(keywordsList, layoutInflater, {
             val position = list_view.getChildAdapterPosition(it)
             confirmDelete(position)
         })

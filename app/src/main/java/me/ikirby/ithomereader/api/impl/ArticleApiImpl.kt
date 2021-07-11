@@ -191,23 +191,23 @@ object ArticleApiImpl : ArticleApi {
             val post: Element?
             if (isLiveInfo) {
                 post = doc.getElementById("about_info_show")
-                title = doc.getElementsByTag("title")?.text() ?: ""
+                title = doc.getElementsByTag("title").text() ?: ""
                 time = ""
             } else {
                 post = doc.getElementById("paragraph")
-                title = doc.select("h1")?.text() ?: ""
+                title = doc.select("h1").text() ?: ""
                 var meta = doc.select(".info .l")
                 if (meta.isEmpty()) { // for old version of article page
                     meta = doc.select(".pt_info")
                 }
 
                 val avatar = meta.select("a.avatar")
-                val pubtime = meta.select("#pubtime_baidu")?.text() ?: ""
+                val pubtime = meta.select("#pubtime_baidu").text() ?: ""
                 time = pubtime + if (avatar.isNotEmpty()) {
                     " " + avatar.text() + "(IT号)"
                 } else {
-                    " " + (meta.select("#author_baidu strong")?.text() ?: "") +
-                            "(" + (meta.select("#source_baidu a")?.text() ?: "") + ")"
+                    " " + (meta.select("#author_baidu strong").text() ?: "") +
+                            "(" + (meta.select("#source_baidu").text() ?: "") + ")"
                 }
             }
 
@@ -223,6 +223,7 @@ object ArticleApiImpl : ArticleApi {
                     it.attr("loading", "lazy")
                     it.removeAttr("srcset")
                     it.addClass("loaded")
+                    it.attr("referrerpolicy", "no-referrer")
                 }
             } else {
                 imgs.forEach {
@@ -232,6 +233,7 @@ object ArticleApiImpl : ArticleApi {
                     it.removeAttr("src")
                     it.removeAttr("srcset")
                     it.attr("title", "点按加载图片")
+                    it.attr("referrerpolicy", "no-referrer")
                 }
             }
 
