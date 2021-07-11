@@ -78,7 +78,7 @@ object ArticleApiImpl : ArticleApi {
                 gradeHtml = matcher.group(1)!!.replace(");", "")
                 val gradeDoc = Jsoup.parse(gradeHtml)
                 val score =
-                    addWhiteSpace(gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text").text())
+                    addWhiteSpace(gradeDoc.selectFirst(".text .sd")?.text() ?: gradeDoc.selectFirst(".text")?.text() ?: "")
 
                 val bt = gradeDoc.select(".bt span div")
                 val trash = bt[1].text()

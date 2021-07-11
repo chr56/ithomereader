@@ -13,14 +13,16 @@ object TrendingApiImpl : TrendingApi {
     override fun getFocusBannerArticles(): List<Article>? {
         val list = mutableListOf<Article>()
         return try {
-            val elements = ITHomeApi.getHomePage().getElementById("focus-owl-wrap").getElementsByTag("a")
-            for (element in elements) {
-                val url = element.attr("abs:href")
-                if (!url.contains("www.ithome.com")) continue
-                val image = element.getElementsByTag("img")[0]
-                val title = addWhiteSpace(image.attr("alt"))
-                val thumb = image.attr("abs:src")
-                list.add(Article(title, null, url, thumb, null))
+            val elements = ITHomeApi.getHomePage().getElementById("focus-owl-wrap")?.getElementsByTag("a")
+            if (elements != null) {
+                for (element in elements) {
+                    val url = element.attr("abs:href")
+                    if (!url.contains("www.ithome.com")) continue
+                    val image = element.getElementsByTag("img")[0]
+                    val title = addWhiteSpace(image.attr("alt"))
+                    val thumb = image.attr("abs:src")
+                    list.add(Article(title, null, url, thumb, null))
+                }
             }
             list
         } catch (e: Exception) {

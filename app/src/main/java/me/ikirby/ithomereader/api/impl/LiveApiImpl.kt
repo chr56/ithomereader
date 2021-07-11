@@ -41,8 +41,8 @@ object LiveApiImpl : LiveApi {
     override fun getNewsIdHash(id: String): String? {
         return try {
             val html = ITHomeApi.getPageDoc(String.format(LIVE_PAGE_URL, id))
-            val ifCommentSrc = html.getElementById("ifcomment").attr("src")
-            ifCommentSrc.split("/").last()
+            val ifCommentSrc = html.getElementById("ifcomment")?.attr("src")
+            ifCommentSrc?.split("/")?.last()
         } catch (e: Exception) {
             Logger.e(tag, "getNewsIdHash", e)
             null
