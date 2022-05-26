@@ -1,6 +1,7 @@
 package me.ikirby.ithomereader.network
 
 import android.annotation.SuppressLint
+import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import org.jsoup.Jsoup
@@ -17,6 +18,7 @@ object ITHomeApi {
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
     private const val SEARCH_URL = "https://www.ithome.com/search/adt_all_%s_0.html"
+    private const val SEARCH_URL_NEW = "https://www.ithome.com/category/searchpage?page=%d&keyword=%s"
     private const val USER_AGENT =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
     private const val LIVE_URL = "https://live.ithome.com/newsinfo/getnewsph?newsid="
@@ -258,6 +260,22 @@ object ITHomeApi {
         return NetworkRequest.getDocument(
             String.format(SEARCH_URL, keyword),
             getHeaders(null, null, null)
+        )
+    }
+
+    /**
+     * 以 Post 获取方式得到分页搜索结果
+     * @param keyword 搜索关键词
+     * @param page 页码
+     * @return 搜索结果 HTTP Respond
+     * @throws IOException 网络请求异常
+     */
+    @SuppressLint("DefaultLocale")
+    @Throws(IOException::class)
+    fun getSearchDocWithPage(page: Int, keyword: String, cookie: String?): Response {
+        return NetworkRequest.getPostResponse(
+            String.format(SEARCH_URL_NEW, page, keyword),
+            getHeaders("XMLHttpRequest", null, cookie)
         )
     }
 

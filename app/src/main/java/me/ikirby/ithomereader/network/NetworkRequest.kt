@@ -1,10 +1,15 @@
 package me.ikirby.ithomereader.network
 
+import okhttp3.FormBody
+import okhttp3.Headers.Companion.toHeaders
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 internal object NetworkRequest {
     private const val TIMEOUT = 7000
@@ -57,6 +62,19 @@ internal object NetworkRequest {
             .ignoreContentType(true)
             .timeout(TIMEOUT)
             .execute()
+    }
+    // todo
+    @Throws(IOException::class)
+    fun getPostResponse(url: String, headers: Map<String, String>): Response {
+        val client = OkHttpClient.Builder().connectTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS).build()
+        val call = client.newCall(
+            Request.Builder()
+                .url(url)
+                .headers(headers.toHeaders())
+                .post(FormBody.Builder().build())//todo
+                .build()
+        )
+        return call.execute()
     }
 
     /**

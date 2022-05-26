@@ -9,8 +9,11 @@ import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.addWhiteSpace
 import me.ikirby.ithomereader.util.getMatchInt
 import me.ikirby.ithomereader.util.isUrlImgSrc
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser
+import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.util.regex.Pattern
@@ -61,6 +64,34 @@ object ArticleApiImpl : ArticleApi {
                     list.add(getSearchArticleObj(post))
                 }
             }
+            list
+        } catch (e: Exception) {
+            Logger.e(TAG, "getSearchResults", e)
+            null
+        }
+    }
+    override fun getSearchResultsWithPages(keyword: String, page: Int, cookie: String?): List<Article>? {
+        return try {
+            val response = ITHomeApi.getSearchDocWithPage(page, keyword, cookie)
+            val list = mutableListOf<Article>()
+
+            val r = response.body?.string()
+            val html = JSONObject(response.body?.string() ?: throw IOException("Fail to fetch response"))
+                .getJSONObject("content")
+                .getString("html")
+                .toByteArray(Charsets.UTF_8) // resolve /u****
+                .toString(Charsets.UTF_8)
+                .replace("\\r\\n", "\r\n")
+                .replace("\\\"", "\"")
+            val doc = Parser.parse(html, "https://www.ithome.com")
+
+            val posts = doc.select("li")
+            if (!posts.isEmpty()) {
+                for (post in posts) {
+                    list.add(getSearchArticleObj(post))
+                }
+            }
+
             list
         } catch (e: Exception) {
             Logger.e(TAG, "getSearchResults", e)
@@ -207,7 +238,7 @@ object ArticleApiImpl : ArticleApi {
                     " " + avatar.text() + "(IT号)"
                 } else {
                     " " + (meta.select("#author_baidu strong").text() ?: "") +
-                            "(" + (meta.select("#source_baidu").text() ?: "") + ")"
+                        "(" + (meta.select("#source_baidu").text() ?: "") + ")"
                 }
             }
 
