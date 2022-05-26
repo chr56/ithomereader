@@ -15,7 +15,7 @@ interface ArticleApi {
 
     fun getSearchResults(keyword: String): List<Article>?
 
-    fun getSearchResultsWithPages(keyword: String, page: Int, cookie: String?): List<Article>?
+    fun getSearchResultsWithPages(keyword: String, page: Int): List<Article>?
 
     fun getArticleGrade(id: String, cookie: String?): ArticleGrade?
 

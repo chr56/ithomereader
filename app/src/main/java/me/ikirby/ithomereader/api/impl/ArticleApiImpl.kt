@@ -70,31 +70,37 @@ object ArticleApiImpl : ArticleApi {
             null
         }
     }
-    override fun getSearchResultsWithPages(keyword: String, page: Int, cookie: String?): List<Article>? {
+    override fun getSearchResultsWithPages(keyword: String, page: Int): List<Article>? {
         if (page == 1) return getSearchResults(keyword)
         return try {
-            val response = ITHomeApi.getSearchDocWithPage(page, keyword, cookie)
+            val response = ITHomeApi.getSearchDocWithPage(page, keyword, null)
             val list = mutableListOf<Article>()
 
-            val r = response.body?.string()
-            val html = JSONObject(response.body?.string() ?: throw IOException("Fail to fetch response"))
-                .getJSONObject("content")
-                .getString("html")
-                .toByteArray(Charsets.UTF_8) // resolve /u****
-                .toString(Charsets.UTF_8)
-                .replace("\\r\\n", "\r\n")
-                .replace("\\\"", "\"")
-            val doc = Parser.parse(html, "https://www.ithome.com")
+            val body: String = response.body?.string() ?: throw IOException("Failed to retrieve response")
+            val json = JSONObject(body)
+            if (json.getBoolean("success")) {
+                val html = json
+                    .getJSONObject("content")
+                    .getString("html")
+                    .toByteArray(Charsets.UTF_8) // resolve /u**** unicode string
+                    .toString(Charsets.UTF_8)
+                    .replace("\\\"", "\"")
 
-            val posts = doc.select("li")
-            if (!posts.isEmpty()) {
-                for (post in posts) {
-                    list.add(getSearchArticleObj(post))
+                val doc = Parser.parse(html, "https://www.ithome.com")
+
+                val posts = doc.select("li")
+                if (!posts.isEmpty()) {
+                    for (post in posts) {
+                        list.add(getSearchArticleObj(post))
+                    }
                 }
+                list
+            } else {
+                throw IllegalAccessException("Server reports failing to retrieve search result")
+                // todo
             }
-
-            list
         } catch (e: Exception) {
+            // todo handle exception
             Logger.e(TAG, "getSearchResults", e)
             null
         }
