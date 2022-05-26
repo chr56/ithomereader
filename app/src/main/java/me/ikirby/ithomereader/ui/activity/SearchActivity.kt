@@ -78,7 +78,7 @@ class SearchActivity : BaseActivity() {
             isLoading = true
             swipe_refresh.isRefreshing = true
             launch {
-                val articles = withContext(Dispatchers.IO) { ArticleApiImpl.getSearchResultsWithPages(keyword, page) }
+                val articles = withContext(Dispatchers.IO) { ArticleApiImpl.getSearchResults(keyword, page) }
                 if (articles != null) {
                     if (articles.isNotEmpty()) {
                         if (articles[0].title != lastFirst) {

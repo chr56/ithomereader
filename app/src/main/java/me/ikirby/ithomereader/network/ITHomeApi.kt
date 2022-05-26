@@ -12,7 +12,7 @@ object ITHomeApi {
     const val IFCOMMENT_URL = "https://dyn.ithome.com/comment/"
     // const val LAPIN_IFCOMMENT_URL = "https://www.lapin365.com/comment/index?id="
 
-    private const val HOME_URL = "https://www.ithome.com"
+    const val HOME_URL = "https://www.ithome.com"
     private const val NEWS_URL = "https://www.ithome.com/category/blogpage"
     private const val AJAX_DATA_URL = "https://dyn.ithome.com/ithome/getajaxdata.aspx"
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
@@ -50,7 +50,8 @@ object ITHomeApi {
     @Throws(IOException::class)
     fun getRankBlock(): Document {
         return NetworkRequest.getDocument(
-            NEWS_RANK_BLOCK_URL, getHeaders(null, null, null))
+            NEWS_RANK_BLOCK_URL, getHeaders(null, null, null)
+        )
     }
 
     /**
@@ -200,8 +201,11 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun postComment(
-        id: String, parentId: String?, selfId: String?,
-        commentContent: String, cookie: String
+        id: String,
+        parentId: String?,
+        selfId: String?,
+        commentContent: String,
+        cookie: String
     ): String {
         val postData = mutableMapOf(
             "newsid" to id,
@@ -219,9 +223,9 @@ object ITHomeApi {
             postData["parentCommentID"] = "0"
         }
 
-
         return NetworkRequest.getResponse(
-            COMMENT_POST_URL, getHeaders(
+            COMMENT_POST_URL,
+            getHeaders(
                 "XMLHttpRequest",
                 "application/x-www-form-urlencoded", cookie
             ),
@@ -302,7 +306,8 @@ object ITHomeApi {
         }
 
         return NetworkRequest.getResponse(
-            COMMENT_POST_URL, getHeaders(
+            COMMENT_POST_URL,
+            getHeaders(
                 "XMLHttpRequest",
                 "application/x-www-form-urlencoded", cookie
             ),

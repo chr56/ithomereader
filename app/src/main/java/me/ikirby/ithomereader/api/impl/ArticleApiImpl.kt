@@ -54,41 +54,14 @@ object ArticleApiImpl : ArticleApi {
         }
     }
 
-    override fun getSearchResults(keyword: String): List<Article>? {
+    override fun getSearchResults(keyword: String, page: Int): List<Article>? {
         return try {
-            val doc = ITHomeApi.getSearchDoc(keyword)
-            val list = mutableListOf<Article>()
-            val posts = doc.select("ul.bl li")
-            if (!posts.isEmpty()) {
-                for (post in posts) {
-                    list.add(getSearchArticleObj(post))
-                }
-            }
-            list
-        } catch (e: Exception) {
-            Logger.e(TAG, "getSearchResults", e)
-            null
-        }
-    }
-    override fun getSearchResultsWithPages(keyword: String, page: Int): List<Article>? {
-        if (page == 1) return getSearchResults(keyword)
-        return try {
-            val response = ITHomeApi.getSearchDocWithPage(page, keyword, null)
             val list = mutableListOf<Article>()
 
-            val body: String = response.body?.string() ?: throw IOException("Failed to retrieve response")
-            val json = JSONObject(body)
-            if (json.getBoolean("success")) {
-                val html = json
-                    .getJSONObject("content")
-                    .getString("html")
-                    .toByteArray(Charsets.UTF_8) // resolve /u**** unicode string
-                    .toString(Charsets.UTF_8)
-                    .replace("\\\"", "\"")
-
-                val doc = Parser.parse(html, "https://www.ithome.com")
-
-                val posts = doc.select("li")
+            if (page == 1) {
+                // first page can not be query with getSearchDocWithPage(), use old way
+                val doc = ITHomeApi.getSearchDoc(keyword)
+                val posts = doc.select("ul.bl li")
                 if (!posts.isEmpty()) {
                     for (post in posts) {
                         list.add(getSearchArticleObj(post))
@@ -96,8 +69,30 @@ object ArticleApiImpl : ArticleApi {
                 }
                 list
             } else {
-                throw IllegalAccessException("Server reports failing to retrieve search result")
-                // todo
+                val response = ITHomeApi.getSearchDocWithPage(page, keyword, null)
+                val body: String = response.body?.string() ?: throw IOException("Failed to retrieve response")
+                val json = JSONObject(body)
+                if (json.getBoolean("success")) {
+                    val html = json
+                        .getJSONObject("content")
+                        .getString("html")
+                        .toByteArray(Charsets.UTF_8) // resolve /u**** unicode string
+                        .toString(Charsets.UTF_8)
+                        .replace("\\\"", "\"")
+
+                    val doc = Parser.parse(html, ITHomeApi.HOME_URL)
+
+                    val posts = doc.select("li")
+                    if (!posts.isEmpty()) {
+                        for (post in posts) {
+                            list.add(getSearchArticleObj(post))
+                        }
+                    }
+                    list
+                } else {
+                    throw IllegalAccessException("Server reports failing to retrieve search result")
+                    // todo
+                }
             }
         } catch (e: Exception) {
             // todo handle exception
