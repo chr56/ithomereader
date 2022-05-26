@@ -71,6 +71,7 @@ object ArticleApiImpl : ArticleApi {
         }
     }
     override fun getSearchResultsWithPages(keyword: String, page: Int, cookie: String?): List<Article>? {
+        if (page == 1) return getSearchResults(keyword)
         return try {
             val response = ITHomeApi.getSearchDocWithPage(page, keyword, cookie)
             val list = mutableListOf<Article>()
