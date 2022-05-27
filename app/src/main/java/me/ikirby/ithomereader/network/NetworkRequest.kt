@@ -1,15 +1,9 @@
 package me.ikirby.ithomereader.network
 
-import okhttp3.FormBody
-import okhttp3.Headers.Companion.toHeaders
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
-import java.util.concurrent.TimeUnit
 
 internal object NetworkRequest {
     private const val TIMEOUT = 7000
