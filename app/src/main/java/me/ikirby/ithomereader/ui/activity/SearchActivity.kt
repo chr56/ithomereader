@@ -14,7 +14,7 @@ import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
-import java.util.*
+import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
 
 class SearchActivity : BaseActivity() {
 
@@ -24,6 +24,8 @@ class SearchActivity : BaseActivity() {
     private lateinit var keyword: String
     private var lastFirst: String? = null
     private var isLoading = false
+    private var isRefresh = false
+    private var page = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,7 @@ class SearchActivity : BaseActivity() {
             articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
         }
 
-        list_view.setAllContentLoaded(true)
+        list_view.setAllContentLoaded(false)
 
         if (savedInstanceState == null || articleList.isEmpty()) {
             articleList = ArrayList()
@@ -56,6 +58,8 @@ class SearchActivity : BaseActivity() {
             list_view.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
+
+        list_view.setOnBottomReachedListener(bottomReachedListener)
     }
 
     override fun initView() {
@@ -74,14 +78,20 @@ class SearchActivity : BaseActivity() {
             isLoading = true
             swipe_refresh.isRefreshing = true
             launch {
-                val articles = withContext(Dispatchers.IO) { ArticleApiImpl.getSearchResults(keyword) }
+                val articles = withContext(Dispatchers.IO) { ArticleApiImpl.getSearchResults(keyword, page) }
                 if (articles != null) {
                     if (articles.isNotEmpty()) {
                         if (articles[0].title != lastFirst) {
-                            lastFirst = articles[0].title
+                            if (isRefresh) {
+                                articleList.clear()
+                            }
                             articleList.addAll(articles)
                             adapter.notifyDataSetChanged()
+                            page++
                         }
+                    } else {
+                        list_view.setAllContentLoaded(true)
+                        ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
@@ -90,6 +100,12 @@ class SearchActivity : BaseActivity() {
                 isLoading = false
                 swipe_refresh.isRefreshing = false
             }
+        }
+    }
+
+    private val bottomReachedListener = object : OnBottomReachedListener {
+        override fun onBottomReached() {
+            loadList()
         }
     }
 

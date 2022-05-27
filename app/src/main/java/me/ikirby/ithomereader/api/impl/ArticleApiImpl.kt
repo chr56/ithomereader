@@ -10,7 +10,9 @@ import me.ikirby.ithomereader.util.addWhiteSpace
 import me.ikirby.ithomereader.util.getMatchInt
 import me.ikirby.ithomereader.util.isUrlImgSrc
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.util.regex.Pattern
@@ -51,21 +53,38 @@ object ArticleApiImpl : ArticleApi {
         }
     }
 
-    override fun getSearchResults(keyword: String): List<Article>? {
+    override fun getSearchResults(keyword: String, page: Int): List<Article>? {
         return try {
-            val doc = ITHomeApi.getSearchDoc(keyword)
-            val list = mutableListOf<Article>()
-            val posts = doc.select("ul.bl li")
-            if (!posts.isEmpty()) {
-                for (post in posts) {
-                    list.add(getSearchArticleObj(post))
-                }
+            if (page == 1) { // first page can not be query with getSearchDocWithPage(), use old way
+                val doc = ITHomeApi.getSearchDoc(keyword)
+                readDocumentToArticle(doc, "ul.bl li")
+            } else {
+                val json = ITHomeApi.getSearchResultJsonWithPage(page, keyword, null)
+                val html = json
+                    .getJSONObject("content")
+                    .getString("html")
+                    .toByteArray(Charsets.UTF_8).toString(Charsets.UTF_8) // converting unicode escape slash codes (like /u????) to readable character
+                    .replace("\\\"", "\"") // undo " escape
+
+                val doc = Parser.parse(html, ITHomeApi.HOME_URL)
+
+                readDocumentToArticle(doc, "li")
             }
-            list
         } catch (e: Exception) {
             Logger.e(TAG, "getSearchResults", e)
             null
         }
+    }
+
+    private fun readDocumentToArticle(doc: Document, query: String): List<Article> {
+        val posts = doc.select(query)
+        val list = mutableListOf<Article>()
+        if (!posts.isEmpty()) {
+            for (post in posts) {
+                list.add(getSearchArticleObj(post))
+            }
+        }
+        return list
     }
 
     override fun getArticleGrade(id: String, cookie: String?): ArticleGrade? {
@@ -207,7 +226,7 @@ object ArticleApiImpl : ArticleApi {
                     " " + avatar.text() + "(IT号)"
                 } else {
                     " " + (meta.select("#author_baidu strong").text() ?: "") +
-                            "(" + (meta.select("#source_baidu").text() ?: "") + ")"
+                        "(" + (meta.select("#source_baidu").text() ?: "") + ")"
                 }
             }
 

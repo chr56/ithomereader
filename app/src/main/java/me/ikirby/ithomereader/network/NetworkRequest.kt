@@ -3,7 +3,6 @@ package me.ikirby.ithomereader.network
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-
 import java.io.IOException
 
 internal object NetworkRequest {

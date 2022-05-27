@@ -158,7 +158,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onDisplayPreferenceDialog(preference: Preference?) {
+    override fun onDisplayPreferenceDialog(preference: Preference) {
         when (preference) {
             is ListPreference -> showListPreferenceDialog(requireContext(), preference)
             is TimePreference -> showTimePreferenceDialog(requireContext(), preference)

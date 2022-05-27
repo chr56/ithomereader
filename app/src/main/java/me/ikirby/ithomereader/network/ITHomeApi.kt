@@ -3,6 +3,7 @@ package me.ikirby.ithomereader.network
 import android.annotation.SuppressLint
 import org.json.JSONException
 import org.json.JSONObject
+import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
@@ -11,14 +12,15 @@ object ITHomeApi {
     const val IFCOMMENT_URL = "https://dyn.ithome.com/comment/"
     // const val LAPIN_IFCOMMENT_URL = "https://www.lapin365.com/comment/index?id="
 
-    private const val HOME_URL = "https://www.ithome.com"
+    const val HOME_URL = "https://www.ithome.com"
     private const val NEWS_URL = "https://www.ithome.com/category/blogpage"
     private const val AJAX_DATA_URL = "https://dyn.ithome.com/ithome/getajaxdata.aspx"
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
     private const val SEARCH_URL = "https://www.ithome.com/search/adt_all_%s_0.html"
+    private const val SEARCH_URL_NEW = "https://www.ithome.com/category/searchpage?page=%d&keyword=%s"
     private const val USER_AGENT =
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
     private const val LIVE_URL = "https://live.ithome.com/newsinfo/getnewsph?newsid="
     private const val LAPIN_AJAX_DATA_URL = "https://www.lapin365.com/comment/getajaxdata"
     private const val NEWS_GRADE_URL = "https://dyn.ithome.com/grade/"
@@ -48,7 +50,8 @@ object ITHomeApi {
     @Throws(IOException::class)
     fun getRankBlock(): Document {
         return NetworkRequest.getDocument(
-            NEWS_RANK_BLOCK_URL, getHeaders(null, null, null))
+            NEWS_RANK_BLOCK_URL, getHeaders(null, null, null)
+        )
     }
 
     /**
@@ -198,8 +201,11 @@ object ITHomeApi {
      */
     @Throws(IOException::class)
     fun postComment(
-        id: String, parentId: String?, selfId: String?,
-        commentContent: String, cookie: String
+        id: String,
+        parentId: String?,
+        selfId: String?,
+        commentContent: String,
+        cookie: String
     ): String {
         val postData = mutableMapOf(
             "newsid" to id,
@@ -217,9 +223,9 @@ object ITHomeApi {
             postData["parentCommentID"] = "0"
         }
 
-
         return NetworkRequest.getResponse(
-            COMMENT_POST_URL, getHeaders(
+            COMMENT_POST_URL,
+            getHeaders(
                 "XMLHttpRequest",
                 "application/x-www-form-urlencoded", cookie
             ),
@@ -247,7 +253,7 @@ object ITHomeApi {
     }
 
     /**
-     * 获取搜索结果文档
+     * 获取第一页搜索结果文档
      * @param keyword 搜索关键词
      * @return 搜索结果文档
      * @throws IOException 网络请求异常
@@ -259,6 +265,30 @@ object ITHomeApi {
             String.format(SEARCH_URL, keyword),
             getHeaders(null, null, null)
         )
+    }
+
+    /**
+     * （以 Post 方式）获取分页搜索结果
+     * @param keyword 搜索关键词
+     * @param page 页码 （需大于2）
+     * @return 搜索结果 JSON 若有效且报告成功
+     * @throws IOException 网络请求异常
+     */
+    @SuppressLint("DefaultLocale")
+    @Throws(IOException::class)
+    fun getSearchResultJsonWithPage(page: Int, keyword: String, cookie: String?): JSONObject {
+        val response =  NetworkRequest.getResponse(
+            String.format(SEARCH_URL_NEW, page, keyword),
+            getHeaders("XMLHttpRequest", null, cookie),
+            hashMapOf() // empty post data
+        )
+        val body: String = response.body() ?: throw IOException("Failed to retrieve response")
+        val json = JSONObject(body)
+        if (json.getBoolean("success")){
+            return json
+        }else{
+            throw IOException("Server reported failing to retrieve search result")
+        }
     }
 
     /**
@@ -284,7 +314,8 @@ object ITHomeApi {
         }
 
         return NetworkRequest.getResponse(
-            COMMENT_POST_URL, getHeaders(
+            COMMENT_POST_URL,
+            getHeaders(
                 "XMLHttpRequest",
                 "application/x-www-form-urlencoded", cookie
             ),

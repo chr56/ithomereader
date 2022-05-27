@@ -13,7 +13,7 @@ interface ArticleApi {
         oldList: ArrayList<Article>?
     ): List<Article>?
 
-    fun getSearchResults(keyword: String): List<Article>?
+    fun getSearchResults(keyword: String, page: Int): List<Article>?
 
     fun getArticleGrade(id: String, cookie: String?): ArticleGrade?
 
