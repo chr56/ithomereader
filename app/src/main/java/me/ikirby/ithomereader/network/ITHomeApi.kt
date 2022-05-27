@@ -1,9 +1,9 @@
 package me.ikirby.ithomereader.network
 
 import android.annotation.SuppressLint
-import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
+import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
@@ -276,10 +276,11 @@ object ITHomeApi {
      */
     @SuppressLint("DefaultLocale")
     @Throws(IOException::class)
-    fun getSearchDocWithPage(page: Int, keyword: String, cookie: String?): Response {
-        return NetworkRequest.getPostResponse(
+    fun getSearchDocWithPage(page: Int, keyword: String, cookie: String?): Connection.Response {
+        return NetworkRequest.getResponse(
             String.format(SEARCH_URL_NEW, page, keyword),
-            getHeaders("XMLHttpRequest", null, cookie)
+            getHeaders("XMLHttpRequest", null, cookie),
+            hashMapOf() // empty post data
         )
     }
 

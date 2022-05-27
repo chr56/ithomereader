@@ -70,7 +70,7 @@ object ArticleApiImpl : ArticleApi {
                 list
             } else {
                 val response = ITHomeApi.getSearchDocWithPage(page, keyword, null)
-                val body: String = response.body?.string() ?: throw IOException("Failed to retrieve response")
+                val body: String = response.body() ?: throw IOException("Failed to retrieve response")
                 val json = JSONObject(body)
                 if (json.getBoolean("success")) {
                     val html = json

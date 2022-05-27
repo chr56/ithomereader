@@ -63,19 +63,6 @@ internal object NetworkRequest {
             .timeout(TIMEOUT)
             .execute()
     }
-    // todo
-    @Throws(IOException::class)
-    fun getPostResponse(url: String, headers: Map<String, String>): Response {
-        val client = OkHttpClient.Builder().connectTimeout(TIMEOUT.toLong(), TimeUnit.MILLISECONDS).build()
-        val call = client.newCall(
-            Request.Builder()
-                .url(url)
-                .headers(headers.toHeaders())
-                .post(FormBody.Builder().build())//todo
-                .build()
-        )
-        return call.execute()
-    }
 
     /**
      * 获取 Jsoup Response 带 post 数据
