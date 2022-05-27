@@ -253,7 +253,7 @@ object ITHomeApi {
     }
 
     /**
-     * 获取搜索结果文档
+     * 获取第一页搜索结果文档
      * @param keyword 搜索关键词
      * @return 搜索结果文档
      * @throws IOException 网络请求异常
@@ -268,20 +268,27 @@ object ITHomeApi {
     }
 
     /**
-     * 以 Post 获取方式得到分页搜索结果
+     * （以 Post 方式）获取分页搜索结果
      * @param keyword 搜索关键词
-     * @param page 页码
-     * @return 搜索结果 HTTP Respond
+     * @param page 页码 （需大于2）
+     * @return 搜索结果 JSON 若有效且报告成功
      * @throws IOException 网络请求异常
      */
     @SuppressLint("DefaultLocale")
     @Throws(IOException::class)
-    fun getSearchDocWithPage(page: Int, keyword: String, cookie: String?): Connection.Response {
-        return NetworkRequest.getResponse(
+    fun getSearchResultJsonWithPage(page: Int, keyword: String, cookie: String?): JSONObject {
+        val response =  NetworkRequest.getResponse(
             String.format(SEARCH_URL_NEW, page, keyword),
             getHeaders("XMLHttpRequest", null, cookie),
             hashMapOf() // empty post data
         )
+        val body: String = response.body() ?: throw IOException("Failed to retrieve response")
+        val json = JSONObject(body)
+        if (json.getBoolean("success")){
+            return json
+        }else{
+            throw IOException("Server reported failing to retrieve search result")
+        }
     }
 
     /**

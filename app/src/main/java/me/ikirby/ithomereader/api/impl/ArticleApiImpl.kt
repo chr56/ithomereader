@@ -9,11 +9,10 @@ import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.addWhiteSpace
 import me.ikirby.ithomereader.util.getMatchInt
 import me.ikirby.ithomereader.util.isUrlImgSrc
-import org.json.JSONObject
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Parser
-import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.util.regex.Pattern
@@ -56,49 +55,36 @@ object ArticleApiImpl : ArticleApi {
 
     override fun getSearchResults(keyword: String, page: Int): List<Article>? {
         return try {
-            val list = mutableListOf<Article>()
-
-            if (page == 1) {
-                // first page can not be query with getSearchDocWithPage(), use old way
+            if (page == 1) { // first page can not be query with getSearchDocWithPage(), use old way
                 val doc = ITHomeApi.getSearchDoc(keyword)
-                val posts = doc.select("ul.bl li")
-                if (!posts.isEmpty()) {
-                    for (post in posts) {
-                        list.add(getSearchArticleObj(post))
-                    }
-                }
-                list
+                readDocumentToArticle(doc, "ul.bl li")
             } else {
-                val response = ITHomeApi.getSearchDocWithPage(page, keyword, null)
-                val body: String = response.body() ?: throw IOException("Failed to retrieve response")
-                val json = JSONObject(body)
-                if (json.getBoolean("success")) {
-                    val html = json
-                        .getJSONObject("content")
-                        .getString("html")
-                        .toByteArray(Charsets.UTF_8) // resolve /u**** unicode string
-                        .toString(Charsets.UTF_8)
-                        .replace("\\\"", "\"")
+                val json = ITHomeApi.getSearchResultJsonWithPage(page, keyword, null)
+                val html = json
+                    .getJSONObject("content")
+                    .getString("html")
+                    .toByteArray(Charsets.UTF_8).toString(Charsets.UTF_8) // converting unicode escape slash codes (like /u????) to readable character
+                    .replace("\\\"", "\"") // undo " escape
 
-                    val doc = Parser.parse(html, ITHomeApi.HOME_URL)
+                val doc = Parser.parse(html, ITHomeApi.HOME_URL)
 
-                    val posts = doc.select("li")
-                    if (!posts.isEmpty()) {
-                        for (post in posts) {
-                            list.add(getSearchArticleObj(post))
-                        }
-                    }
-                    list
-                } else {
-                    throw IllegalAccessException("Server reports failing to retrieve search result")
-                    // todo
-                }
+                readDocumentToArticle(doc, "li")
             }
         } catch (e: Exception) {
-            // todo handle exception
             Logger.e(TAG, "getSearchResults", e)
             null
         }
+    }
+
+    private fun readDocumentToArticle(doc: Document, query: String): List<Article> {
+        val posts = doc.select(query)
+        val list = mutableListOf<Article>()
+        if (!posts.isEmpty()) {
+            for (post in posts) {
+                list.add(getSearchArticleObj(post))
+            }
+        }
+        return list
     }
 
     override fun getArticleGrade(id: String, cookie: String?): ArticleGrade? {
