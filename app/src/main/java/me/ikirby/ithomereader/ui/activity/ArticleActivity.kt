@@ -6,12 +6,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.*
-import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
+import me.ikirby.ithomereader.databinding.ActivityArticleBinding
 import me.ikirby.ithomereader.entity.FullArticle
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.ArticleGradeDialog
@@ -20,6 +20,8 @@ import me.ikirby.ithomereader.util.*
 import kotlin.math.roundToInt
 
 class ArticleActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityArticleBinding
 
     private lateinit var title: String
     private lateinit var url: String
@@ -30,6 +32,8 @@ class ArticleActivity : BaseActivity() {
     private val actionBarElevation = convertDpToPixel(4F)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityArticleBinding.inflate(layoutInflater)
+        // make sure binding is inflated before using in [initView()]
         super.onCreate(savedInstanceState)
         setTitleCustom("")
         enableBackBtn()
@@ -49,10 +53,10 @@ class ArticleActivity : BaseActivity() {
         }
 
         if (isNightMode()) {
-            post_content.setBackgroundColor(getColor(R.color.background_dark))
+            binding.postContent.setBackgroundColor(getColor(R.color.background_dark))
         }
 
-        post_content.webViewClient = object : WebViewClient() {
+        binding.postContent.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 openLink(this@ArticleActivity, request.url.toString())
                 return true
@@ -60,23 +64,23 @@ class ArticleActivity : BaseActivity() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 supportActionBar?.elevation = 0F
-                load_progress.visibility = View.GONE
-                load_tip.visibility = View.GONE
+                binding.loadProgress.visibility = View.GONE
+                binding.loadTip.visibility = View.GONE
 
                 if (readProgress != 0F) {
                     view.postDelayed({
-                        val webViewSize = post_content.contentHeight - post_content.top
+                        val webViewSize = binding.postContent.contentHeight - binding.postContent.top
                         val position = webViewSize * readProgress
-                        val scrollY = (post_content.top + position).roundToInt()
-                        post_content.scrollTo(0, scrollY)
+                        val scrollY = (binding.postContent.top + position).roundToInt()
+                        binding.postContent.scrollTo(0, scrollY)
                     }, 300)
                 }
             }
         }
-        post_content.settings.javaScriptEnabled = true
-        post_content.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
-        post_content.addJavascriptInterface(this, "JSInterface")
-        post_content.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+        binding.postContent.settings.javaScriptEnabled = true
+        binding.postContent.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+        binding.postContent.addJavascriptInterface(this, "JSInterface")
+        binding.postContent.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             if (scrollY > 0) {
                 if (supportActionBar!!.elevation != actionBarElevation) {
                     supportActionBar?.elevation = actionBarElevation
@@ -94,7 +98,7 @@ class ArticleActivity : BaseActivity() {
         }
 
         if (savedInstanceState?.getParcelable<FullArticle>(KEY_FULL_ARTICLE) == null) {
-            load_tip.visibility = View.VISIBLE
+            binding.loadTip.visibility = View.VISIBLE
             loadContent()
         } else {
             fullArticle = savedInstanceState.getParcelable(KEY_FULL_ARTICLE)!!
@@ -104,14 +108,14 @@ class ArticleActivity : BaseActivity() {
     }
 
     override fun initView() {
-        setContentView(R.layout.activity_article)
+        setContentView(binding.root)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (::fullArticle.isInitialized) {
             outState.putParcelable(KEY_FULL_ARTICLE, fullArticle)
-            outState.putFloat(KEY_READ_PROGRESS, getScrollProgress(post_content))
+            outState.putFloat(KEY_READ_PROGRESS, getScrollProgress(binding.postContent))
         }
     }
 
@@ -139,10 +143,10 @@ class ArticleActivity : BaseActivity() {
     }
 
     private fun loadContent() {
-        load_tip.setOnClickListener(null)
-        load_tip.visibility = View.VISIBLE
-        load_progress.visibility = View.VISIBLE
-        load_text.visibility = View.GONE
+        binding.loadTip.setOnClickListener(null)
+        binding.loadTip.visibility = View.VISIBLE
+        binding.loadProgress.visibility = View.VISIBLE
+        binding.loadText.visibility = View.GONE
         launch {
             val loadImageAutomatically = shouldLoadImageAutomatically()
             val fullArticle = withContext(Dispatchers.IO) {
@@ -158,15 +162,15 @@ class ArticleActivity : BaseActivity() {
                 loadArticleContent()
             } else {
                 ToastUtil.showToast(R.string.timeout_no_internet)
-                load_text.visibility = View.VISIBLE
-                load_tip.setOnClickListener { loadContent() }
-                load_progress.visibility = View.GONE
+                binding.loadText.visibility = View.VISIBLE
+                binding.loadTip.setOnClickListener { loadContent() }
+                binding.loadProgress.visibility = View.GONE
             }
         }
     }
 
     private fun loadArticleContent() {
-        post_content.loadDataWithBaseURL(
+        binding.postContent.loadDataWithBaseURL(
             url,
             getHead(isNightMode()) + fullArticle.content + getFooter(),
             "text/html; charset=utf-8",
