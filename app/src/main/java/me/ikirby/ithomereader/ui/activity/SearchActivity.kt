@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
-import me.ikirby.ithomereader.databinding.ActivitySearchBinding
+import me.ikirby.ithomereader.databinding.ActivitySimpleListBinding
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -18,7 +18,7 @@ import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
 
 class SearchActivity : BaseActivity() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: ActivitySimpleListBinding
 
     private lateinit var articleList: ArrayList<Article>
     private lateinit var adapter: ArticleListAdapter
@@ -31,7 +31,7 @@ class SearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        binding = ActivitySimpleListBinding.inflate(layoutInflater)
         // make sure binding is inflated before using in [initView()]
 
         super.onCreate(savedInstanceState)

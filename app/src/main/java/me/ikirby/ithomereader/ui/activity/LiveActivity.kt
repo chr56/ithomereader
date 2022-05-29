@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.LiveApiImpl
-import me.ikirby.ithomereader.databinding.ActivitySearchBinding
+import me.ikirby.ithomereader.databinding.ActivitySimpleListBinding
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.ui.adapter.LivePostListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -20,7 +20,7 @@ import me.ikirby.ithomereader.util.getMatchInt
 
 class LiveActivity : BaseActivity() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: ActivitySimpleListBinding
 
     private lateinit var liveMessages: ArrayList<LiveMsg>
     private lateinit var adapter: LivePostListAdapter
@@ -31,7 +31,7 @@ class LiveActivity : BaseActivity() {
     private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        binding = ActivitySimpleListBinding.inflate(layoutInflater)
         // make sure binding is inflated before using in [initView()]
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.live))
