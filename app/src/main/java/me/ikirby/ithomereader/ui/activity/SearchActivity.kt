@@ -27,7 +27,6 @@ class SearchActivity : BaseActivity() {
 
     private var lastFirst: String? = null
     private var isLoading = false
-    private var isRefresh = false
     private var page = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,9 +87,6 @@ class SearchActivity : BaseActivity() {
                 if (articles != null) {
                     if (articles.isNotEmpty()) {
                         if (articles[0].title != lastFirst) {
-                            if (isRefresh) {
-                                articleList.clear()
-                            }
                             articleList.addAll(articles)
                             adapter.notifyDataSetChanged()
                             page++
