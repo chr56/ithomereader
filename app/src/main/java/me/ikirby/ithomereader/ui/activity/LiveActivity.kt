@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.LiveApiImpl
+import me.ikirby.ithomereader.databinding.ActivitySearchBinding
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.ui.adapter.LivePostListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -19,6 +19,8 @@ import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.getMatchInt
 
 class LiveActivity : BaseActivity() {
+
+    private lateinit var binding: ActivitySearchBinding
 
     private lateinit var liveMessages: ArrayList<LiveMsg>
     private lateinit var adapter: LivePostListAdapter
@@ -29,6 +31,8 @@ class LiveActivity : BaseActivity() {
     private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        // make sure binding is inflated before using in [initView()]
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.live))
         enableBackBtn()
@@ -37,10 +41,10 @@ class LiveActivity : BaseActivity() {
         newsId = "" + getMatchInt(url)
 
         layoutManager = LinearLayoutManager(this)
-        list_view.layoutManager = layoutManager
+        binding.layout.listView.layoutManager = layoutManager
 
-        swipe_refresh.setOnRefreshListener { loadList() }
-        error_placeholder.setOnClickListener { loadList() }
+        binding.layout.swipeRefresh.setOnRefreshListener { loadList() }
+        binding.layout.errorPlaceholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
             liveMessages = savedInstanceState.getParcelableArrayList(KEY_LIVE_MESSAGES) ?: ArrayList()
@@ -49,17 +53,17 @@ class LiveActivity : BaseActivity() {
         if (savedInstanceState == null || liveMessages.isEmpty()) {
             liveMessages = ArrayList()
             adapter = LivePostListAdapter(liveMessages, layoutInflater)
-            list_view.adapter = adapter
+            binding.layout.listView.adapter = adapter
             loadList()
         } else {
             adapter = LivePostListAdapter(liveMessages, layoutInflater)
-            list_view.adapter = adapter
+            binding.layout.listView.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
     }
 
     override fun initView() {
-        setContentView(R.layout.activity_search)
+        setContentView(binding.root)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -71,7 +75,7 @@ class LiveActivity : BaseActivity() {
     private fun loadList() {
         if (!isLoading) {
             isLoading = true
-            swipe_refresh.isRefreshing = true
+            binding.layout.swipeRefresh.isRefreshing = true
             launch {
                 val liveMsgs = withContext(Dispatchers.IO) { LiveApiImpl.getLiveMessages(newsId) }
                 if (liveMsgs != null) {
@@ -80,7 +84,7 @@ class LiveActivity : BaseActivity() {
                         liveMessages.addAll(liveMsgs)
                         adapter.notifyDataSetChanged()
                     } else {
-                        list_view.setAllContentLoaded(true)
+                        binding.layout.listView.setAllContentLoaded(true)
                         ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
@@ -90,9 +94,9 @@ class LiveActivity : BaseActivity() {
                 if (commentNewsIdHash != null) {
                     newsIdHash = commentNewsIdHash
                 }
-                UiUtil.switchVisibility(list_view, error_placeholder, liveMessages.size)
+                UiUtil.switchVisibility(binding.layout.listView, binding.layout.errorPlaceholder, liveMessages.size)
                 isLoading = false
-                swipe_refresh.isRefreshing = false
+                binding.layout.swipeRefresh.isRefreshing = false
             }
         }
     }
