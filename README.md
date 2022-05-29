@@ -4,9 +4,11 @@ A 3rd-party [ITHome](https://www.ithome.com) App. This is a project I made when 
 
 ## To do
 
-- Use ktx libs and syntax
-- Replace deprecated `ViewPager` with `ViewPager2`
-- Fix other deprecated things
+- [ ] Remove 'kotlin-android-extensions' for binding layouts ( Activities & Fragments ✓; Adapters ×; Misc ×)
+
+- [ ] Use ktx libs and syntax
+- [ ] Replace deprecated `ViewPager` with `ViewPager2`
+- [ ] Fix other deprecated things
 
 ## Building
 
