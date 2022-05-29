@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,6 +14,7 @@ import me.ikirby.ithomereader.KEY_SHOW_THUMB
 import me.ikirby.ithomereader.KEY_TRENDING_LIST
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.api.impl.TrendingApiImpl
+import me.ikirby.ithomereader.databinding.ListLayoutBinding
 import me.ikirby.ithomereader.entity.Trending
 import me.ikirby.ithomereader.ui.adapter.TrendingListAdapter
 import me.ikirby.ithomereader.ui.base.BaseFragment
@@ -23,6 +23,9 @@ import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.shouldShowThumb
 
 class TrendingListFragment : BaseFragment() {
+
+    private var _binding: ListLayoutBinding? = null
+    private val binding: ListLayoutBinding get() = _binding!!
 
     private lateinit var trendingList: ArrayList<Trending>
     private lateinit var adapter: TrendingListAdapter
@@ -35,14 +38,14 @@ class TrendingListFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = LayoutInflater.from(context).inflate(R.layout.list_layout, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = ListLayoutBinding.inflate(layoutInflater)
 
         layoutManager = LinearLayoutManager(activity)
-        view.list_view.layoutManager = layoutManager
+        binding.listView.layoutManager = layoutManager
 
-        view.swipe_refresh.setOnRefreshListener { loadList() }
-        view.error_placeholder.setOnClickListener { loadList() }
+        binding.swipeRefresh.setOnRefreshListener { loadList() }
+        binding.errorPlaceholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
             trendingList = savedInstanceState.getParcelableArrayList(KEY_TRENDING_LIST) ?: ArrayList()
@@ -52,15 +55,20 @@ class TrendingListFragment : BaseFragment() {
             trendingList = ArrayList()
             showThumb = shouldShowThumb()
             adapter = TrendingListAdapter(trendingList, requireContext(), showThumb)
-            view.list_view.adapter = adapter
+            binding.listView.adapter = adapter
         } else {
             showThumb = savedInstanceState.getBoolean(KEY_SHOW_THUMB, true)
             adapter = TrendingListAdapter(trendingList, requireContext(), showThumb)
-            view.list_view.adapter = adapter
+            binding.listView.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
 
-        return view
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,7 +96,7 @@ class TrendingListFragment : BaseFragment() {
     private fun loadList() {
         if (!isLoading) {
             isLoading = true
-            requireView().swipe_refresh.isRefreshing = true
+            binding.swipeRefresh.isRefreshing = true
             launch {
                 val trendings = withContext(Dispatchers.IO) { TrendingApiImpl.getTrendingList() }
                 if (trendings != null) {
@@ -104,9 +112,9 @@ class TrendingListFragment : BaseFragment() {
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(requireView().list_view, requireView().error_placeholder, trendingList.size)
+                UiUtil.switchVisibility(binding.listView, binding.errorPlaceholder, trendingList.size)
                 isLoading = false
-                requireView().swipe_refresh.isRefreshing = false
+                binding.swipeRefresh.isRefreshing = false
             }
         }
     }
