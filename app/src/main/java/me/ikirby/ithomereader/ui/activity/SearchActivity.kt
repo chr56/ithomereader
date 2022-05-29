@@ -3,12 +3,12 @@ package me.ikirby.ithomereader.ui.activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
+import me.ikirby.ithomereader.databinding.ActivitySearchBinding
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -18,16 +18,23 @@ import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
 
 class SearchActivity : BaseActivity() {
 
+    private lateinit var binding: ActivitySearchBinding
+
     private lateinit var articleList: ArrayList<Article>
     private lateinit var adapter: ArticleListAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var keyword: String
+
     private var lastFirst: String? = null
     private var isLoading = false
     private var isRefresh = false
     private var page = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        // make sure binding is inflated before using in [initView()]
+
         super.onCreate(savedInstanceState)
         enableBackBtn()
 
@@ -36,34 +43,33 @@ class SearchActivity : BaseActivity() {
         setTitleCustom(getString(R.string.keyword_s_results, keyword))
 
         layoutManager = LinearLayoutManager(this)
-        list_view.layoutManager = layoutManager
 
-        swipe_refresh.isEnabled = false
-
-        error_placeholder.setOnClickListener { loadList() }
+        binding.layout.listView.layoutManager = layoutManager
+        binding.layout.swipeRefresh.isEnabled = false
+        binding.layout.errorPlaceholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
             articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
         }
 
-        list_view.setAllContentLoaded(false)
+        binding.layout.listView.setAllContentLoaded(false)
 
         if (savedInstanceState == null || articleList.isEmpty()) {
             articleList = ArrayList()
             adapter = ArticleListAdapter(articleList, null, this, false)
-            list_view.adapter = adapter
+            binding.layout.listView.adapter = adapter
             loadList()
         } else {
             adapter = ArticleListAdapter(articleList, null, this, false)
-            list_view.adapter = adapter
+            binding.layout.listView.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
         }
 
-        list_view.setOnBottomReachedListener(bottomReachedListener)
+        binding.layout.listView.setOnBottomReachedListener(bottomReachedListener)
     }
 
     override fun initView() {
-        setContentView(R.layout.activity_search)
+        setContentView(binding.root)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -76,7 +82,7 @@ class SearchActivity : BaseActivity() {
     private fun loadList() {
         if (!isLoading) {
             isLoading = true
-            swipe_refresh.isRefreshing = true
+            binding.layout.swipeRefresh.isRefreshing = true
             launch {
                 val articles = withContext(Dispatchers.IO) { ArticleApiImpl.getSearchResults(keyword, page) }
                 if (articles != null) {
@@ -90,15 +96,15 @@ class SearchActivity : BaseActivity() {
                             page++
                         }
                     } else {
-                        list_view.setAllContentLoaded(true)
+                        binding.layout.listView.setAllContentLoaded(true)
                         ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
-                UiUtil.switchVisibility(list_view, error_placeholder, articleList.size)
+                UiUtil.switchVisibility(binding.layout.listView, binding.layout.errorPlaceholder, articleList.size)
                 isLoading = false
-                swipe_refresh.isRefreshing = false
+                binding.layout.swipeRefresh.isRefreshing = false
             }
         }
     }
