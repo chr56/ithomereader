@@ -73,7 +73,7 @@ class ArticleListAdapter(
                 if (focusSlideAdapter != null) position - 1 else position
             ]
             (holder as ArticleListViewHolder).bind(
-                PostModel(title = title, null, date = date, showThumb, thumb = thumb)
+                title = title,  date = date, showThumb, thumb = thumb
             )
         } else if (holder.itemViewType == TYPE_SLIDE_BANNER) {
             // banner
@@ -90,23 +90,22 @@ class ArticleListAdapter(
 
     internal inner class ArticleListViewHolder(private val viewBinding: PostListItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-        fun bind(data: PostModel) {
+        fun bind(title: String, date: String?, showPostThumb: Boolean, thumb: String?) {
             viewBinding.postThumb.clipToOutline = true
 
-            viewBinding.postTitle.text = data.title
-            viewBinding.postDate.text = data.date
+            viewBinding.postTitle.text = title
+            viewBinding.postDate.text = date
 
-            if (data.showPostThumb) {
+            if (showPostThumb) {
                 viewBinding.postTitle.maxLines = 3
                 viewBinding.postThumb.visibility = View.VISIBLE
-                Glide.with(context).load(data.thumb).into(viewBinding.postThumb)
+                Glide.with(context).load(thumb).into(viewBinding.postThumb)
             } else {
                 viewBinding.postTitle.maxLines = 2
                 viewBinding.postThumb.visibility = View.GONE
             }
         }
     }
-    internal data class PostModel(val title: String, val desc: String?, val date: String?, val showPostThumb: Boolean, val thumb: String?)
 
     internal inner class SlideBannerViewHolder(private val viewBinding: SlideRecyclerBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         val handler = Handler(Looper.getMainLooper())
