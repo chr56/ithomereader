@@ -5,15 +5,13 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.post_list_item.view.*
-import kotlinx.android.synthetic.main.slide_recycler.view.*
 import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.databinding.PostListItemBinding
+import me.ikirby.ithomereader.databinding.SlideRecyclerBinding
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.activity.ArticleActivity
 import me.ikirby.ithomereader.ui.activity.ImageViewerActivity
@@ -36,13 +34,14 @@ class ArticleListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 0) {
-            val view = LayoutInflater.from(context).inflate(R.layout.slide_recycler, parent, false)
-            return SlideBannerViewHolder(view)
+        if (viewType == TYPE_SLIDE_BANNER) {
+            val viewBinding = SlideRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return SlideBannerViewHolder(viewBinding)
         } else {
-            val view = LayoutInflater.from(context).inflate(R.layout.post_list_item, parent, false)
-            val articleListViewHolder = ArticleListViewHolder(view)
-            view.setOnClickListener {
+            val viewBinding = PostListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val articleListViewHolder = ArticleListViewHolder(viewBinding)
+            // todo: move click listeners to onBindViewHolder
+            viewBinding.root.setOnClickListener {
                 var position = articleListViewHolder.bindingAdapterPosition
                 if (focusSlideAdapter != null) {
                     position--
@@ -54,7 +53,7 @@ class ArticleListAdapter(
                 }
                 context.startActivity(intent)
             }
-            view.setOnLongClickListener {
+            viewBinding.root.setOnLongClickListener {
                 var position = articleListViewHolder.bindingAdapterPosition
                 if (focusSlideAdapter != null) {
                     position--
@@ -67,77 +66,66 @@ class ArticleListAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        var pos = position
-        if (focusSlideAdapter == null || pos > 0) {
-            val articleListViewHolder = holder as ArticleListViewHolder
+        if (holder.itemViewType == TYPE_POST) {
+            // post
+            val (title, date, _, thumb) = list[
+                // position
+                if (focusSlideAdapter != null) position - 1 else position
+            ]
+            (holder as ArticleListViewHolder).bind(
+                PostModel(title = title, null, date = date, showThumb, thumb = thumb)
+            )
+        } else if (holder.itemViewType == TYPE_SLIDE_BANNER) {
+            // banner
+            (holder as SlideBannerViewHolder).layoutManager = bannerLayoutManager
+        }
+    }
 
-            if (focusSlideAdapter != null) {
-                pos -= 1
-            }
-            val (title, date, _, thumb) = list[pos]
+    override fun getItemId(position: Int): Long = 0
 
-            articleListViewHolder.titleText.text = title
-            articleListViewHolder.dateText.text = date
+    override fun getItemCount(): Int = list.size
 
-            if (showThumb) {
-                articleListViewHolder.titleText.maxLines = 3
-                articleListViewHolder.thumbImage.visibility = View.VISIBLE
-                Glide.with(context).load(thumb).into(articleListViewHolder.thumbImage)
+    override fun getItemViewType(position: Int): Int =
+        if (focusSlideAdapter != null && position == 0) TYPE_SLIDE_BANNER else TYPE_POST
+
+    internal inner class ArticleListViewHolder(private val viewBinding: PostListItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
+
+        fun bind(data: PostModel) {
+            viewBinding.postThumb.clipToOutline = true
+
+            viewBinding.postTitle.text = data.title
+            viewBinding.postDate.text = data.date
+
+            if (data.showPostThumb) {
+                viewBinding.postTitle.maxLines = 3
+                viewBinding.postThumb.visibility = View.VISIBLE
+                Glide.with(context).load(data.thumb).into(viewBinding.postThumb)
             } else {
-                articleListViewHolder.titleText.maxLines = 2
-                articleListViewHolder.thumbImage.visibility = View.GONE
+                viewBinding.postTitle.maxLines = 2
+                viewBinding.postThumb.visibility = View.GONE
             }
-        } else if (pos == 0) {
-            (holder as SlideBannerViewHolder).recyclerView.layoutManager = bannerLayoutManager
         }
     }
+    internal data class PostModel(val title: String, val desc: String?, val date: String?, val showPostThumb: Boolean, val thumb: String?)
 
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (focusSlideAdapter != null && position == 0) {
-            0
-        } else {
-            1
-        }
-    }
-
-    internal inner class ArticleListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val thumbImage: ImageView = itemView.post_thumb
-        val titleText: TextView = itemView.post_title
-        val dateText: TextView = itemView.post_date
-        val postInfoWrapper: View = itemView.post_info_wrapper
-
-        init {
-            thumbImage.clipToOutline = true
-        }
-    }
-
-    internal inner class SlideBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val recyclerView: RecyclerView = itemView.recycler_view
+    internal inner class SlideBannerViewHolder(private val viewBinding: SlideRecyclerBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         val handler = Handler(Looper.getMainLooper())
         private val autoScroll = object : Runnable {
             override fun run() {
                 if (bannerLayoutManager.findFirstVisibleItemPosition() == bannerLayoutManager.itemCount - 1) {
-                    recyclerView.smoothScrollToPosition(0)
+                    viewBinding.recyclerView.smoothScrollToPosition(0)
                 } else {
-                    recyclerView.smoothScrollToPosition(bannerLayoutManager.findFirstVisibleItemPosition() + 1)
+                    viewBinding.recyclerView.smoothScrollToPosition(bannerLayoutManager.findFirstVisibleItemPosition() + 1)
                 }
                 handler.postDelayed(this, SLIDE_SCROLL_INTERVAL)
             }
         }
 
         init {
-            PagerSnapHelper().attachToRecyclerView(recyclerView)
-            recyclerView.layoutManager = bannerLayoutManager
-            recyclerView.adapter = focusSlideAdapter
-            recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            PagerSnapHelper().attachToRecyclerView(viewBinding.recyclerView)
+            viewBinding.recyclerView.layoutManager = bannerLayoutManager
+            viewBinding.recyclerView.adapter = focusSlideAdapter
+            viewBinding.recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
                 override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
                 }
 
@@ -152,10 +140,13 @@ class ArticleListAdapter(
 
                 override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
                 }
-
             })
             handler.postDelayed(autoScroll, SLIDE_SCROLL_INTERVAL)
         }
+
+        internal var layoutManager: RecyclerView.LayoutManager?
+            get() = viewBinding.recyclerView.layoutManager
+            set(value) { viewBinding.recyclerView.layoutManager = value }
     }
 
     fun setShowThumb(showThumb: Boolean) {
@@ -167,38 +158,46 @@ class ArticleListAdapter(
     }
 
     private fun showPopupMenu(post: Article) {
-        UiUtil.showBottomSheetMenu(context, object : BottomSheetMenu.BottomSheetMenuListener {
-            override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
-                inflater.inflate(R.menu.main_context, menu)
-                if (post.thumb == null) {
-                    menu.removeItem(R.id.view_thumb)
+        UiUtil.showBottomSheetMenu(
+            context,
+            object : BottomSheetMenu.BottomSheetMenuListener {
+                override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
+                    inflater.inflate(R.menu.main_context, menu)
+                    if (post.thumb == null) {
+                        menu.removeItem(R.id.view_thumb)
+                    }
                 }
-            }
 
-            override fun onBottomSheetMenuItemSelected(item: MenuItem) {
-                when (item.itemId) {
-                    R.id.share -> {
-                        val share = Intent(Intent.ACTION_SEND).apply {
-                            putExtra(Intent.EXTRA_TEXT, post.title + "\n" + post.url)
-                            type = "text/plain"
-                        }
-                        context.startActivity(
-                            Intent.createChooser(
-                                share,
-                                context.getString(R.string.share) + " " + post.title
+                override fun onBottomSheetMenuItemSelected(item: MenuItem) {
+                    when (item.itemId) {
+                        R.id.share -> {
+                            val share = Intent(Intent.ACTION_SEND).apply {
+                                putExtra(Intent.EXTRA_TEXT, post.title + "\n" + post.url)
+                                type = "text/plain"
+                            }
+                            context.startActivity(
+                                Intent.createChooser(
+                                    share,
+                                    context.getString(R.string.share) + " " + post.title
+                                )
                             )
-                        )
-                    }
-                    R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
-                    R.id.view_thumb -> {
-                        val intent = Intent(context, ImageViewerActivity::class.java).apply {
-                            putExtra(KEY_URL, post.thumb)
                         }
-                        context.startActivity(intent)
+                        R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
+                        R.id.view_thumb -> {
+                            val intent = Intent(context, ImageViewerActivity::class.java).apply {
+                                putExtra(KEY_URL, post.thumb)
+                            }
+                            context.startActivity(intent)
+                        }
+                        R.id.open_in_browser -> openLinkInBrowser(context, post.url)
                     }
-                    R.id.open_in_browser -> openLinkInBrowser(context, post.url)
                 }
             }
-        })
+        )
+    }
+
+    companion object {
+        private const val TYPE_SLIDE_BANNER = 0
+        private const val TYPE_POST = 1
     }
 }
