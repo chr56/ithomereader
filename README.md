@@ -4,7 +4,7 @@ A 3rd-party [ITHome](https://www.ithome.com) App. This is a project I made when 
 
 ## To do
 
-- [ ] Remove 'kotlin-android-extensions' for binding layouts ( Activities & Fragments ✓; Adapters ×; Misc ×)
+- [x] Remove 'kotlin-android-extensions'
 
 - [ ] Use ktx libs and syntax
 - [ ] Replace deprecated `ViewPager` with `ViewPager2`
