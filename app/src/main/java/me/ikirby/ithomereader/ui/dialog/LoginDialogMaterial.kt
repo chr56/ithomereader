@@ -1,42 +1,42 @@
 package me.ikirby.ithomereader.ui.dialog
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.login_dialog.*
 import kotlinx.coroutines.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_USERNAME
 import me.ikirby.ithomereader.SETTINGS_KEY_USER_HASH
 import me.ikirby.ithomereader.api.impl.UserApiImpl
+import me.ikirby.ithomereader.databinding.LoginDialogBinding
 import me.ikirby.ithomereader.ui.util.ToastUtil
-
 
 fun showLoginDialog(context: Context, loginSuccessCallback: ((username: String) -> Unit)?) {
     val coroutineContext = Dispatchers.Main + SupervisorJob()
     val coroutineScope = CoroutineScope(coroutineContext)
 
+    val binding: LoginDialogBinding = LoginDialogBinding.inflate(LayoutInflater.from(context))
+
     val dialog = MaterialAlertDialogBuilder(context)
-        .setView(R.layout.login_dialog)
+        .setView(binding.root)
         .setNegativeButton(R.string.cancel, null)
         .create()
 
     dialog.setOnShowListener {
-        val btnLogin = dialog.btn_login
-        val textUsername = dialog.username
-        val textPassword = dialog.password
 
-        btnLogin.setOnClickListener {
-            val username = textUsername.text.toString()
-            val password = textPassword.text.toString()
+        binding.btnLogin.setOnClickListener {
+
+            val username = binding.username.text.toString()
+            val password = binding.password.text.toString()
+
             if (username == "" || password == "") {
                 ToastUtil.showToast(R.string.user_pass_empty)
             } else {
-                btnLogin.isEnabled = false
-                val loadProgress = dialog.load_progress
-                loadProgress.visibility = View.VISIBLE
+                binding.btnLogin.isEnabled = false
+                binding.loadProgress.visibility = View.VISIBLE
 
                 coroutineScope.launch {
                     val userHash = withContext(Dispatchers.IO) { UserApiImpl.login(username, password) }
@@ -51,8 +51,8 @@ fun showLoginDialog(context: Context, loginSuccessCallback: ((username: String) 
                         dialog.dismiss()
                     } else {
                         ToastUtil.showToast(R.string.login_failed)
-                        loadProgress.visibility = View.GONE
-                        btnLogin.isEnabled = true
+                        binding.loadProgress.visibility = View.GONE
+                        binding.btnLogin.isEnabled = true
                     }
                 }
             }
