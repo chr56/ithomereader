@@ -68,12 +68,9 @@ class ArticleListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == TYPE_POST) {
             // post
-            val (title, date, _, thumb) = list[
-                // position
-                if (focusSlideAdapter != null) position - 1 else position
-            ]
             (holder as ArticleListViewHolder).bind(
-                title = title,  date = date, showThumb, thumb = thumb
+                list[ if (focusSlideAdapter != null) position - 1 else position ],
+                showThumb
             )
         } else if (holder.itemViewType == TYPE_SLIDE_BANNER) {
             // banner
@@ -90,16 +87,16 @@ class ArticleListAdapter(
 
     internal inner class ArticleListViewHolder(private val viewBinding: PostListItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-        fun bind(title: String, date: String?, showPostThumb: Boolean, thumb: String?) {
+        fun bind(article: Article, showPostThumb: Boolean) {
             viewBinding.postThumb.clipToOutline = true
 
-            viewBinding.postTitle.text = title
-            viewBinding.postDate.text = date
+            viewBinding.postTitle.text = article.title
+            viewBinding.postDate.text = article.date
 
             if (showPostThumb) {
                 viewBinding.postTitle.maxLines = 3
                 viewBinding.postThumb.visibility = View.VISIBLE
-                Glide.with(context).load(thumb).into(viewBinding.postThumb)
+                Glide.with(context).load(article.thumb).into(viewBinding.postThumb)
             } else {
                 viewBinding.postTitle.maxLines = 2
                 viewBinding.postThumb.visibility = View.GONE
