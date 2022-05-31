@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_update_dialog.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.KEY_UPDATE_INFO
 import me.ikirby.ithomereader.R
@@ -27,7 +26,7 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
         updateInfo = intent.getParcelableExtra(KEY_UPDATE_INFO)
 
         if (updateInfo != null) {
-            update_info_text.text = updateInfo!!.version + "\n" + updateInfo!!.log
+            binding.updateInfoText.text = updateInfo!!.version + "\n" + updateInfo!!.log
 
             binding.btnUpdate.setOnClickListener(this)
             binding.btnCancel.setOnClickListener(this)
