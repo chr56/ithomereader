@@ -13,8 +13,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_viewpager.*
 import me.ikirby.ithomereader.*
+import me.ikirby.ithomereader.databinding.ActivityViewpagerBinding
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.fragment.ArticleListFragment
 import me.ikirby.ithomereader.ui.fragment.TrendingListFragment
@@ -25,6 +25,8 @@ import me.ikirby.ithomereader.ui.util.ToastUtil
 
 class MainActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityViewpagerBinding
+
     private val startSettings = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
             recreate()
@@ -32,6 +34,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityViewpagerBinding.inflate(layoutInflater)
+        // make sure binding is inflated before using in [initView()]
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.app_name))
         isGestureEnabled = false
@@ -59,17 +63,17 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        viewPager!!.adapter = adapter
+        binding.viewPager.adapter = adapter
 
         if (savedInstanceState == null) {
             if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH, true)) {
                 checkForUpdate(this)
             }
-            if (!BaseApplication.preferences.contains(SETTINGS_KEY_VERSION)
-                || BuildConfig.VERSION_CODE > BaseApplication.preferences.getInt(
-                    SETTINGS_KEY_VERSION,
-                    BuildConfig.VERSION_CODE
-                )
+            if (!BaseApplication.preferences.contains(SETTINGS_KEY_VERSION) ||
+                BuildConfig.VERSION_CODE > BaseApplication.preferences.getInt(
+                        SETTINGS_KEY_VERSION,
+                        BuildConfig.VERSION_CODE
+                    )
             ) {
                 cleanUp(this)
             }
@@ -81,17 +85,17 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-        setContentView(R.layout.activity_viewpager)
+        setContentView(binding.root)
         if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_USE_BOTTOM_NAV, false)) {
-            tabs.visibility = View.GONE
+            binding.tabs.visibility = View.GONE
             if (isNightMode()) {
-                bottom_nav.setBackgroundColor(getColor(R.color.background_dark))
+                binding.bottomNav.setBackgroundColor(getColor(R.color.background_dark))
             } else {
-                bottom_nav.setBackgroundColor(getColor(R.color.background_light))
+                binding.bottomNav.setBackgroundColor(getColor(R.color.background_light))
             }
-            bottom_nav.visibility = View.VISIBLE
-            viewPager.setSwipeDisabled(true)
-            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            binding.bottomNav.visibility = View.VISIBLE
+            binding.viewPager.setSwipeDisabled(true)
+            binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
                 }
 
@@ -99,24 +103,20 @@ class MainActivity : BaseActivity() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    if (position == 1) {
-                        bottom_nav.selectedItemId = R.id.bottom_nav_hot
-                    } else {
-                        bottom_nav.selectedItemId = R.id.bottom_nav_news
-                    }
+                    binding.bottomNav.selectedItemId =
+                        if (position == 1) R.id.bottom_nav_hot else R.id.bottom_nav_news
                 }
-
             })
-            bottom_nav.setOnItemSelectedListener {
+            binding.bottomNav.setOnItemSelectedListener {
                 when (it.itemId) {
-                    R.id.bottom_nav_news -> viewPager.setCurrentItem(0, false)
-                    R.id.bottom_nav_hot -> viewPager.setCurrentItem(1, false)
+                    R.id.bottom_nav_news -> binding.viewPager.setCurrentItem(0, false)
+                    R.id.bottom_nav_hot -> binding.viewPager.setCurrentItem(1, false)
                 }
                 true
             }
         } else {
             supportActionBar?.elevation = 0F
-            tabs.setupWithViewPager(viewPager)
+            binding.tabs.setupWithViewPager(binding.viewPager)
         }
     }
 

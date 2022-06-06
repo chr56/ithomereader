@@ -6,13 +6,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.api.impl.ArticleApiImpl
 import me.ikirby.ithomereader.api.impl.TrendingApiImpl
+import me.ikirby.ithomereader.databinding.ListLayoutBinding
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
 import me.ikirby.ithomereader.ui.adapter.SlideBannerAdapter
@@ -22,8 +22,10 @@ import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
 import me.ikirby.ithomereader.util.shouldShowThumb
 
-
 class ArticleListFragment : BaseFragment() {
+
+    private var _binding: ListLayoutBinding? = null
+    private val binding: ListLayoutBinding get() = _binding!!
 
     private lateinit var articleList: ArrayList<Article>
     private lateinit var focuses: ArrayList<Article>
@@ -47,13 +49,14 @@ class ArticleListFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = LayoutInflater.from(context).inflate(R.layout.list_layout, container, false)
-        layoutManager = LinearLayoutManager(activity)
-        view.list_view.layoutManager = layoutManager
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = ListLayoutBinding.inflate(layoutInflater)
 
-        view.swipe_refresh.setOnRefreshListener { reloadList() }
-        view.error_placeholder.setOnClickListener { reloadList() }
+        layoutManager = LinearLayoutManager(activity)
+        binding.listView.layoutManager = layoutManager
+
+        binding.swipeRefresh.setOnRefreshListener { reloadList() }
+        binding.errorPlaceholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {
             articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
@@ -71,7 +74,7 @@ class ArticleListFragment : BaseFragment() {
             } else {
                 adapter = ArticleListAdapter(articleList, null, requireContext(), showThumb)
             }
-            view.list_view.adapter = adapter
+            binding.listView.adapter = adapter
         } else {
             showThumb = savedInstanceState.getBoolean(KEY_SHOW_THUMB, true)
             showBanner = savedInstanceState.getBoolean(KEY_SHOW_BANNER, true)
@@ -82,7 +85,7 @@ class ArticleListFragment : BaseFragment() {
             } else {
                 adapter = ArticleListAdapter(articleList, null, requireContext(), showThumb)
             }
-            view.list_view.adapter = adapter
+            binding.listView.adapter = adapter
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
             if (showBanner) {
                 adapter.bannerLayoutManager.onRestoreInstanceState(
@@ -91,8 +94,13 @@ class ArticleListFragment : BaseFragment() {
             }
         }
 
-        view.list_view.setOnBottomReachedListener(bottomReachedListener)
-        return view
+        binding.listView.setOnBottomReachedListener(bottomReachedListener)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,7 +133,7 @@ class ArticleListFragment : BaseFragment() {
 
     private fun reloadList() {
         if (!isLoading) {
-            requireView().list_view.setAllContentLoaded(false)
+            binding.listView.setAllContentLoaded(false)
             isRefresh = true
             page = 0
             loadList()
@@ -146,7 +154,7 @@ class ArticleListFragment : BaseFragment() {
     private fun loadList() {
         if (!isLoading) {
             isLoading = true
-            requireView().swipe_refresh.isRefreshing = true
+            binding.swipeRefresh.isRefreshing = true
             launch {
                 val filterLapin = BaseApplication.preferences.getBoolean(SETTINGS_KEY_FILTER_ADS, false)
                 val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
@@ -170,17 +178,17 @@ class ArticleListFragment : BaseFragment() {
                         adapter.notifyDataSetChanged()
                         page++
                     } else {
-                        requireView().list_view.setAllContentLoaded(true)
+                        binding.listView.setAllContentLoaded(true)
                         ToastUtil.showToast(R.string.no_more_content)
                     }
                 } else {
                     ToastUtil.showToast(R.string.timeout_no_internet)
                 }
 
-                UiUtil.switchVisibility(requireView().list_view, requireView().error_placeholder, articleList.size)
+                UiUtil.switchVisibility(binding.listView, binding.errorPlaceholder, articleList.size)
                 isLoading = false
                 isRefresh = false
-                requireView().swipe_refresh.isRefreshing = false
+                binding.swipeRefresh.isRefreshing = false
             }
         }
     }

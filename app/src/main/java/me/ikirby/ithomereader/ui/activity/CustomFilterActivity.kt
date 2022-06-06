@@ -3,42 +3,48 @@ package me.ikirby.ithomereader.ui.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.appcompat.app.AlertDialog
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_edittext.*
-import kotlinx.android.synthetic.main.list_layout.*
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_CUSTOM_FILTER
+import me.ikirby.ithomereader.databinding.DialogEdittextBinding
+import me.ikirby.ithomereader.databinding.ListLayoutBinding
 import me.ikirby.ithomereader.ui.adapter.CustomFilterListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
 
 class CustomFilterActivity : BaseActivity() {
 
+    private lateinit var listLayout: ListLayoutBinding
+    private lateinit var dialog: DialogEdittextBinding
+
     private val keywordsList = mutableListOf<String>()
     private lateinit var adapter: CustomFilterListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        listLayout = ListLayoutBinding.inflate(layoutInflater)
+        // make sure binding is inflated before using in [initView()]
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.pref_custom_filter))
         enableBackBtn()
-        swipe_refresh.isEnabled = false
+        listLayout.swipeRefresh.isEnabled = false
 
         val keywords = BaseApplication.preferences.getString(SETTINGS_KEY_CUSTOM_FILTER, "")!!
         keywordsList.addAll(keywords.split(",").filter { it.isNotBlank() })
 
-        adapter = CustomFilterListAdapter(keywordsList, layoutInflater, {
-            val position = list_view.getChildAdapterPosition(it)
+        adapter = CustomFilterListAdapter(keywordsList, layoutInflater) {
+            val position = listLayout.listView.getChildAdapterPosition(it)
             confirmDelete(position)
-        })
-        list_view.layoutManager = LinearLayoutManager(this)
-        list_view.adapter = adapter
+        }
+        listLayout.listView.layoutManager = LinearLayoutManager(this)
+        listLayout.listView.adapter = adapter
+
+        dialog = DialogEdittextBinding.inflate(layoutInflater)
     }
 
     override fun initView() {
-        setContentView(R.layout.list_layout)
+        setContentView(listLayout.root)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,12 +61,12 @@ class CustomFilterActivity : BaseActivity() {
     }
 
     private fun addKeyword() {
+        // todo: use another more elegant way to handle custom view
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.add_keyword)
-            .setView(R.layout.dialog_edittext)
-            .setPositiveButton(R.string.ok) { dialogInterface, _ ->
-                val editText = (dialogInterface as AlertDialog).edit_text
-                val keyword = editText.text.toString().trim()
+            .setView(dialog.root)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                val keyword = dialog.editText.text.toString().trim()
 
                 if (keyword.isNotBlank()) {
                     keywordsList.add(keyword)
@@ -69,6 +75,10 @@ class CustomFilterActivity : BaseActivity() {
                 }
             }
             .setNegativeButton(R.string.cancel, null)
+            .setOnDismissListener {
+                (dialog.root.parent as ViewGroup).removeView(dialog.root)
+                // remove self, or crash next time.
+            }
             .show()
     }
 

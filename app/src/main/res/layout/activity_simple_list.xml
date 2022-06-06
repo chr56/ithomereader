@@ -6,6 +6,7 @@
     android:clipToPadding="false"
     android:clipChildren="false">
 
-    <include layout="@layout/list_layout" />
+    <include layout="@layout/list_layout"
+        android:id="@+id/layout"/>
 
 </FrameLayout>

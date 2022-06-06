@@ -1,8 +1,8 @@
 package me.ikirby.ithomereader.ui.activity
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.unknown_exception_message.*
 import me.ikirby.ithomereader.KEY_STACK_TRACE
 import me.ikirby.ithomereader.R
 
@@ -14,7 +14,7 @@ class UnknownExceptionHandlerActivity : AppCompatActivity() {
 
         val stackTrace = intent.getStringExtra(KEY_STACK_TRACE)
         if (stackTrace != null) {
-            exception_message.text = stackTrace
+            findViewById<TextView>(R.id.exception_message).text = stackTrace
         }
     }
 }

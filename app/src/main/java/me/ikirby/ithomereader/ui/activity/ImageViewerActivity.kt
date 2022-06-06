@@ -22,11 +22,11 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import kotlinx.android.synthetic.main.activity_image_viewer.*
 import kotlinx.coroutines.*
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.databinding.ActivityImageViewerBinding
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
@@ -36,13 +36,15 @@ import kotlin.coroutines.CoroutineContext
 
 class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, CoroutineScope {
 
+    private lateinit var binding: ActivityImageViewerBinding
+
     companion object {
         const val flagsFullscreen = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
 
     private val job = SupervisorJob()
@@ -64,12 +66,13 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_viewer)
+        binding = ActivityImageViewerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         url = intent.getStringExtra(KEY_URL) ?: ""
 
-        photo_view.setOnClickListener(this)
-        image_menu_btn.setOnClickListener(this)
+        binding.photoView.setOnClickListener(this)
+        binding.imageMenuBtn.setOnClickListener(this)
 
         fadeOutAnim = AlphaAnimation(1F, 0F)
         fadeOutAnim.interpolator = AccelerateInterpolator()
@@ -88,10 +91,10 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     }
 
     private fun loadImage() {
-        load_tip.setOnClickListener(null)
-        load_tip.visibility = View.VISIBLE
-        load_text.visibility = View.GONE
-        load_progress.visibility = View.VISIBLE
+        binding.loadTip.setOnClickListener(null)
+        binding.loadTip.visibility = View.VISIBLE
+        binding.loadText.visibility = View.GONE
+        binding.loadProgress.visibility = View.VISIBLE
         Glide.with(this).load(url).transition(withCrossFade()).listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
@@ -99,10 +102,10 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                 target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
-                load_progress.visibility = View.GONE
-                load_progress.visibility = View.VISIBLE
-                photo_view.visibility = View.INVISIBLE
-                load_tip.setOnClickListener(this@ImageViewerActivity)
+                binding.loadProgress.visibility = View.GONE
+                binding.loadProgress.visibility = View.VISIBLE
+                binding.photoView.visibility = View.INVISIBLE
+                binding.loadTip.setOnClickListener(this@ImageViewerActivity)
                 return false
             }
 
@@ -113,12 +116,12 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                 dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
-                load_tip.visibility = View.GONE
-                photo_view.visibility = View.VISIBLE
-                image_menu_btn.visibility = View.VISIBLE
+                binding.loadTip.visibility = View.GONE
+                binding.photoView.visibility = View.VISIBLE
+                binding.imageMenuBtn.visibility = View.VISIBLE
                 return false
             }
-        }).into(photo_view)
+        }).into(binding.photoView)
     }
 
     private fun createImageFile() {
@@ -156,27 +159,30 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             R.id.photo_view -> {
                 if (window.decorView.systemUiVisibility == flagsFullscreen) {
                     window.decorView.systemUiVisibility = 0
-                    image_menu_btn.visibility = View.VISIBLE
-                    image_menu_btn.startAnimation(fadeInAnim)
+                    binding.imageMenuBtn.visibility = View.VISIBLE
+                    binding.imageMenuBtn.startAnimation(fadeInAnim)
                 } else {
                     window.decorView.systemUiVisibility = flagsFullscreen
-                    image_menu_btn.visibility = View.GONE
-                    image_menu_btn.startAnimation(fadeOutAnim)
+                    binding.imageMenuBtn.visibility = View.GONE
+                    binding.imageMenuBtn.startAnimation(fadeOutAnim)
                 }
             }
             R.id.load_tip -> loadImage()
-            R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(this, object : BottomSheetMenu.BottomSheetMenuListener {
-                override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
-                    inflater.inflate(R.menu.menu_img_viewer, menu)
-                }
+            R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(
+                this,
+                object : BottomSheetMenu.BottomSheetMenuListener {
+                    override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
+                        inflater.inflate(R.menu.menu_img_viewer, menu)
+                    }
 
-                override fun onBottomSheetMenuItemSelected(item: MenuItem) {
-                    when (item.itemId) {
-                        R.id.context_download_img -> createImageFile()
-                        R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, url)
+                    override fun onBottomSheetMenuItemSelected(item: MenuItem) {
+                        when (item.itemId) {
+                            R.id.context_download_img -> createImageFile()
+                            R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, url)
+                        }
                     }
                 }
-            })
+            )
         }
     }
 }
