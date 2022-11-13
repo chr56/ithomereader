@@ -27,7 +27,7 @@ android {
             storePassword signingProperties['storePassword']
         }
     }
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "me.ikirby.ithomereader"
         minSdkVersion 23
