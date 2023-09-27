@@ -1,8 +1,12 @@
 package me.ikirby.ithomereader.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
+import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.databinding.CommentListItemBinding
 import me.ikirby.ithomereader.databinding.CommentReplyItemBinding
 import me.ikirby.ithomereader.entity.app.comment.Comment
@@ -69,8 +73,20 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: Comment) {
-            binding.comment = comment
-            binding.executePendingBindings()
+            val context = binding.root.context
+            with(binding) {
+                commentNick.text = comment.nickname
+                commentDevice.text = comment.device
+                commentFloor.text = comment.floor
+                commentPosandtime.text =
+                    context.getString(R.string.comment_posandtime_format, comment.region, comment.time)
+                commentContent.text =
+                    HtmlCompat.fromHtml(comment.content,HtmlCompat.FROM_HTML_MODE_COMPACT)
+                commentExpand.text = context.getString(R.string.comment_expand, comment.replyCount)
+                commentExpand.visibility = if (comment.replyCount > 0) VISIBLE else GONE
+                commentSupport.text = context.getString(R.string.comment_support, comment.support)
+                commentAgainst.text = context.getString(R.string.comment_against, comment.against)
+            }
         }
     }
 
@@ -78,8 +94,18 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: Comment) {
-            binding.comment = comment
-            binding.executePendingBindings()
+            val context = binding.root.context
+            with(binding) {
+                commentNick.text = comment.nickname
+                commentDevice.text = comment.device
+                commentFloor.text = comment.floor
+                commentPosandtime.text =
+                    context.getString(R.string.comment_posandtime_format, comment.region, comment.time)
+                commentContent.text =
+                    HtmlCompat.fromHtml(comment.content,HtmlCompat.FROM_HTML_MODE_COMPACT)
+                commentSupport.text = context.getString(R.string.comment_support, comment.support)
+                commentAgainst.text = context.getString(R.string.comment_against, comment.against)
+            }
         }
     }
 }
