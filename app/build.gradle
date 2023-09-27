@@ -51,7 +51,7 @@ android {
         debug {
             applicationIdSuffix ".debug"
         }
-        RC{
+        RC {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -60,7 +60,7 @@ android {
             versionNameSuffix "-rc"
         }
     }
-    flavorDimensions 'update'
+    flavorDimensions = List.of("update")
     productFlavors {
         normal {
             dimension 'update'
