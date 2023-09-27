@@ -99,7 +99,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val libMdc = findPreference<Preference>(SETTINGS_KEY_LIB_MDC)
             val libJsoup = findPreference<Preference>(SETTINGS_KEY_LIB_JSOUP)
             val libPhotoView = findPreference<Preference>(SETTINGS_KEY_LIB_PHOTOVIEW)
-            val libGlide = findPreference<Preference>(SETTINGS_KEY_LIB_GLIDE)
+            val libCoil = findPreference<Preference>(SETTINGS_KEY_LIB_COIL)
             val libBottomSheet = findPreference<Preference>(SETTINGS_KEY_LIB_BOTTOMSHEET)
             val libKotlinxCoroutines = findPreference<Preference>(SETTINGS_KEY_LIB_KOTLINCOROUTINES)
             val libPanguJs = findPreference<Preference>(SETTINGS_KEY_LIB_PANGU_JS)
@@ -129,8 +129,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-            libGlide?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                openInCustomTabs("https://github.com/bumptech/glide")
+            libCoil?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                openInCustomTabs("https://coil-kt.github.io/coil/")
                 true
             }
 

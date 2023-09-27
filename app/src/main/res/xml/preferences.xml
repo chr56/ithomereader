@@ -144,8 +144,8 @@
             app:title="PhotoView" />
 
         <Preference
-            app:key="lib_glide"
-            app:title="Glide" />
+            app:key="lib_coil"
+            app:title="Coil" />
 
         <Preference
             app:key="lib_bottom_sheet"
