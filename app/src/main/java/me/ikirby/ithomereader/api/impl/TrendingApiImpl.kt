@@ -20,7 +20,7 @@ object TrendingApiImpl : TrendingApi {
                     if (!url.contains("www.ithome.com")) continue
                     val image = element.getElementsByTag("img")[0]
                     val title = addWhiteSpace(image.attr("alt"))
-                    val thumb = image.attr("abs:src")
+                    val thumb = image.attr("data-src")
                     list.add(Article(title, null, url, thumb, null))
                 }
             }

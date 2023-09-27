@@ -145,7 +145,7 @@ object ArticleApiImpl : ArticleApi {
         val title = addWhiteSpace(post.select("a.title").text())
         val date = post.select(".c").attr("data-ot")
         var url = post.select("a.title").attr("abs:href")
-        var thumb = post.select("a.img > img").attr("src")
+        var thumb = post.select(".lazy").attr("data-original")
         if (thumb.startsWith("//")) {
             thumb = thumb.replace("//", "https://")
         } else if (thumb.startsWith("http://")) {
