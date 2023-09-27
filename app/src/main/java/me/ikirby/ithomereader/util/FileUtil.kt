@@ -1,9 +1,11 @@
 package me.ikirby.ithomereader.util
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.webkit.URLUtil
+import androidx.core.graphics.drawable.toBitmap
 import me.ikirby.ithomereader.BaseApplication
 import java.io.File
-import java.io.FileInputStream
 import java.io.IOException
 import java.io.OutputStream
 
@@ -54,18 +56,7 @@ fun getImageMimeType(fileName: String): String {
 }
 
 @Throws(IOException::class)
-fun writeFile(outputStream: OutputStream, file: File) {
-    val inputStream = FileInputStream(file)
-    val buffer = ByteArray(1024)
-    var length: Int
-    while (true) {
-        length = inputStream.read(buffer)
-        if (length > 0) {
-            outputStream.write(buffer, 0, length)
-        } else {
-            break
-        }
-    }
-    inputStream.close()
-    outputStream.close()
+fun writeFile(outputStream: OutputStream, drawable: Drawable) {
+    val bitmap = drawable.toBitmap()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
 }

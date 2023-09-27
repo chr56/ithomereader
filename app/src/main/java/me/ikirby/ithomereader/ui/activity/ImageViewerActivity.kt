@@ -16,13 +16,14 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import kotlinx.coroutines.*
+import coil.Coil
+import coil.request.ImageRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.R
@@ -30,7 +31,11 @@ import me.ikirby.ithomereader.databinding.ActivityImageViewerBinding
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
-import me.ikirby.ithomereader.util.*
+import me.ikirby.ithomereader.util.Logger
+import me.ikirby.ithomereader.util.copyToClipboard
+import me.ikirby.ithomereader.util.getFileName
+import me.ikirby.ithomereader.util.getImageMimeType
+import me.ikirby.ithomereader.util.writeFile
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
@@ -95,33 +100,26 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         binding.loadTip.visibility = View.VISIBLE
         binding.loadText.visibility = View.GONE
         binding.loadProgress.visibility = View.VISIBLE
-        Glide.with(this).load(url).transition(withCrossFade()).listener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any,
-                target: Target<Drawable>,
-                isFirstResource: Boolean
-            ): Boolean {
-                binding.loadProgress.visibility = View.GONE
-                binding.loadProgress.visibility = View.VISIBLE
-                binding.photoView.visibility = View.INVISIBLE
-                binding.loadTip.setOnClickListener(this@ImageViewerActivity)
-                return false
-            }
+        Coil.imageLoader(this).enqueue(
+            ImageRequest.Builder(this)
+                .data(url)
+                .target(object : coil.target.Target {
+                    override fun onError(error: Drawable?) {
+                        binding.loadProgress.visibility = View.GONE
+                        binding.loadProgress.visibility = View.VISIBLE
+                        binding.photoView.visibility = View.INVISIBLE
+                        binding.loadTip.setOnClickListener(this@ImageViewerActivity)
+                    }
 
-            override fun onResourceReady(
-                resource: Drawable,
-                model: Any,
-                target: Target<Drawable>,
-                dataSource: DataSource,
-                isFirstResource: Boolean
-            ): Boolean {
-                binding.loadTip.visibility = View.GONE
-                binding.photoView.visibility = View.VISIBLE
-                binding.imageMenuBtn.visibility = View.VISIBLE
-                return false
-            }
-        }).into(binding.photoView)
+                    override fun onSuccess(result: Drawable) {
+                        binding.photoView.setImageDrawable(result)
+                        binding.loadTip.visibility = View.GONE
+                        binding.photoView.visibility = View.VISIBLE
+                        binding.imageMenuBtn.visibility = View.VISIBLE
+                    }
+                })
+                .build()
+        )
     }
 
     private fun createImageFile() {
@@ -137,19 +135,29 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     private fun saveImage(uri: Uri) {
         launch {
             withContext(Dispatchers.IO) {
-                val target = Glide.with(this@ImageViewerActivity).downloadOnly().load(url).submit()
-                try {
-                    writeFile(contentResolver.openOutputStream(uri)!!, target.get())
-                    withContext(Dispatchers.Main) {
-                        MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(uri.toString()), null, null)
-                        ToastUtil.showToast(R.string.image_saved)
-                    }
-                } catch (e: IOException) {
-                    Logger.e("ImageViewerActivity", "saveImage", e)
-                    withContext(Dispatchers.Main) {
-                        ToastUtil.showToast(R.string.save_fail)
-                    }
-                }
+                Coil.imageLoader(this@ImageViewerActivity).enqueue(
+                    ImageRequest.Builder(this@ImageViewerActivity)
+                        .data(url)
+                        .target { drawable ->
+                            try {
+                                val stream =
+                                    contentResolver.openOutputStream(uri)?.buffered(4096)!!
+                                stream.use {
+                                    writeFile(it, drawable)
+                                }
+                                launch(Dispatchers.Main) {
+                                    MediaScannerConnection.scanFile(this@ImageViewerActivity, arrayOf(uri.toString()), null, null)
+                                    ToastUtil.showToast(R.string.image_saved)
+                                }
+                            } catch (e: IOException) {
+                                Logger.e("ImageViewerActivity", "saveImage", e)
+                                launch(Dispatchers.Main) {
+                                    ToastUtil.showToast(R.string.save_fail)
+                                }
+                            }
+                        }
+                        .build()
+                )
             }
         }
     }

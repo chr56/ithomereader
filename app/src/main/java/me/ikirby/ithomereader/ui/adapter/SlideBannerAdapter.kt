@@ -5,7 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.Coil
+import coil.request.ImageRequest
 import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
 import me.ikirby.ithomereader.KEY_TITLE
 import me.ikirby.ithomereader.KEY_URL
@@ -53,7 +54,13 @@ class SlideBannerAdapter(private val list: List<Article>, private val context: C
 
     inner class BannerItemViewHolder(private val viewBinding: SlideImageViewBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         internal fun bind(thumb: String?) {
-            Glide.with(context).asBitmap().load(thumb).into(viewBinding.slideImage)
+            val loader = Coil.imageLoader(context)
+            loader.enqueue(
+                ImageRequest.Builder(context)
+                    .data(thumb)
+                    .target(viewBinding.slideImage)
+                    .build()
+            )
         }
     }
 

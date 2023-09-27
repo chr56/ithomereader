@@ -8,7 +8,8 @@ import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.Coil
+import coil.request.ImageRequest
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.databinding.PostListItemBinding
 import me.ikirby.ithomereader.databinding.SlideRecyclerBinding
@@ -96,7 +97,13 @@ class ArticleListAdapter(
             if (showPostThumb) {
                 viewBinding.postTitle.maxLines = 3
                 viewBinding.postThumb.visibility = View.VISIBLE
-                Glide.with(context).load(article.thumb).into(viewBinding.postThumb)
+                val loader = Coil.imageLoader(context)
+                loader.enqueue(
+                    ImageRequest.Builder(context)
+                        .data(article.thumb)
+                        .target(viewBinding.postThumb)
+                        .build()
+                )
             } else {
                 viewBinding.postTitle.maxLines = 2
                 viewBinding.postThumb.visibility = View.GONE

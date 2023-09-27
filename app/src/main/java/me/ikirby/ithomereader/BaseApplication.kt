@@ -1,11 +1,15 @@
 package me.ikirby.ithomereader
 
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
+import android.os.PowerManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 
-class BaseApplication : Application() {
+class BaseApplication : Application(), ImageLoaderFactory {
 
     companion object {
         lateinit var instance: BaseApplication
@@ -48,4 +52,9 @@ class BaseApplication : Application() {
             }
         AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }
+
+    override fun newImageLoader(): ImageLoader =
+        ImageLoader.Builder(this)
+            .crossfade(!(getSystemService(Context.POWER_SERVICE) as PowerManager).isPowerSaveMode)
+            .build()
 }

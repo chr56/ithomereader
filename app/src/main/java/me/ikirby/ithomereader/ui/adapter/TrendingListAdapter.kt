@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.Coil
+import coil.request.ImageRequest
 import me.ikirby.ithomereader.CLIP_TAG_NEWS_LINK
 import me.ikirby.ithomereader.KEY_TITLE
 import me.ikirby.ithomereader.KEY_URL
@@ -122,7 +123,13 @@ class TrendingListAdapter(
             if (showPostThumb) {
                 viewBinding.postTitle.maxLines = 3
                 viewBinding.postThumb.visibility = View.VISIBLE
-                Glide.with(context).load(thumb).into(viewBinding.postThumb)
+                val loader = Coil.imageLoader(context)
+                loader.enqueue(
+                    ImageRequest.Builder(context)
+                        .data(thumb)
+                        .target(viewBinding.postThumb)
+                        .build()
+                )
             } else {
                 viewBinding.postTitle.maxLines = 2
                 viewBinding.postThumb.visibility = View.GONE

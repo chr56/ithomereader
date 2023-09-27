@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.Coil
+import coil.request.ImageRequest
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.LIVE_MSG_TYPE_IMAGE
 import me.ikirby.ithomereader.databinding.LiveMsgItemBinding
@@ -38,7 +39,13 @@ class LivePostListAdapter(
                 viewBinding.postTime.visibility = View.GONE
                 viewBinding.postTxt.visibility = View.GONE
                 viewBinding.postImageContainer.visibility = View.VISIBLE
-                Glide.with(inflater.context).load(data.content).into(viewBinding.postImageContainer)
+                val loader = Coil.imageLoader(inflater.context)
+                loader.enqueue(
+                    ImageRequest.Builder(inflater.context)
+                        .data(data.content)
+                        .target(viewBinding.postImageContainer)
+                        .build()
+                )
                 viewBinding.postImageContainer.setOnClickListener {
                     val intent = Intent(inflater.context, ImageViewerActivity::class.java).apply {
                         putExtra(KEY_URL, data.content)
