@@ -1,25 +1,37 @@
+import java.io.ByteArrayOutputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidGradlePlugin)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
 }
 
-def getGitHash = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
+fun Project.getGitHash(shortHash: Boolean): String =
+    ByteArrayOutputStream().use { stdout ->
+        exec {
+            if (shortHash) {
+                commandLine("git", "rev-parse", "--short", "HEAD")
+            } else {
+                commandLine("git", "rev-parse", "HEAD")
+            }
+            standardOutput = stdout
+        }
+        stdout
+    }.toString().trim()
+
+
+val signingConfigFile: File = rootProject.file("signing.properties")
+var signingProperties = Properties()
+if (signingConfigFile.exists()) {
+    signingConfigFile.inputStream().use { signingProperties.load(it) }
 }
 
-def signingConfigFile = rootProject.file("signing.properties")
-def signingProperties = new Properties()
-signingProperties.load(new FileInputStream(signingConfigFile))
-
-def secretsConfigFile = rootProject.file("secrets.properties")
-def secretsProperties = new Properties()
-secretsProperties.load(new FileInputStream(secretsConfigFile))
+val secretsConfigFile: File = rootProject.file("secrets.properties")
+val secretsProperties: Properties = Properties()
+if (secretsConfigFile.exists()) {
+    secretsConfigFile.inputStream().use { secretsProperties.load(it) }
+}
 
 android {
     namespace = "me.ikirby.ithomereader"
@@ -27,60 +39,65 @@ android {
     buildToolsVersion = "34.0.0"
 
     signingConfigs {
-        create("release") {
-            keyAlias = signingProperties['keyAlias']
-            keyPassword = signingProperties['keyPassword']
-            storeFile = file(signingProperties['storeFile'])
-            storePassword = signingProperties['storePassword']
+        if (signingConfigFile.exists()) {
+            create("release") {
+                keyAlias = signingProperties["keyAlias"] as String
+                keyPassword = signingProperties["keyPassword"] as String
+                storeFile = file(signingProperties["storeFile"] as String)
+                storePassword = signingProperties["storePassword"] as String
+            }
         }
     }
 
     defaultConfig {
         applicationId = "me.ikirby.ithomereader"
+
         minSdk = 23
         targetSdk = 34
+
         versionCode = 190
         versionName = "5.1.0-dev1"
-        resConfigs("zh-rCN")
-        versionNameSuffix = "-" + getGitHash()
+
+        resourceConfigurations += setOf("zh-rCN")
+        versionNameSuffix = "-" + getGitHash(true)
     }
     buildTypes {
         named("release") {
-            minifyEnabled = true
-            shrinkResources = true
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig(signingConfigs.release)
+            signingConfig = signingConfigs.getByName("release")
         }
         named("debug") {
             applicationIdSuffix = ".debug"
         }
         create("RC") {
-            minifyEnabled = true
-            shrinkResources = true
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig(signingConfigs.release)
+            signingConfig = signingConfigs.getByName("release")
             applicationIdSuffix = ".rc"
             versionNameSuffix = "-rc"
         }
     }
-    flavorDimensions = List.of("update")
+    flavorDimensions += listOf("update")
     productFlavors {
         create("nornal") {
             dimension = "update"
-            manifestPlaceholders = [updateUrl: secretsProperties["updateUrl"]]
+            manifestPlaceholders += mapOf("updateUrl" to secretsProperties["updateUrl"] as String)
         }
         create("noupdate") {
             dimension = "update"
             versionNameSuffix = "-pub"
-            manifestPlaceholders = [updateUrl: ""]
+            manifestPlaceholders += mapOf("updateUrl" to "")
         }
     }
-    packagingOptions {
-        pickFirst("META-INF/atomicfu.kotlin_module")
-        exclude("META-INF/CHANGES")
-        exclude("META-INF/README.md")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/*.version")
+    packaging {
+        resources.pickFirsts.add("META-INF/atomicfu.kotlin_module")
+        resources.excludes.add("META-INF/CHANGES")
+        resources.excludes.add("META-INF/README.md")
+        resources.excludes.add("META-INF/LICENSE")
+        resources.excludes.add("META-INF/*.version")
     }
     kotlinOptions {
         jvmTarget = "1.8"
