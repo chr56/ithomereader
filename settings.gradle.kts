@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+rootProject.buildFileName = "build.gradle.kts"
+
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
