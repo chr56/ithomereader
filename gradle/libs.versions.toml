@@ -17,7 +17,13 @@ composeSetting = "1.0.3"
 coil = "2.5.0"
 materialDialogs = "3.3.0"
 materialTools = "0.2.0"
+moshi = "1.12.0"
+retrofit2 = "2.9.0"
 room = "2.6.1"
+
+espressoCore = "3.5.1"
+
+leakcanary = "1.5.4"
 
 [libraries]
 
@@ -39,6 +45,12 @@ androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.
 androidx-media = "androidx.media:media:1.7.0"
 androidx-cardview = "androidx.cardview:cardview:1.0.0"
 androidx-palette = "androidx.palette:palette-ktx:1.0.0"
+androidx-viewpager = "androidx.viewpager:viewpager:1.0.0"
+androidx-browser = "androidx.browser:browser:1.7.0"
+
+
+androidx-junit = "androidx.test.ext:junit:1.1.5"
+androidx-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
 
 #
 # Room
@@ -76,7 +88,8 @@ compose-activity = { group = "androidx.activity", name = "activity-compose", ver
 #
 
 okhttp3 = "com.squareup.okhttp3:okhttp:4.12.0"
-retrofit2 = "com.squareup.retrofit2:retrofit:2.9.0"
+retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 kotlinx-serialization-ktoml = "com.akuleshov7:ktoml-core:0.5.0"
 kotlinx-serialization-kaml = "com.charleskorn.kaml:kaml:0.57.0"
@@ -85,9 +98,20 @@ coil-compose = { module = "io.coil-kt:coil-compose-base", version.ref = "coil" }
 koin = "io.insert-koin:koin-android:3.5.3"
 kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0"
 
+moshi-core = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi" }
+retrofit2-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit2" }
+
+jsoup = "org.jsoup:jsoup:1.16.1"
+
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+leakcanary-androidNoOp = { module = "com.squareup.leakcanary:leakcanary-android-no-op", version.ref = "leakcanary" }
+
 #
 # other
 #
+
 
 androidGradlePluginAPI = { module = "com.android.tools.build:gradle-api", version.ref = "agp" } # for Plugin development
 
@@ -121,6 +145,11 @@ advrecyclerview = "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0
 composeReorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 statusBarLyricsApi = "com.github.577fkj:StatusBarApiExample:v2.0"
 lyricsGetterAPi = "com.github.xiaowine:Lyric-Getter-Api:6.0.0"
+photoView = "com.github.chrisbanes:PhotoView:2.3.0"
+
+# Test
+
+junit = "junit:junit:4.13.2"
 
 [bundles]
 
