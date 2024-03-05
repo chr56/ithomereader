@@ -18,72 +18,72 @@ def signingProperties = new Properties()
 signingProperties.load(new FileInputStream(signingConfigFile))
 
 android {
-    namespace "me.ikirby.ithomereader"
+    namespace = "me.ikirby.ithomereader"
     compileSdk = 34
     buildToolsVersion = "34.0.0"
 
     signingConfigs {
-        release {
-            keyAlias signingProperties['keyAlias']
-            keyPassword signingProperties['keyPassword']
-            storeFile file(signingProperties['storeFile'])
-            storePassword signingProperties['storePassword']
+        create("release") {
+            keyAlias = signingProperties['keyAlias']
+            keyPassword = signingProperties['keyPassword']
+            storeFile = file(signingProperties['storeFile'])
+            storePassword = signingProperties['storePassword']
         }
     }
 
     defaultConfig {
-        applicationId "me.ikirby.ithomereader"
-        minSdkVersion 23
-        targetSdkVersion 34
-        versionCode 190
-        versionName "5.1.0-dev1"
-        resConfigs "zh-rCN"
-        versionNameSuffix '-' + getGitHash()
+        applicationId = "me.ikirby.ithomereader"
+        minSdk = 23
+        targetSdk = 34
+        versionCode = 190
+        versionName = "5.1.0-dev1"
+        resConfigs("zh-rCN")
+        versionNameSuffix = "-" + getGitHash()
     }
     buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+        named("release") {
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig(signingConfigs.release)
         }
-        debug {
-            applicationIdSuffix ".debug"
+        named("debug") {
+            applicationIdSuffix = ".debug"
         }
-        RC {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-            applicationIdSuffix ".rc"
-            versionNameSuffix "-rc"
+        create("RC") {
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig(signingConfigs.release)
+            applicationIdSuffix = ".rc"
+            versionNameSuffix = "-rc"
         }
     }
     flavorDimensions = List.of("update")
     productFlavors {
-        normal {
-            dimension 'update'
+        create("nornal") {
+            dimension = "update"
             manifestPlaceholders = [updateUrl: updateUrl]
         }
-        noupdate {
-            dimension 'update'
-            versionNameSuffix '-pub'
-            manifestPlaceholders = [updateUrl: '']
+        create("noupdate") {
+            dimension = "update"
+            versionNameSuffix = "-pub"
+            manifestPlaceholders = [updateUrl: ""]
         }
     }
     packagingOptions {
         pickFirst("META-INF/atomicfu.kotlin_module")
-        exclude 'META-INF/CHANGES'
-        exclude 'META-INF/README.md'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/*.version'
+        exclude("META-INF/CHANGES")
+        exclude("META-INF/README.md")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/*.version")
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     buildFeatures {
         viewBinding = true
