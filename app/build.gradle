@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
-apply from: 'config.gradle'
-
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
@@ -16,6 +14,10 @@ def getGitHash = { ->
 def signingConfigFile = rootProject.file("signing.properties")
 def signingProperties = new Properties()
 signingProperties.load(new FileInputStream(signingConfigFile))
+
+def secretsConfigFile = rootProject.file("secrets.properties")
+def secretsProperties = new Properties()
+secretsProperties.load(new FileInputStream(secretsConfigFile))
 
 android {
     namespace = "me.ikirby.ithomereader"
@@ -63,7 +65,7 @@ android {
     productFlavors {
         create("nornal") {
             dimension = "update"
-            manifestPlaceholders = [updateUrl: updateUrl]
+            manifestPlaceholders = [updateUrl: secretsProperties["updateUrl"]]
         }
         create("noupdate") {
             dimension = "update"

@@ -38,3 +38,4 @@ captures/
 *.ipr
 
 signing.properties
+secrets.properties
