@@ -12,7 +12,7 @@ data class Comment(
     @Json(name = "T") val time: Date,
     @Json(name = "S") val support: Int,
     @Json(name = "A") val against: Int,
-    @Json(name = "Ta") val device: String,
+    @Json(name = "Ta") val device: String?,
     @Json(name = "SF") val floor: String,
     @Json(name = "pCid") val pCid: Long
 ) {
