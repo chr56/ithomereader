@@ -130,7 +130,7 @@ dependencies {
     implementation(libs.coil)
 
     implementation(libs.okhttp3)
-    implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2)
     implementation(libs.moshi.core)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
@@ -139,6 +139,5 @@ dependencies {
     // releaseImplementation(libs.leakcanary.androidNoOp)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.bundles.test.androidx.suite)
 }
