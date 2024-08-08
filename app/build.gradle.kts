@@ -43,8 +43,8 @@ android {
         minSdk = 23
         targetSdk = 34
 
-        versionCode = 192
-        versionName = "5.1.0-dev3"
+        versionCode = 193
+        versionName = "5.1.1-dev1"
 
         resourceConfigurations += setOf("zh-rCN")
         versionNameSuffix = "-" + getGitHash(true)
