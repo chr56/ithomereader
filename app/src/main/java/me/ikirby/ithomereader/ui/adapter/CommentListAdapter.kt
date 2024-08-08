@@ -76,7 +76,7 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val context = binding.root.context
             with(binding) {
                 commentNick.text = comment.nickname
-                commentDevice.text = comment.device
+                commentDevice.text = comment.device ?: context.getString(R.string.unknown)
                 commentFloor.text = comment.floor
                 commentPosandtime.text =
                     context.getString(R.string.comment_posandtime_format, comment.region, comment.time)
@@ -97,7 +97,7 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val context = binding.root.context
             with(binding) {
                 commentNick.text = comment.nickname
-                commentDevice.text = comment.device
+                commentDevice.text = comment.device ?: context.getString(R.string.unknown)
                 commentFloor.text = comment.floor
                 commentPosandtime.text =
                     context.getString(R.string.comment_posandtime_format, comment.region, comment.time)

@@ -111,4 +111,5 @@
     <string name="pref_auto_add_whitespace_summary">对性能有轻微影响，不包括评论</string>
     <string name="comment_expand">展开(%d)</string>
     <string name="comment_posandtime_format">%1$s %2$tF %2$tT</string>
+    <string name="unknown">未知</string>
 </resources>
