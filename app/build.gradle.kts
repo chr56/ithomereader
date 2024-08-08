@@ -1,25 +1,13 @@
-import java.io.ByteArrayOutputStream
+import tools.release.git.getGitHash
+import tools.release.registerPublishTask
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidGradlePlugin)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.artifactsRelease)
 }
-
-fun Project.getGitHash(shortHash: Boolean): String =
-    ByteArrayOutputStream().use { stdout ->
-        exec {
-            if (shortHash) {
-                commandLine("git", "rev-parse", "--short", "HEAD")
-            } else {
-                commandLine("git", "rev-parse", "HEAD")
-            }
-            standardOutput = stdout
-        }
-        stdout
-    }.toString().trim()
-
 
 val signingConfigFile: File = rootProject.file("signing.properties")
 var signingProperties = Properties()
@@ -109,6 +97,24 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+
+    androidComponents {
+
+        val moduleName = project.name
+        onVariants(selector().all()) { variant ->
+            // Rename
+            for (output in variant.outputs) {
+                val outputImpl = output as? com.android.build.api.variant.impl.VariantOutputImpl ?: continue
+                val origin = outputImpl.outputFileName.get()
+                val new = origin.replace(moduleName, "ITHomeReader-${output.versionName.get()}")
+                outputImpl.outputFileName.set(new)
+            }
+        }
+
+        onVariants(selector().withBuildType("release")) { variant ->
+            tasks.registerPublishTask("ITHomeReader", variant)
+        }
     }
 }
 
