@@ -42,7 +42,12 @@ class ArticleActivity : BaseActivity() {
         url = intent.getStringExtra(KEY_URL) ?: ""
         title = intent.getStringExtra(KEY_TITLE) ?: ""
 
-        if (url.contains("live.ithome.com")) {
+        if (url.contains("m.ithome.com")) {
+            url = convertUrl(url) ?: run {
+                finish()
+                return
+            }
+        } else if (url.contains("live.ithome.com")) {
             if (intent.getStringExtra(KEY_LIVE_INFO) == null) {
                 val i = Intent(this, LiveActivity::class.java)
                 i.putExtra(KEY_URL, url)
