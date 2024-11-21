@@ -17,6 +17,8 @@ import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
 import me.ikirby.ithomereader.ui.adapter.SlideBannerAdapter
 import me.ikirby.ithomereader.ui.base.BaseFragment
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelable
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelableArrayList
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
@@ -59,8 +61,8 @@ class ArticleListFragment : BaseFragment() {
         binding.errorPlaceholder.setOnClickListener { reloadList() }
 
         if (savedInstanceState != null) {
-            articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
-            focuses = savedInstanceState.getParcelableArrayList(KEY_BANNER_ITEMS) ?: ArrayList()
+            articleList = savedInstanceState.parcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
+            focuses = savedInstanceState.parcelableArrayList(KEY_BANNER_ITEMS) ?: ArrayList()
         }
 
         if (savedInstanceState == null || showBanner || articleList.isEmpty()) {
@@ -86,10 +88,10 @@ class ArticleListFragment : BaseFragment() {
                 adapter = ArticleListAdapter(articleList, null, requireContext(), showThumb)
             }
             binding.listView.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
+            layoutManager.onRestoreInstanceState(savedInstanceState.parcelable(KEY_LIST_STATE))
             if (showBanner) {
                 adapter.bannerLayoutManager.onRestoreInstanceState(
-                    savedInstanceState.getParcelable(KEY_BANNER_STATE)
+                    savedInstanceState.parcelable(KEY_BANNER_STATE)
                 )
             }
         }

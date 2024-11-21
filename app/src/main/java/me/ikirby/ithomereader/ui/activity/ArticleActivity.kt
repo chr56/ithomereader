@@ -15,6 +15,7 @@ import me.ikirby.ithomereader.databinding.ActivityArticleBinding
 import me.ikirby.ithomereader.entity.FullArticle
 import me.ikirby.ithomereader.ui.base.BaseActivity
 import me.ikirby.ithomereader.ui.dialog.ArticleGradeDialog
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelable
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.util.*
 import kotlin.math.roundToInt
@@ -97,11 +98,11 @@ class ArticleActivity : BaseActivity() {
             }
         }
 
-        if (savedInstanceState?.getParcelable<FullArticle>(KEY_FULL_ARTICLE) == null) {
+        if (savedInstanceState?.parcelable<FullArticle>(KEY_FULL_ARTICLE) == null) {
             binding.loadTip.visibility = View.VISIBLE
             loadContent()
         } else {
-            fullArticle = savedInstanceState.getParcelable(KEY_FULL_ARTICLE)!!
+            fullArticle = savedInstanceState.parcelable(KEY_FULL_ARTICLE)!!
             readProgress = savedInstanceState.getFloat(KEY_READ_PROGRESS)
             loadArticleContent()
         }

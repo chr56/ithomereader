@@ -14,6 +14,8 @@ import me.ikirby.ithomereader.databinding.ActivitySimpleListBinding
 import me.ikirby.ithomereader.entity.LiveMsg
 import me.ikirby.ithomereader.ui.adapter.LivePostListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelable
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelableArrayList
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.getMatchInt
@@ -47,7 +49,7 @@ class LiveActivity : BaseActivity() {
         binding.layout.errorPlaceholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            liveMessages = savedInstanceState.getParcelableArrayList(KEY_LIVE_MESSAGES) ?: ArrayList()
+            liveMessages = savedInstanceState.parcelableArrayList(KEY_LIVE_MESSAGES) ?: ArrayList()
         }
 
         if (savedInstanceState == null || liveMessages.isEmpty()) {
@@ -58,7 +60,7 @@ class LiveActivity : BaseActivity() {
         } else {
             adapter = LivePostListAdapter(liveMessages, layoutInflater)
             binding.layout.listView.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
+            layoutManager.onRestoreInstanceState(savedInstanceState.parcelable(KEY_LIST_STATE))
         }
     }
 
