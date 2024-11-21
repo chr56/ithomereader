@@ -10,6 +10,7 @@ import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.SETTINGS_KEY_IGNORE_VERSION_CODE
 import me.ikirby.ithomereader.databinding.ActivityUpdateDialogBinding
 import me.ikirby.ithomereader.entity.UpdateInfo
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelableExtra
 import me.ikirby.ithomereader.util.openLink
 
 class DialogActivity : AppCompatActivity(), View.OnClickListener {
@@ -23,7 +24,7 @@ class DialogActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityUpdateDialogBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_update_dialog)
 
-        updateInfo = intent.getParcelableExtra(KEY_UPDATE_INFO)
+        updateInfo = intent.parcelableExtra(KEY_UPDATE_INFO)
 
         if (updateInfo != null) {
             binding.updateInfoText.text = updateInfo!!.version + "\n" + updateInfo!!.log

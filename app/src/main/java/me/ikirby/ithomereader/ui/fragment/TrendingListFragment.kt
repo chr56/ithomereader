@@ -18,6 +18,8 @@ import me.ikirby.ithomereader.databinding.ListLayoutBinding
 import me.ikirby.ithomereader.entity.Trending
 import me.ikirby.ithomereader.ui.adapter.TrendingListAdapter
 import me.ikirby.ithomereader.ui.base.BaseFragment
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelable
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelableArrayList
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.util.shouldShowThumb
@@ -48,7 +50,7 @@ class TrendingListFragment : BaseFragment() {
         binding.errorPlaceholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            trendingList = savedInstanceState.getParcelableArrayList(KEY_TRENDING_LIST) ?: ArrayList()
+            trendingList = savedInstanceState.parcelableArrayList(KEY_TRENDING_LIST) ?: ArrayList()
         }
 
         if (savedInstanceState == null || trendingList.isEmpty()) {
@@ -60,7 +62,7 @@ class TrendingListFragment : BaseFragment() {
             showThumb = savedInstanceState.getBoolean(KEY_SHOW_THUMB, true)
             adapter = TrendingListAdapter(trendingList, requireContext(), showThumb)
             binding.listView.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
+            layoutManager.onRestoreInstanceState(savedInstanceState.parcelable(KEY_LIST_STATE))
         }
 
         return binding.root

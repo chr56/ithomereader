@@ -12,6 +12,8 @@ import me.ikirby.ithomereader.databinding.ActivitySimpleListBinding
 import me.ikirby.ithomereader.entity.Article
 import me.ikirby.ithomereader.ui.adapter.ArticleListAdapter
 import me.ikirby.ithomereader.ui.base.BaseActivity
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelable
+import me.ikirby.ithomereader.ui.util.CompatibilityUtil.parcelableArrayList
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
@@ -48,7 +50,7 @@ class SearchActivity : BaseActivity() {
         binding.layout.errorPlaceholder.setOnClickListener { loadList() }
 
         if (savedInstanceState != null) {
-            articleList = savedInstanceState.getParcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
+            articleList = savedInstanceState.parcelableArrayList(KEY_ARTICLE_LIST) ?: ArrayList()
         }
 
         binding.layout.listView.setAllContentLoaded(false)
@@ -61,7 +63,7 @@ class SearchActivity : BaseActivity() {
         } else {
             adapter = ArticleListAdapter(articleList, null, this, false)
             binding.layout.listView.adapter = adapter
-            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(KEY_LIST_STATE))
+            layoutManager.onRestoreInstanceState(savedInstanceState.parcelable(KEY_LIST_STATE))
         }
 
         binding.layout.listView.setOnBottomReachedListener(bottomReachedListener)

@@ -113,7 +113,14 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
         } else {
             R.color.colorActionBarBackground_white
         }
-        val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityManager.TaskDescription.Builder()
+                .setLabel(getString(R.string.app_name))
+                .setIcon(R.mipmap.ic_launcher)
+                .setPrimaryColor(getColor(descriptionColorRes))
+                .build()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            @Suppress("DEPRECATION")
             ActivityManager.TaskDescription(
                 getString(R.string.app_name),
                 R.mipmap.ic_launcher,
