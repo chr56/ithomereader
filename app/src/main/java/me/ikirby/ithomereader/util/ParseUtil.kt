@@ -28,9 +28,28 @@ fun getMatchInt(s: String): Int {
 fun canHandleURL(url: String): Boolean {
     return url.contains("www.ithome.com/html")
             || url.contains("www.ithome.com/0/")
+            || url.contains("m.ithome.com/html")
             || url.contains("live.ithome.com")
             || url.contains("lapin.ithome.com/html")
 }
+
+/**
+ * convert mobile url to desktop url
+ *
+ * www.ithome.com/0/???/???.htm
+ * m.ithome.com/html/??????.htm
+ */
+fun convertUrl(url: String): String? =
+    try {
+        regex.replace(url) {
+            "https://www.ithome.com/0/${it.groupValues[1]}/${it.groupValues[2]}.htm"
+        }
+    } catch (e: Exception) {
+        Logger.e("Parser", "Failed to parse $url", e)
+        null
+    }
+
+val regex by lazy(LazyThreadSafetyMode.PUBLICATION) { Regex("""\D*/(\d\d\d)(\d*)\.htm""") }
 
 fun shouldEnableNightMode(startTime: String?, endTime: String?): Boolean {
     if (startTime == null || endTime == null) return false
