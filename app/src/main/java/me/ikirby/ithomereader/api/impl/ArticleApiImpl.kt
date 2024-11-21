@@ -56,8 +56,12 @@ object ArticleApiImpl : ArticleApi {
     override fun getSearchResults(keyword: String, page: Int): List<Article>? {
         return try {
             if (page == 1) { // first page can not be query with getSearchDocWithPage(), use old way
+                /*
                 val doc = ITHomeApi.getSearchDoc(keyword)
                 readDocumentToArticle(doc, "ul.bl li")
+                 */
+                val doc = ITHomeApi.getSearchDocMobile(keyword)
+                parseSearchResult(doc, ".search-content")
             } else {
                 val json = ITHomeApi.getSearchResultJsonWithPage(page, keyword, null)
                 val html = json
@@ -73,6 +77,18 @@ object ArticleApiImpl : ArticleApi {
         } catch (e: Exception) {
             Logger.e(TAG, "getSearchResults", e)
             null
+        }
+    }
+
+    private fun parseSearchResult(doc: Document, query: String): List<Article> {
+        val posts = doc.select(query).firstOrNull()
+        if (posts == null || posts.childrenSize() <= 0) return emptyList()
+        return posts.children().map { item: Element ->
+            val title = item.select(".plc-title").text()
+            val date = item.select(".post-time").text()
+            val url = item.select("a").attr("href")
+            val thumb = item.select(".plc-image img").attr("data-original")
+            Article(title, date, url, thumb, null)
         }
     }
 

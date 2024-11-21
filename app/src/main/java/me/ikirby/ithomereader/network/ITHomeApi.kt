@@ -18,6 +18,7 @@ object ITHomeApi {
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
     private const val SEARCH_URL = "https://www.ithome.com/search/adt_all_%s_0.html"
+    private const val SEARCH_MOBILE = "https://m.ithome.com/search/%s"
     private const val SEARCH_URL_NEW = "https://www.ithome.com/category/searchpage?page=%d&keyword=%s"
     private const val USER_AGENT =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -263,6 +264,21 @@ object ITHomeApi {
     fun getSearchDoc(keyword: String): Document {
         return NetworkRequest.getDocument(
             String.format(SEARCH_URL, keyword),
+            getHeaders(null, null, null)
+        )
+    }
+
+    /**
+     * 获取第一页搜索结果文档（移动端）
+     * @param keyword 搜索关键词
+     * @return 搜索结果文档
+     * @throws IOException 网络请求异常
+     */
+    @SuppressLint("DefaultLocale")
+    @Throws(IOException::class)
+    fun getSearchDocMobile(keyword: String): Document {
+        return NetworkRequest.getDocument(
+            String.format(SEARCH_MOBILE, keyword),
             getHeaders(null, null, null)
         )
     }
