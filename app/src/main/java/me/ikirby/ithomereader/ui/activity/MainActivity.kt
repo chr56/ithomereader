@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.CookieManager
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
@@ -81,6 +82,12 @@ class MainActivity : BaseActivity() {
             val cookieManager = CookieManager.getInstance()
             cookieManager.setAcceptCookie(false)
             cookieManager.removeAllCookies(null)
+        }
+
+        onBackPressedDispatcher.addCallback(this, true) {
+            remove()
+            BaseApplication.hasSetNightModeManually = false
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -165,11 +172,6 @@ class MainActivity : BaseActivity() {
             }
         }
         return true
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        BaseApplication.hasSetNightModeManually = false
     }
 
     override fun swipeRight(): Boolean {
