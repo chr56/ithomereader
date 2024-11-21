@@ -56,30 +56,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="www.ithome.com"
-                    android:pathPattern="/html/.*/.*.htm"
-                    android:scheme="http" />
-                <data
-                    android:host="www.ithome.com"
-                    android:pathPattern="/html/.*/.*.htm"
-                    android:scheme="https" />
-                <data
-                    android:host="www.ithome.com"
-                    android:pathPattern="/0/.*/.*.htm"
-                    android:scheme="http" />
-                <data
-                    android:host="www.ithome.com"
-                    android:pathPattern="/0/.*/.*.htm"
-                    android:scheme="https" />
-                <data
-                    android:host="live.ithome.com"
-                    android:pathPattern="/item/.*.htm"
-                    android:scheme="http" />
-                <data
-                    android:host="live.ithome.com"
-                    android:pathPattern="/item/.*.htm"
-                    android:scheme="https" />
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+
+                <data android:host="m.ithome.com"/>
+                <data android:host="www.ithome.com"/>
+                <data android:host="live.ithome.com"/>
+
+                <data android:pathPattern="/html/.*/.*.htm"/>
+                <data android:pathPattern="/html/.*.htm"/>
+                <data android:pathPattern="/0/.*/.*.htm"/>
+                <data android:pathPattern="/item/.*.htm"/>
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.LiveActivity" />
