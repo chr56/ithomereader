@@ -2,6 +2,7 @@ package me.ikirby.ithomereader.ui.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.addCallback
 import me.ikirby.ithomereader.BaseApplication
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -15,17 +16,19 @@ class SettingsActivity : BaseActivity() {
         enableBackBtn()
 
         supportFragmentManager.beginTransaction().add(android.R.id.content, SettingsFragment()).commit()
+
+        onBackPressedDispatcher.addCallback(this, true) {
+            remove()
+            BaseApplication.instance.loadPreferences()
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> onBackPressed()
+            android.R.id.home -> onBackPressedDispatcher.onBackPressed()
         }
         return false
     }
 
-    override fun onBackPressed() {
-        BaseApplication.instance.loadPreferences()
-        super.onBackPressed()
-    }
 }
