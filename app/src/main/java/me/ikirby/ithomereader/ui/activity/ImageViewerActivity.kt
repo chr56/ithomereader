@@ -7,9 +7,11 @@ import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
+import android.view.GestureDetector
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
@@ -31,6 +33,7 @@ import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
 import me.ikirby.ithomereader.KEY_URLS
 import me.ikirby.ithomereader.R
+import me.ikirby.ithomereader.SWIPE_GESTURE_DISTANCE
 import me.ikirby.ithomereader.databinding.ActivityImageViewerBinding
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
@@ -42,6 +45,7 @@ import me.ikirby.ithomereader.util.getImageMimeType
 import me.ikirby.ithomereader.util.writeFile
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.abs
 
 class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, CoroutineScope {
 
@@ -109,6 +113,9 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             }
             windowInsets
         }
+
+        setupGesture()
+
 
         loadImage(current)
     }
@@ -217,4 +224,27 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             )
         }
     }
+
+
+    private lateinit var gestureDetector: GestureDetector
+    private fun setupGesture() {
+        val distance = resources.displayMetrics.widthPixels / 2
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent, v: Float, v1: Float): Boolean {
+                if (e1 != null && abs(e1.rawY - e2.rawY) < 75) {
+                    if (e1.rawX - e2.rawX > distance) {
+                        previous()
+                        return true
+                    } else {
+                        next()
+                        return false
+                    }
+                }
+                return false
+            }
+        })
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean =
+        if (gestureDetector.onTouchEvent(ev)) true else super.dispatchTouchEvent(ev)
 }
