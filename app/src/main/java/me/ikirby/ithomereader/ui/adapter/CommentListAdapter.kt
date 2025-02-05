@@ -26,6 +26,7 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
     var expandClickListener: ItemClickListener? = null
+    var viewPicturesClickListener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_COMMENT) {
@@ -48,8 +49,14 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             viewHolder.binding.commentExpand.setOnClickListener {
                 expandClickListener?.onClick(it, position)
             }
+            viewHolder.binding.commentViewPictures.setOnClickListener {
+                viewPicturesClickListener?.onClick(it, position)
+            }
         } else if (viewHolder is CommentReplyItemViewHolder) {
             viewHolder.bind(comment)
+            viewHolder.binding.commentViewPictures.setOnClickListener {
+                viewPicturesClickListener?.onClick(it, position)
+            }
         }
     }
 
@@ -84,13 +91,15 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     HtmlCompat.fromHtml(comment.content,HtmlCompat.FROM_HTML_MODE_COMPACT)
                 commentExpand.text = context.getString(R.string.comment_expand, comment.replyCount)
                 commentExpand.visibility = if (comment.replyCount > 0) VISIBLE else GONE
+                commentViewPictures.visibility = if (comment.elements.size > 1) VISIBLE else GONE
+                commentViewPictures.text = context.getString(R.string.view_pictures)
                 commentSupport.text = context.getString(R.string.comment_support, comment.support)
                 commentAgainst.text = context.getString(R.string.comment_against, comment.against)
             }
         }
     }
 
-    class CommentReplyItemViewHolder(private val binding: CommentReplyItemBinding) :
+    class CommentReplyItemViewHolder(val binding: CommentReplyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: Comment) {
@@ -103,6 +112,8 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     context.getString(R.string.comment_posandtime_format, comment.region, comment.time)
                 commentContent.text =
                     HtmlCompat.fromHtml(comment.content,HtmlCompat.FROM_HTML_MODE_COMPACT)
+                commentViewPictures.visibility = if (comment.elements.size > 1) VISIBLE else GONE
+                commentViewPictures.text = context.getString(R.string.view_pictures)
                 commentSupport.text = context.getString(R.string.comment_support, comment.support)
                 commentAgainst.text = context.getString(R.string.comment_against, comment.against)
             }

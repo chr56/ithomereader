@@ -80,6 +80,16 @@
             android:paddingTop="4dp"
             android:textColor="@color/expandText" />
 
+        <TextView
+            android:id="@+id/comment_view_pictures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:paddingStart="6dp"
+            android:paddingTop="4dp"
+            android:textColor="@color/expandText"
+            android:visibility="gone" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"

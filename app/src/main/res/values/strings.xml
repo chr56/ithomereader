@@ -112,4 +112,5 @@
     <string name="comment_expand">展开(%d)</string>
     <string name="comment_posandtime_format">%1$s %2$tF %2$tT</string>
     <string name="unknown">未知</string>
+    <string name="view_pictures">查看图片</string>
 </resources>
