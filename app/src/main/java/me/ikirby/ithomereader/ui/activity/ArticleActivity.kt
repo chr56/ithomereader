@@ -189,10 +189,7 @@ class ArticleActivity : BaseActivity() {
     @Suppress("Unused")
     @JavascriptInterface
     fun openInViewer(url: String) {
-        val intent = Intent(this, ImageViewerActivity::class.java).apply {
-            putExtra(KEY_URL, url)
-        }
-        startActivity(intent)
+        startActivity(ImageViewerActivity.intent(this, listOf(url)))
     }
 
     private fun showComments() {

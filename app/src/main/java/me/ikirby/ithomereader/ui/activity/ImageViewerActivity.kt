@@ -1,6 +1,7 @@
 package me.ikirby.ithomereader.ui.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
@@ -28,7 +29,7 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
-import me.ikirby.ithomereader.KEY_URL
+import me.ikirby.ithomereader.KEY_URLS
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.databinding.ActivityImageViewerBinding
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
@@ -47,13 +48,18 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     private lateinit var binding: ActivityImageViewerBinding
 
     companion object {
+        fun intent(context: Context, urls: Collection<String>): Intent =
+            Intent(context, ImageViewerActivity::class.java).apply {
+                putExtra(KEY_URLS, ArrayList(urls))
+            }
     }
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    private lateinit var url: String
+    private var urls: List<String> = emptyList()
+    private var current = -1
 
     private lateinit var fadeOutAnim: Animation
     private lateinit var fadeInAnim: Animation
@@ -61,7 +67,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     private val saveImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.let {
-                saveImage(it.data!!)
+                saveImage(it.data!!, current)
             }
         }
     }
@@ -71,7 +77,8 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         binding = ActivityImageViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        url = intent.getStringExtra(KEY_URL) ?: ""
+        urls = intent.getStringArrayListExtra(KEY_URLS).orEmpty()
+        current = urls.lastIndex
 
         binding.photoView.setOnClickListener(this)
         binding.imageMenuBtn.setOnClickListener(this)
@@ -103,7 +110,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             windowInsets
         }
 
-        loadImage()
+        loadImage(current)
     }
 
     override fun onDestroy() {
@@ -111,14 +118,14 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         super.onDestroy()
     }
 
-    private fun loadImage() {
+    private fun loadImage(position: Int) {
         binding.loadTip.setOnClickListener(null)
         binding.loadTip.visibility = View.VISIBLE
         binding.loadText.visibility = View.GONE
         binding.loadProgress.visibility = View.VISIBLE
         Coil.imageLoader(this).enqueue(
             ImageRequest.Builder(this)
-                .data(url)
+                .data(urls[position])
                 .target(object : coil.target.Target {
                     override fun onError(error: Drawable?) {
                         binding.loadProgress.visibility = View.GONE
@@ -139,7 +146,7 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     }
 
     private fun createImageFile() {
-        val fileName = getFileName(url)
+        val fileName = getFileName(urls[current])
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = getImageMimeType(fileName)
@@ -148,12 +155,12 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         saveImage.launch(intent)
     }
 
-    private fun saveImage(uri: Uri) {
+    private fun saveImage(uri: Uri, position: Int) {
         launch {
             withContext(Dispatchers.IO) {
                 Coil.imageLoader(this@ImageViewerActivity).enqueue(
                     ImageRequest.Builder(this@ImageViewerActivity)
-                        .data(url)
+                        .data(urls[position])
                         .target { drawable ->
                             try {
                                 val stream =
@@ -178,9 +185,19 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         }
     }
 
+    private fun previous() {
+        current = (current - 1).mod(urls.size)
+        loadImage(current)
+    }
+
+    private fun next() {
+        current = (current + 1).mod(urls.size)
+        loadImage(current)
+    }
+
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.load_tip -> loadImage()
+            R.id.load_tip -> loadImage(current)
             R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(
                 this,
                 object : BottomSheetMenu.BottomSheetMenuListener {
@@ -191,7 +208,9 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                     override fun onBottomSheetMenuItemSelected(item: MenuItem) {
                         when (item.itemId) {
                             R.id.context_download_img -> createImageFile()
-                            R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, url)
+                            R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, urls[current])
+                            R.id.context_next -> next()
+                            R.id.context_previous -> previous()
                         }
                     }
                 }

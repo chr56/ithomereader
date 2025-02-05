@@ -47,10 +47,7 @@ class LivePostListAdapter(
                         .build()
                 )
                 viewBinding.postImageContainer.setOnClickListener {
-                    val intent = Intent(inflater.context, ImageViewerActivity::class.java).apply {
-                        putExtra(KEY_URL, data.content)
-                    }
-                    inflater.context.startActivity(intent)
+                    inflater.context.startActivity(ImageViewerActivity.intent(inflater.context, listOf(data.content)))
                 }
             } else {
                 viewBinding.timelineDot.visibility = View.VISIBLE

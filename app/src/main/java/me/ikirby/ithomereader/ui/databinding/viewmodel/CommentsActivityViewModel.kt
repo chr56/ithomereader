@@ -108,10 +108,7 @@ class CommentsActivityViewModel : ViewModel() {
 
     fun viewPictures(context: Context, comment: Comment) {
         val images = comment.elements.filter { it.type == COMMENT_ELEMENT_TYPE_IMAGE } // type 1 is images
-        val url = images.firstOrNull()?.src ?: return
-        val intent = Intent(context, ImageViewerActivity::class.java).apply {
-            putExtra(KEY_URL, url)
-        }
-        context.startActivity(intent)
+        val urls = images.mapNotNull { it.src }
+        context.startActivity(ImageViewerActivity.intent(context, urls))
     }
 }

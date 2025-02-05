@@ -113,4 +113,6 @@
     <string name="comment_posandtime_format">%1$s %2$tF %2$tT</string>
     <string name="unknown">未知</string>
     <string name="view_pictures">查看图片</string>
+    <string name="next">下一个</string>
+    <string name="previous">上一个</string>
 </resources>

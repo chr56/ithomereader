@@ -46,6 +46,7 @@ const val CLIP_TAG_IMAGE_LINK = "ITHomeImageLink"
 const val CLIP_TAG_COMMENT = "ITHomeComment"
 
 const val KEY_URL = "url"
+const val KEY_URLS = "urls"
 const val KEY_TITLE = "title"
 const val KEY_LIVE_INFO = "live_info"
 const val KEY_NEWS_ID = "news_id"

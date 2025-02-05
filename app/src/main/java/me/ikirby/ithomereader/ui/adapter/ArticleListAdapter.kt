@@ -187,10 +187,8 @@ class ArticleListAdapter(
                         }
                         R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, post.url)
                         R.id.view_thumb -> {
-                            val intent = Intent(context, ImageViewerActivity::class.java).apply {
-                                putExtra(KEY_URL, post.thumb)
-                            }
-                            context.startActivity(intent)
+                            val url = post.thumb ?: return
+                            context.startActivity(ImageViewerActivity.intent(context, listOf(url)))
                         }
                         R.id.open_in_browser -> openLinkInBrowser(context, post.url)
                     }
