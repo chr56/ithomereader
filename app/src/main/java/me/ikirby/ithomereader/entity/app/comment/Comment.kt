@@ -14,7 +14,8 @@ data class Comment(
     @Json(name = "A") val against: Int,
     @Json(name = "Ta") val device: String?,
     @Json(name = "SF") val floor: String,
-    @Json(name = "pCid") val pCid: Long
+    @Json(name = "pCid") val pCid: Long,
+    @Json(name = "Elements") val elements: List<CommentElement>,
 ) {
     var isReply = false
     var replyCount = 0
