@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.databinding.ListLayoutBinding
 import me.ikirby.ithomereader.ui.adapter.CommentListAdapter
+import me.ikirby.ithomereader.ui.adapter.ItemClickListener
 import me.ikirby.ithomereader.ui.databinding.viewmodel.CommentsActivityViewModel
 import me.ikirby.ithomereader.ui.util.UiUtil
 import me.ikirby.ithomereader.ui.widget.OnBottomReachedListener
@@ -29,6 +30,12 @@ class AllCommentFragment : Fragment() {
         binding = ListLayoutBinding.inflate(inflater, container, false)
 
         val adapter = CommentListAdapter()
+        adapter.viewPicturesClickListener = object : ItemClickListener {
+            override fun onClick(v: View, position: Int) {
+                val comment = viewModel.allList.value!![position]
+                viewModel.viewPictures(requireContext(), comment)
+            }
+        }
         binding.listView.adapter = adapter
         binding.listView.layoutManager = LinearLayoutManager(requireContext())
         binding.listView.setOnBottomReachedListener(object : OnBottomReachedListener {

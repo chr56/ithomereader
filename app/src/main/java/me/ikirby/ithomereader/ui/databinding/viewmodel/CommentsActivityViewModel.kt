@@ -1,12 +1,16 @@
 package me.ikirby.ithomereader.ui.databinding.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.APP_VER
+import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.clientapi.Api
 import me.ikirby.ithomereader.entity.app.comment.Comment
+import me.ikirby.ithomereader.ui.activity.ImageViewerActivity
 import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.encryptString
 
@@ -99,5 +103,14 @@ class CommentsActivityViewModel : ViewModel() {
             }
             hotLoading.value = false
         }
+    }
+
+    fun viewPictures(context: Context, comment: Comment) {
+        val images = comment.elements.filter { it.type == 1 } // type 1 is images
+        val url = images.firstOrNull()?.src ?: return
+        val intent = Intent(context, ImageViewerActivity::class.java).apply {
+            putExtra(KEY_URL, url)
+        }
+        context.startActivity(intent)
     }
 }

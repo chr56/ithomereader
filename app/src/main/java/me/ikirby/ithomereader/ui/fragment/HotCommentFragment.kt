@@ -34,6 +34,12 @@ class HotCommentFragment: Fragment() {
                 viewModel.expandComment(position)
             }
         }
+        adapter.viewPicturesClickListener = object : ItemClickListener {
+            override fun onClick(v: View, position: Int) {
+                val comment = viewModel.hotList.value!![position]
+                viewModel.viewPictures(requireContext(), comment)
+            }
+        }
         binding.listView.adapter = adapter
         binding.listView.layoutManager = LinearLayoutManager(requireContext())
         binding.swipeRefresh.setOnRefreshListener {
