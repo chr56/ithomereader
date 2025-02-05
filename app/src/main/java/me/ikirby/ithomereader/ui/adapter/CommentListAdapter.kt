@@ -91,7 +91,7 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     HtmlCompat.fromHtml(comment.content,HtmlCompat.FROM_HTML_MODE_COMPACT)
                 commentExpand.text = context.getString(R.string.comment_expand, comment.replyCount)
                 commentExpand.visibility = if (comment.replyCount > 0) VISIBLE else GONE
-                commentViewPictures.visibility = if (comment.elements.size > 1) VISIBLE else GONE
+                commentViewPictures.visibility = if (comment.hasAttachedImages) VISIBLE else GONE
                 commentViewPictures.text = context.getString(R.string.view_pictures)
                 commentSupport.text = context.getString(R.string.comment_support, comment.support)
                 commentAgainst.text = context.getString(R.string.comment_against, comment.against)
@@ -112,7 +112,7 @@ class CommentListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     context.getString(R.string.comment_posandtime_format, comment.region, comment.time)
                 commentContent.text =
                     HtmlCompat.fromHtml(comment.content,HtmlCompat.FROM_HTML_MODE_COMPACT)
-                commentViewPictures.visibility = if (comment.elements.size > 1) VISIBLE else GONE
+                commentViewPictures.visibility = if (comment.hasAttachedImages) VISIBLE else GONE
                 commentViewPictures.text = context.getString(R.string.view_pictures)
                 commentSupport.text = context.getString(R.string.comment_support, comment.support)
                 commentAgainst.text = context.getString(R.string.comment_against, comment.against)

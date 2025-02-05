@@ -2,6 +2,7 @@ package me.ikirby.ithomereader
 
 const val APP_VER = "980"
 
+const val COMMENT_ELEMENT_TYPE_IMAGE = 1
 const val LIVE_MSG_TYPE_IMAGE = 1
 const val THEME_CHANGE_REQUEST_CODE = 1
 const val COMMENT_POSTED_REQUEST_CODE = 1

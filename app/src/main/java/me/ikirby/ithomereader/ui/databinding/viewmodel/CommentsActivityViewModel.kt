@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.ikirby.ithomereader.APP_VER
+import me.ikirby.ithomereader.COMMENT_ELEMENT_TYPE_IMAGE
 import me.ikirby.ithomereader.KEY_URL
 import me.ikirby.ithomereader.clientapi.Api
 import me.ikirby.ithomereader.entity.app.comment.Comment
@@ -106,7 +107,7 @@ class CommentsActivityViewModel : ViewModel() {
     }
 
     fun viewPictures(context: Context, comment: Comment) {
-        val images = comment.elements.filter { it.type == 1 } // type 1 is images
+        val images = comment.elements.filter { it.type == COMMENT_ELEMENT_TYPE_IMAGE } // type 1 is images
         val url = images.firstOrNull()?.src ?: return
         val intent = Intent(context, ImageViewerActivity::class.java).apply {
             putExtra(KEY_URL, url)

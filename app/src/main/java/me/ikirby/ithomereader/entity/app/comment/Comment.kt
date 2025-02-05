@@ -1,6 +1,7 @@
 package me.ikirby.ithomereader.entity.app.comment
 
 import com.squareup.moshi.Json
+import me.ikirby.ithomereader.COMMENT_ELEMENT_TYPE_IMAGE
 import java.util.*
 
 data class Comment(
@@ -19,4 +20,6 @@ data class Comment(
 ) {
     var isReply = false
     var replyCount = 0
+
+    val hasAttachedImages: Boolean get() = elements.any { it.type == COMMENT_ELEMENT_TYPE_IMAGE }
 }
