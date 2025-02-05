@@ -16,6 +16,9 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import coil.Coil
 import coil.request.ImageRequest
 import kotlinx.coroutines.CoroutineScope
@@ -44,12 +47,6 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     private lateinit var binding: ActivityImageViewerBinding
 
     companion object {
-        const val flagsFullscreen = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
 
     private val job = SupervisorJob()
@@ -86,6 +83,25 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         fadeInAnim = AlphaAnimation(0F, 1F)
         fadeInAnim.interpolator = DecelerateInterpolator()
         fadeInAnim.duration = 400
+
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
+            if (windowInsets.isVisible(WindowInsetsCompat.Type.navigationBars())
+                || windowInsets.isVisible(WindowInsetsCompat.Type.statusBars())
+            ) {
+                binding.photoView.setOnClickListener {
+                    WindowInsetsControllerCompat(window, view).hide(WindowInsetsCompat.Type.systemBars())
+                    binding.imageMenuBtn.visibility = View.GONE
+                    binding.imageMenuBtn.startAnimation(fadeOutAnim)
+                }
+            } else {
+                binding.photoView.setOnClickListener {
+                    WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.systemBars())
+                    binding.imageMenuBtn.visibility = View.VISIBLE
+                    binding.imageMenuBtn.startAnimation(fadeInAnim)
+                }
+            }
+            windowInsets
+        }
 
         loadImage()
     }
@@ -164,17 +180,6 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.photo_view -> {
-                if (window.decorView.systemUiVisibility == flagsFullscreen) {
-                    window.decorView.systemUiVisibility = 0
-                    binding.imageMenuBtn.visibility = View.VISIBLE
-                    binding.imageMenuBtn.startAnimation(fadeInAnim)
-                } else {
-                    window.decorView.systemUiVisibility = flagsFullscreen
-                    binding.imageMenuBtn.visibility = View.GONE
-                    binding.imageMenuBtn.startAnimation(fadeOutAnim)
-                }
-            }
             R.id.load_tip -> loadImage()
             R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(
                 this,
