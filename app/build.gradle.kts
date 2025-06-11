@@ -122,7 +122,7 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines)
     implementation(libs.androidx.core)
-    implementation(libs.androidx.viewpager)
+    implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)

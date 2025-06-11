@@ -7,9 +7,10 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import me.ikirby.ithomereader.KEY_NEWS_ID
 import me.ikirby.ithomereader.KEY_TITLE
 import me.ikirby.ithomereader.KEY_URL
@@ -22,7 +23,7 @@ import me.ikirby.ithomereader.ui.fragment.HotCommentFragment
 import me.ikirby.ithomereader.util.Logger
 import me.ikirby.ithomereader.util.encryptString
 
-class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
+class CommentsActivity : BaseActivity() {
 
     private val viewModel by lazy { ViewModelProvider(this).get(CommentsActivityViewModel::class.java) }
     private lateinit var binding: ActivityViewpagerBinding
@@ -61,33 +62,28 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         binding = ActivityViewpagerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val fragments = listOf(
-            HotCommentFragment(),
-            AllCommentFragment()
-        )
-
-        val adapter = object :
-            FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            override fun getItem(position: Int): Fragment {
-                return fragments[position]
-            }
-
-            override fun getCount(): Int {
-                return fragments.size
-            }
-
-            override fun getPageTitle(position: Int): CharSequence {
-                return if (position == 1) {
-                    getString(R.string.all_comments)
-                } else {
-                    getString(R.string.hot_comments)
-                }
-            }
+        binding.viewPager.adapter = object : FragmentStateAdapter(supportFragmentManager, lifecycle) {
+            val fragments = listOf(
+                HotCommentFragment(),
+                AllCommentFragment()
+            )
+            override fun getItemCount(): Int = fragments.size
+            override fun createFragment(position: Int): Fragment = fragments[position]
         }
-
-        binding.viewPager.adapter = adapter
-        binding.viewPager.addOnPageChangeListener(this)
-        binding.tabs.setupWithViewPager(binding.viewPager)
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                isGestureEnabled = position != 1
+            }
+        })
+        binding.viewPager.isUserInputEnabled = true
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.text = if (position == 1) {
+                getString(R.string.all_comments)
+            } else {
+                getString(R.string.hot_comments)
+            }
+        }.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -107,13 +103,4 @@ class CommentsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         binding.viewPager.currentItem = 1
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-    }
-
-    override fun onPageSelected(position: Int) {
-        isGestureEnabled = position != 1
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
-    }
 }

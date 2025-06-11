@@ -12,8 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import me.ikirby.ithomereader.*
 import me.ikirby.ithomereader.databinding.ActivityViewpagerBinding
 import me.ikirby.ithomereader.ui.base.BaseActivity
@@ -40,31 +41,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setTitleCustom(getString(R.string.app_name))
         isGestureEnabled = false
-
-        val fragments = listOf(
-            ArticleListFragment(),
-            TrendingListFragment()
-        )
-
-        val adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            override fun getItem(position: Int): Fragment {
-                return fragments[position]
-            }
-
-            override fun getCount(): Int {
-                return fragments.size
-            }
-
-            override fun getPageTitle(position: Int): CharSequence {
-                return if (position == 1) {
-                    getString(R.string.trending)
-                } else {
-                    getString(R.string.news)
-                }
-            }
-        }
-
-        binding.viewPager.adapter = adapter
 
         if (savedInstanceState == null) {
             if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_CHECK_UPDATE_ON_LAUNCH, true)) {
@@ -93,6 +69,17 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         setContentView(binding.root)
+        binding.viewPager.adapter = object : FragmentStateAdapter(supportFragmentManager, lifecycle) {
+
+            val fragments = listOf(
+                ArticleListFragment(),
+                TrendingListFragment()
+            )
+
+            override fun getItemCount(): Int = fragments.size
+            override fun createFragment(position: Int): Fragment = fragments[position]
+        }
+
         if (BaseApplication.preferences.getBoolean(SETTINGS_KEY_USE_BOTTOM_NAV, false)) {
             binding.tabs.visibility = View.GONE
             if (isNightMode()) {
@@ -101,17 +88,11 @@ class MainActivity : BaseActivity() {
                 binding.bottomNav.setBackgroundColor(getColor(R.color.background_light))
             }
             binding.bottomNav.visibility = View.VISIBLE
-            binding.viewPager.setSwipeDisabled(true)
-            binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                }
-
+            binding.viewPager.isUserInputEnabled = false
+            binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                    binding.bottomNav.selectedItemId =
-                        if (position == 1) R.id.bottom_nav_hot else R.id.bottom_nav_news
+                    super.onPageSelected(position)
+                    binding.bottomNav.selectedItemId = if (position == 1) R.id.bottom_nav_hot else R.id.bottom_nav_news
                 }
             })
             binding.bottomNav.setOnItemSelectedListener {
@@ -123,7 +104,14 @@ class MainActivity : BaseActivity() {
             }
         } else {
             supportActionBar?.elevation = 0F
-            binding.tabs.setupWithViewPager(binding.viewPager)
+            binding.viewPager.isUserInputEnabled = true
+            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+                tab.text = if (position == 1) {
+                    getString(R.string.trending)
+                } else {
+                    getString(R.string.news)
+                }
+            }.attach()
         }
     }
 
