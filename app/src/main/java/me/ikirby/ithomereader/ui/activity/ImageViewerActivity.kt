@@ -231,13 +231,13 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         val distance = resources.displayMetrics.widthPixels / 2
         gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onFling(e1: MotionEvent?, e2: MotionEvent, v: Float, v1: Float): Boolean {
-                if (e1 != null && abs(e1.rawY - e2.rawY) < 75) {
-                    if (e1.rawX - e2.rawX > distance) {
-                        previous()
+                if (urls.size > 1 && binding.photoView.scale == 1f) {
+                    // switch among images, only when it's not zoomed
+                    if (e1 != null && abs(e1.rawY - e2.rawY) < 75) {
+                        // horizontal fling with threshold
+                        val deltaX = e1.rawX - e2.rawX
+                        if (deltaX > distance) next() else if (deltaX < -distance) previous()
                         return true
-                    } else {
-                        next()
-                        return false
                     }
                 }
                 return false
