@@ -1,6 +1,5 @@
 package me.ikirby.ithomereader.ui.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -22,18 +21,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import coil.Coil
 import coil.request.ImageRequest
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ikirby.ithomereader.CLIP_TAG_IMAGE_LINK
+import me.ikirby.ithomereader.KEY_PAGE
 import me.ikirby.ithomereader.KEY_URLS
 import me.ikirby.ithomereader.R
-import me.ikirby.ithomereader.SWIPE_GESTURE_DISTANCE
 import me.ikirby.ithomereader.databinding.ActivityImageViewerBinding
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
@@ -44,23 +42,19 @@ import me.ikirby.ithomereader.util.getFileName
 import me.ikirby.ithomereader.util.getImageMimeType
 import me.ikirby.ithomereader.util.writeFile
 import java.io.IOException
-import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
 
-class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, CoroutineScope {
-
-    private lateinit var binding: ActivityImageViewerBinding
+class ImageViewerActivity : AppCompatActivity() {
 
     companion object {
-        fun intent(context: Context, urls: Collection<String>): Intent =
+        fun intent(context: Context, urls: Collection<String>, selected: Int = -1): Intent =
             Intent(context, ImageViewerActivity::class.java).apply {
                 putExtra(KEY_URLS, ArrayList(urls))
+                if (selected > -1) putExtra(KEY_PAGE, selected)
             }
     }
 
-    private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+    private lateinit var binding: ActivityImageViewerBinding
 
     private var urls: List<String> = emptyList()
     private var current = -1
@@ -68,32 +62,23 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     private lateinit var fadeOutAnim: Animation
     private lateinit var fadeInAnim: Animation
 
-    private val saveImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.let {
-                saveImage(it.data!!, current)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImageViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         urls = intent.getStringArrayListExtra(KEY_URLS).orEmpty()
-        current = urls.lastIndex
+        current = intent.getIntExtra(KEY_PAGE, urls.lastIndex)
 
-        binding.photoView.setOnClickListener(this)
-        binding.imageMenuBtn.setOnClickListener(this)
+        fadeInAnim = AlphaAnimation(0F, 1F).apply {
+            interpolator = DecelerateInterpolator()
+            duration = 400
+        }
 
-        fadeOutAnim = AlphaAnimation(1F, 0F)
-        fadeOutAnim.interpolator = AccelerateInterpolator()
-        fadeOutAnim.duration = 400
-
-        fadeInAnim = AlphaAnimation(0F, 1F)
-        fadeInAnim.interpolator = DecelerateInterpolator()
-        fadeInAnim.duration = 400
+        fadeOutAnim = AlphaAnimation(1F, 0F).apply {
+            interpolator = AccelerateInterpolator()
+            duration = 400
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
             if (windowInsets.isVisible(WindowInsetsCompat.Type.navigationBars())
@@ -116,14 +101,43 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
 
         setupGesture()
 
+        binding.loadTip.setOnClickListener {
+            loadImage(current) // retry
+        }
+
+        binding.imageMenuBtn.setOnClickListener {
+            UiUtil.showBottomSheetMenu(
+                this,
+                object : BottomSheetMenu.BottomSheetMenuListener {
+                    override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
+                        inflater.inflate(R.menu.menu_img_viewer, menu)
+                    }
+
+                    override fun onBottomSheetMenuItemSelected(item: MenuItem) {
+                        when (item.itemId) {
+                            R.id.context_download_img -> downloadAndSaveCurrent()
+                            R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, urls[current])
+                            R.id.context_next -> next()
+                            R.id.context_previous -> previous()
+                        }
+                    }
+                }
+            )
+        }
 
         loadImage(current)
     }
 
-    override fun onDestroy() {
-        coroutineContext.cancelChildren()
-        super.onDestroy()
+    private fun previous() {
+        current = (current - 1).mod(urls.size)
+        loadImage(current)
     }
+
+    private fun next() {
+        current = (current + 1).mod(urls.size)
+        loadImage(current)
+    }
+
 
     private fun loadImage(position: Int) {
         binding.loadTip.setOnClickListener(null)
@@ -138,7 +152,9 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
                         binding.loadProgress.visibility = View.GONE
                         binding.loadProgress.visibility = View.VISIBLE
                         binding.photoView.visibility = View.INVISIBLE
-                        binding.loadTip.setOnClickListener(this@ImageViewerActivity)
+                        binding.loadTip.setOnClickListener {
+                            loadImage(current) // retry
+                        }
                     }
 
                     override fun onSuccess(result: Drawable) {
@@ -152,7 +168,8 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         )
     }
 
-    private fun createImageFile() {
+    //region Save
+    private fun downloadAndSaveCurrent() {
         val fileName = getFileName(urls[current])
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -162,8 +179,17 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
         saveImage.launch(intent)
     }
 
+    private val saveImage =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.let {
+                    saveImage(it.data!!, current)
+                }
+            }
+        }
+
     private fun saveImage(uri: Uri, position: Int) {
-        launch {
+        lifecycleScope.launch(SupervisorJob()) {
             withContext(Dispatchers.IO) {
                 Coil.imageLoader(this@ImageViewerActivity).enqueue(
                     ImageRequest.Builder(this@ImageViewerActivity)
@@ -191,41 +217,9 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
             }
         }
     }
+    //endregion
 
-    private fun previous() {
-        current = (current - 1).mod(urls.size)
-        loadImage(current)
-    }
-
-    private fun next() {
-        current = (current + 1).mod(urls.size)
-        loadImage(current)
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.load_tip -> loadImage(current)
-            R.id.image_menu_btn -> UiUtil.showBottomSheetMenu(
-                this,
-                object : BottomSheetMenu.BottomSheetMenuListener {
-                    override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
-                        inflater.inflate(R.menu.menu_img_viewer, menu)
-                    }
-
-                    override fun onBottomSheetMenuItemSelected(item: MenuItem) {
-                        when (item.itemId) {
-                            R.id.context_download_img -> createImageFile()
-                            R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, urls[current])
-                            R.id.context_next -> next()
-                            R.id.context_previous -> previous()
-                        }
-                    }
-                }
-            )
-        }
-    }
-
-
+    //region Gestures
     private lateinit var gestureDetector: GestureDetector
     private fun setupGesture() {
         val distance = resources.displayMetrics.widthPixels / 2
@@ -246,5 +240,6 @@ class ImageViewerActivity : AppCompatActivity(), View.OnClickListener, Coroutine
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean =
-        if (gestureDetector.onTouchEvent(ev)) true else super.dispatchTouchEvent(ev)
+        gestureDetector.onTouchEvent(ev) || super.dispatchTouchEvent(ev)
+    //endregion
 }
