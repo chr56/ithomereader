@@ -139,6 +139,7 @@ class ArticleActivity : BaseActivity() {
                 }
                 startActivity(Intent.createChooser(share, getString(R.string.share) + " " + title))
             }
+
             R.id.action_grade -> showGrade()
             R.id.action_comments -> showComments()
             R.id.copy_link -> copyToClipboard(CLIP_TAG_NEWS_LINK, url)
@@ -188,8 +189,14 @@ class ArticleActivity : BaseActivity() {
 
     @Suppress("Unused")
     @JavascriptInterface
-    fun openInViewer(url: String) {
-        startActivity(ImageViewerActivity.intent(this, listOf(url)))
+    fun openInViewer(url: String, all: Array<String?>) {
+        val urls = all.filterNotNull()
+        val selected = urls.indexOf(url)
+        if (selected != -1) {
+            startActivity(ImageViewerActivity.intent(this, urls, selected))
+        } else {
+            startActivity(ImageViewerActivity.intent(this, listOf(url))) // all urls does NOT contains url?
+        }
     }
 
     private fun showComments() {
