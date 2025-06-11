@@ -1,29 +1,37 @@
 package me.ikirby.ithomereader.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
-import android.view.GestureDetector
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import coil.Coil
 import coil.request.ImageRequest
+import coil.target.Target
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -33,6 +41,7 @@ import me.ikirby.ithomereader.KEY_PAGE
 import me.ikirby.ithomereader.KEY_URLS
 import me.ikirby.ithomereader.R
 import me.ikirby.ithomereader.databinding.ActivityImageViewerBinding
+import me.ikirby.ithomereader.databinding.FragmentImageViewerBinding
 import me.ikirby.ithomereader.ui.dialog.BottomSheetMenu
 import me.ikirby.ithomereader.ui.util.ToastUtil
 import me.ikirby.ithomereader.ui.util.UiUtil
@@ -42,11 +51,12 @@ import me.ikirby.ithomereader.util.getFileName
 import me.ikirby.ithomereader.util.getImageMimeType
 import me.ikirby.ithomereader.util.writeFile
 import java.io.IOException
-import kotlin.math.abs
+
 
 class ImageViewerActivity : AppCompatActivity() {
 
     companion object {
+
         fun intent(context: Context, urls: Collection<String>, selected: Int = -1): Intent =
             Intent(context, ImageViewerActivity::class.java).apply {
                 putExtra(KEY_URLS, ArrayList(urls))
@@ -64,11 +74,16 @@ class ImageViewerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge(
+            SystemBarStyle.dark(Color.TRANSPARENT),
+            SystemBarStyle.dark(Color.BLACK)
+        )
         binding = ActivityImageViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         urls = intent.getStringArrayListExtra(KEY_URLS).orEmpty()
         current = intent.getIntExtra(KEY_PAGE, urls.lastIndex)
+
 
         fadeInAnim = AlphaAnimation(0F, 1F).apply {
             interpolator = DecelerateInterpolator()
@@ -80,92 +95,154 @@ class ImageViewerActivity : AppCompatActivity() {
             duration = 400
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
-            if (windowInsets.isVisible(WindowInsetsCompat.Type.navigationBars())
-                || windowInsets.isVisible(WindowInsetsCompat.Type.statusBars())
-            ) {
-                binding.photoView.setOnClickListener {
-                    WindowInsetsControllerCompat(window, view).hide(WindowInsetsCompat.Type.systemBars())
-                    binding.imageMenuBtn.visibility = View.GONE
-                    binding.imageMenuBtn.startAnimation(fadeOutAnim)
-                }
-            } else {
-                binding.photoView.setOnClickListener {
-                    WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.systemBars())
-                    binding.imageMenuBtn.visibility = View.VISIBLE
-                    binding.imageMenuBtn.startAnimation(fadeInAnim)
-                }
+        setupViewPager()
+        setupWindowsInsets()
+
+        binding.imageMenuBtn.setOnClickListener { showImageMenu() }
+
+        // Initial load
+        binding.viewPager.setCurrentItem(current, false)
+        updateCountIndicator(current)
+    }
+
+    private fun setupWindowsInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.countIndicator.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = insets.bottom
             }
+            binding.imageMenuBtn.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
+            }
+            hidden = !windowInsets.isVisible(WindowInsetsCompat.Type.systemBars())
             windowInsets
         }
+    }
 
-        setupGesture()
+    class ImageAdapter(
+        private val urls: List<String>, val onClick: () -> Unit
+    ) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
-        binding.loadTip.setOnClickListener {
-            loadImage(current) // retry
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val binding: FragmentImageViewerBinding =
+                FragmentImageViewerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
         }
 
-        binding.imageMenuBtn.setOnClickListener {
-            UiUtil.showBottomSheetMenu(
-                this,
-                object : BottomSheetMenu.BottomSheetMenuListener {
-                    override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
-                        inflater.inflate(R.menu.menu_img_viewer, menu)
-                    }
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.onBind(position, urls) { onClick }
+        }
 
-                    override fun onBottomSheetMenuItemSelected(item: MenuItem) {
-                        when (item.itemId) {
-                            R.id.context_download_img -> downloadAndSaveCurrent()
-                            R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, urls[current])
-                            R.id.context_next -> next()
-                            R.id.context_previous -> previous()
-                        }
+        override fun getItemCount(): Int = urls.size
+
+        class ViewHolder(val binding: FragmentImageViewerBinding) : RecyclerView.ViewHolder(binding.root) {
+
+            fun onBind(position: Int, urls: List<String>, onClick: () -> Unit) {
+                val context = itemView.context
+                val url = urls[position]
+                loadImages(context, url)
+                binding.photoView.setOnLongClickListener { onClick();true }
+            }
+
+            private fun loadImages(context: Context, url: String) {
+                Coil.imageLoader(context).enqueue(
+                    ImageRequest.Builder(context)
+                        .data(url)
+                        .target(object : Target {
+                            override fun onStart(placeholder: Drawable?) {
+                                binding.photoView.visibility = View.INVISIBLE
+                                binding.loadProgress.visibility = View.VISIBLE
+                                binding.loadText.visibility = View.GONE
+                                binding.loadTip.visibility = View.VISIBLE
+                                binding.loadTip.setOnClickListener(null)
+                            }
+
+                            override fun onError(error: Drawable?) {
+                                binding.photoView.visibility = View.INVISIBLE
+                                binding.loadProgress.visibility = View.GONE
+                                binding.loadText.visibility = View.VISIBLE
+                                binding.loadTip.setOnClickListener {
+                                    loadImages(context, url) // retry
+                                }
+                            }
+
+                            override fun onSuccess(result: Drawable) {
+                                binding.photoView.visibility = View.VISIBLE
+                                binding.loadProgress.visibility = View.GONE
+                                binding.photoView.setImageDrawable(result)
+                                binding.loadTip.visibility = View.GONE
+                            }
+                        })
+                        .build()
+                )
+            }
+        }
+    }
+
+    private fun setupViewPager() {
+        binding.viewPager.adapter = ImageAdapter(urls, ::toggleButtons)
+
+        binding.viewPager.offscreenPageLimit = 1 // Keep one page on each side loaded
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                current = position
+                updateCountIndicator(position)
+            }
+        })
+    }
+
+    private var hidden = false
+
+    private fun hideButtons() {
+        binding.imageMenuBtn.startAnimation(fadeOutAnim)
+        binding.imageMenuBtn.visibility = View.GONE
+        binding.countIndicator.startAnimation(fadeOutAnim)
+        binding.countIndicator.visibility = View.GONE
+        WindowInsetsControllerCompat(window, binding.root).hide(WindowInsetsCompat.Type.systemBars())
+    }
+
+    private fun showButtons() {
+        binding.imageMenuBtn.startAnimation(fadeInAnim)
+        binding.imageMenuBtn.visibility = View.VISIBLE
+        binding.countIndicator.startAnimation(fadeInAnim)
+        binding.countIndicator.visibility = View.VISIBLE
+        WindowInsetsControllerCompat(window, binding.root).show(WindowInsetsCompat.Type.systemBars())
+    }
+
+    private fun toggleButtons() {
+        if (hidden) showButtons() else hideButtons()
+    }
+
+    private fun showImageMenu() {
+        UiUtil.showBottomSheetMenu(
+            this,
+            object : BottomSheetMenu.BottomSheetMenuListener {
+                override fun onCreateBottomSheetMenu(inflater: MenuInflater, menu: Menu) {
+                    inflater.inflate(R.menu.menu_img_viewer, menu)
+                }
+
+                override fun onBottomSheetMenuItemSelected(item: MenuItem) {
+                    when (item.itemId) {
+                        R.id.context_download_img -> downloadAndSaveCurrent()
+                        R.id.copy_link -> copyToClipboard(CLIP_TAG_IMAGE_LINK, urls[current])
+                        R.id.context_next -> binding.viewPager.currentItem = (current + 1).mod(urls.size)
+                        R.id.context_previous -> binding.viewPager.currentItem = (current - 1).mod(urls.size)
                     }
                 }
-            )
-        }
-
-        loadImage(current)
-    }
-
-    private fun previous() {
-        current = (current - 1).mod(urls.size)
-        loadImage(current)
-    }
-
-    private fun next() {
-        current = (current + 1).mod(urls.size)
-        loadImage(current)
-    }
-
-
-    private fun loadImage(position: Int) {
-        binding.loadTip.setOnClickListener(null)
-        binding.loadTip.visibility = View.VISIBLE
-        binding.loadText.visibility = View.GONE
-        binding.loadProgress.visibility = View.VISIBLE
-        Coil.imageLoader(this).enqueue(
-            ImageRequest.Builder(this)
-                .data(urls[position])
-                .target(object : coil.target.Target {
-                    override fun onError(error: Drawable?) {
-                        binding.loadProgress.visibility = View.GONE
-                        binding.loadProgress.visibility = View.VISIBLE
-                        binding.photoView.visibility = View.INVISIBLE
-                        binding.loadTip.setOnClickListener {
-                            loadImage(current) // retry
-                        }
-                    }
-
-                    override fun onSuccess(result: Drawable) {
-                        binding.photoView.setImageDrawable(result)
-                        binding.loadTip.visibility = View.GONE
-                        binding.photoView.visibility = View.VISIBLE
-                        binding.imageMenuBtn.visibility = View.VISIBLE
-                    }
-                })
-                .build()
+            }
         )
+    }
+
+
+    private fun updateCountIndicator(position: Int) {
+        if (urls.size > 1) {
+            @SuppressLint("SetTextI18n")
+            binding.countIndicator.text = "${position + 1} / ${urls.size}"
+            binding.countIndicator.visibility = View.VISIBLE
+        } else {
+            binding.countIndicator.visibility = View.GONE
+        }
     }
 
     //region Save
@@ -217,29 +294,5 @@ class ImageViewerActivity : AppCompatActivity() {
             }
         }
     }
-    //endregion
-
-    //region Gestures
-    private lateinit var gestureDetector: GestureDetector
-    private fun setupGesture() {
-        val distance = resources.displayMetrics.widthPixels / 2
-        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent, v: Float, v1: Float): Boolean {
-                if (urls.size > 1 && binding.photoView.scale == 1f) {
-                    // switch among images, only when it's not zoomed
-                    if (e1 != null && abs(e1.rawY - e2.rawY) < 75) {
-                        // horizontal fling with threshold
-                        val deltaX = e1.rawX - e2.rawX
-                        if (deltaX > distance) next() else if (deltaX < -distance) previous()
-                        return true
-                    }
-                }
-                return false
-            }
-        })
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean =
-        gestureDetector.onTouchEvent(ev) || super.dispatchTouchEvent(ev)
     //endregion
 }
