@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Process
 import android.util.Log
+import me.ikirby.ithomereader.ui.activity.UnknownExceptionHandlerActivity
 import kotlin.system.exitProcess
 
 object UnknownExceptionHandler {
@@ -15,12 +16,12 @@ object UnknownExceptionHandler {
     }
 
     private fun handleUncaughtException(context: Context, stackTrace: String) {
-        val intent = Intent().apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            action = "me.ikirby.ithomereader.UNKNOWN_EXCEPTION"
-            putExtra(KEY_STACK_TRACE, stackTrace)
-        }
-        context.startActivity(intent)
+        context.startActivity(
+            Intent(context, UnknownExceptionHandlerActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putExtra(KEY_STACK_TRACE, stackTrace)
+            }
+        )
 
         Process.killProcess(Process.myPid())
         exitProcess(1)
