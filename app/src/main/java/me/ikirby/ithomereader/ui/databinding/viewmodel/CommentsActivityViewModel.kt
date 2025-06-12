@@ -82,7 +82,7 @@ class CommentsActivityViewModel : ViewModel() {
         hotLoading.value = true
         viewModelScope.launch {
             runCatching {
-                Api.api.commentApi.getCommentContent(commentId)
+                Api.api.commentApi.getCommentContent(commentId, APP_VER)
             }.onSuccess {
                 val list = hotList.value!!.toMutableList()
                 val commentContent = it.content.commentContentList[0]

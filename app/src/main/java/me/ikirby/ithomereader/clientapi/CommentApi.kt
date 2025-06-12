@@ -22,7 +22,10 @@ interface CommentApi {
     ): CommentResponse
 
     @GET("comment/getcommentcontent")
-    suspend fun getCommentContent(@Query("commentid") commentid: String): CommentContentResponse
+    suspend fun getCommentContent(
+        @Query("commentid") commentid: String,
+        @Query("appver") appver: String,
+    ): CommentContentResponse
 
     companion object {
         fun create(okHttpClient: OkHttpClient): CommentApi {
