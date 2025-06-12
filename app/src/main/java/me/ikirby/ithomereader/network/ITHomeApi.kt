@@ -17,7 +17,7 @@ object ITHomeApi {
     private const val AJAX_DATA_URL = "https://dyn.ithome.com/ithome/getajaxdata.aspx"
     private const val COMMENT_POST_URL = "https://dyn.ithome.com/ithome/postComment.aspx"
     private const val LOGIN_URL = "https://dyn.ithome.com/ithome/login.aspx/btnLogin_Click"
-    private const val SEARCH_URL = "https://www.ithome.com/search/adt_all_%s_0.html"
+    private const val SEARCH_URL = "https://www.ithome.com/search/%s.html"
     private const val SEARCH_MOBILE = "https://m.ithome.com/search/%s"
     private const val SEARCH_URL_NEW = "https://www.ithome.com/category/searchpage?page=%d&keyword=%s"
     private const val USER_AGENT =
