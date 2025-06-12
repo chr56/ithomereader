@@ -56,12 +56,12 @@ object ArticleApiImpl : ArticleApi {
     override fun getSearchResults(keyword: String, page: Int): List<Article>? {
         return try {
             if (page == 1) { // first page can not be query with getSearchDocWithPage(), use old way
-                /*
                 val doc = ITHomeApi.getSearchDoc(keyword)
                 readDocumentToArticle(doc, "ul.bl li")
-                 */
+                /*
                 val doc = ITHomeApi.getSearchDocMobile(keyword)
                 parseSearchResult(doc, ".search-content")
+                */
             } else {
                 val json = ITHomeApi.getSearchResultJsonWithPage(page, keyword, null)
                 val html = json
