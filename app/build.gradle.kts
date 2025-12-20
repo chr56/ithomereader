@@ -47,7 +47,7 @@ android {
         versionName = "5.3.0-dev2"
 
         resourceConfigurations += setOf("zh-rCN")
-        versionNameSuffix = "-" + getGitHash(true)
+        versionNameSuffix = "-" + getGitHash(true)?.trim()
     }
     buildTypes {
         named("release") {
