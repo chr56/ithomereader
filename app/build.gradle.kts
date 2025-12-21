@@ -44,7 +44,7 @@ android {
         targetSdk = 34
 
         versionCode = 194
-        versionName = "5.3.0-dev2"
+        versionName = "5.3.1-dev1"
 
         resourceConfigurations += setOf("zh-rCN")
         versionNameSuffix = "-" + getGitHash(true)?.trim()
