@@ -120,16 +120,19 @@ android {
 dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines)
+
     implementation(libs.androidx.core)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.fragment)
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference)
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.google.material)
+
     implementation(libs.jsoup)
     implementation(libs.photoView)
     implementation(libs.coil)
@@ -140,6 +143,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.retrofit2.moshi)
+
     // debugImplementation(libs.leakcanary.android)
     // releaseImplementation(libs.leakcanary.androidNoOp)
 
