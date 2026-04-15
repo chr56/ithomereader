@@ -159,7 +159,8 @@ object ArticleApiImpl : ArticleApi {
 
     private fun getArticleObj(post: Element): Article {
         val title = addWhiteSpace(post.select("a.title").text())
-        val date = post.select(".c").attr("data-ot")
+        // val date = post.select(".c").attr("data-ot") // precise date
+        val date = post.select(".d").text() // current date
         var url = post.select("a.title").attr("abs:href")
         var thumb = post.select(".lazy").attr("data-original")
         if (thumb.startsWith("//")) {
