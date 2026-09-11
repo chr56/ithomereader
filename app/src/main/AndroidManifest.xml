@@ -50,7 +50,7 @@
         <activity
             android:name=".ui.activity.LinkJumpActivity"
             android:exported="true">
-            <intent-filter tools:ignore="AppLinkUrlError">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -65,7 +65,7 @@
 
                 <data android:pathPattern="/html/.*/.*.htm"/>
                 <data android:pathPattern="/html/.*.htm"/>
-                <data android:pathPattern="/0/.*/.*.htm"/>
+                <data android:pathPattern="/./.*/.*.htm"/>
                 <data android:pathPattern="/item/.*.htm"/>
             </intent-filter>
         </activity>
