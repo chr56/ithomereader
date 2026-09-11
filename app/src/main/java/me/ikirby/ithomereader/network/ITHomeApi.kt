@@ -21,7 +21,7 @@ object ITHomeApi {
     private const val SEARCH_MOBILE = "https://m.ithome.com/search/%s"
     private const val SEARCH_URL_NEW = "https://www.ithome.com/category/searchpage?page=%d&keyword=%s"
     private const val USER_AGENT =
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
     private const val LIVE_URL = "https://live.ithome.com/newsinfo/getnewsph?newsid="
     private const val LAPIN_AJAX_DATA_URL = "https://www.lapin365.com/comment/getajaxdata"
     private const val NEWS_GRADE_URL = "https://dyn.ithome.com/grade/"
