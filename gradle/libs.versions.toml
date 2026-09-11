@@ -11,11 +11,11 @@ versionChecker = "0.53.0"
 
 ## Libraries
 #### Jetpack Start
-core-ktx = "1.18.0"
-appcompat = "1.7.1"
+core-ktx = "1.19.0"
+appcompat = "1.8.0"
 activity = "1.13.0"
-fragment = "1.8.9"
-lifecycle = "2.10.0"
+fragment = "1.9.0"
+lifecycle = "2.11.0"
 annotation = "1.10.0"
 preference = "1.2.1"
 recyclerview = "1.4.0"
@@ -29,7 +29,7 @@ media3 = "1.10.1"
 browser = "1.9.0"
 cardview = "1.0.0"
 palette = "1.0.0"
-compose = "1.11.2"
+compose = "1.11.4"
 datastore = "1.1.7"
 documentfile = "1.1.0"
 material = "1.12.0"
@@ -38,15 +38,15 @@ room = "2.8.4"
 
 
 #### Popular Start
-ktxc = "1.10.2"
-ktxs-json = "1.10.0"
+ktxc = "1.11.0"
+ktxs-json = "1.11.0"
 ktxs-ktoml = "0.7.0"
 ktxs-kaml = "0.90.0"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
 moshi = "1.15.2"
 coil = "2.7.0"
-koin = "4.2.0"
+koin = "4.2.2"
 #### Popular End
 
 #### Others Start
@@ -213,7 +213,7 @@ androidx-media3 =[
 test-unit = [
     "junit",
     "mockito-core",
-    "mockito-android",
+    # "mockito-android",
     # "testng",
 ]
 
